@@ -1,0 +1,55 @@
+﻿@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.TecnicoVM
+@{
+    ViewBag.Title = "Crear Tecnico";
+}
+
+<div class="sixteen wide column">
+    <h1 class="ui header">@ViewBag.Title</h1>
+</div>
+
+@using (Html.BeginForm("Create", "Cat_Tecnicos", FormMethod.Post, new { @class = "ui row" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="sixteen wide column">
+        <h2 class="ui top attached sub header">Datos </h2>
+        <div class="ui attached form segment">
+            <div class="fields">
+                <div class="field">
+                    @Html.LabelFor(model => model.NombreTecnico, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.NombreTecnico, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NombreTecnico, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="field">
+                    @Html.LabelFor(model => model.Cedula, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Cedula, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Cedula, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="field">
+                    @Html.LabelFor(model => model.CorreoTecnico, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.CorreoTecnico, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CorreoTecnico, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="field">
+                    @Html.LabelFor(model => model.CelularTecnico, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.CelularTecnico, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CelularTecnico, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @Html.ActionLink("Regresar a la Lista", "Index", null, new { @class = "ui secondary button" })
+            <input type="submit" value="Crear" class="ui primary button" />
+
+        </div>
+    </div>
+
+
+
+}
+ 

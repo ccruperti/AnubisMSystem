@@ -1,0 +1,139 @@
+﻿@model AnubisDBMS.Models.ListaEquipos
+@{
+    ViewBag.Title = "Monitoreo de Equipos";
+}
+
+<div class="row">
+    <div class="ui sixteen wide column">
+        <h1 class="ui header">@ViewBag.Title</h1>
+        @using (Html.BeginForm("MonitoreoEquipos", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui menu", id = "" }))
+        {
+            <div class="item">
+                <div class="item header" style="color:black !important">
+                    <h4>Desde</h4>
+                </div>
+                <div class="four wide field item">
+
+                    <div class="ui left icon small input">
+                        <i class="calendar icon"></i>
+                        @Html.TextBoxFor(model => model.Desde, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "Desde" })
+                    </div>
+                </div>
+                <div class="item header" style="color:black !important">
+                    <h4>Hasta</h4>
+                </div>
+                <div class="four wide field item">
+                    <div class="ui left icon small input">
+                        <i class="calendar icon"></i>
+                        @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "Desde" })
+                    </div>
+                </div>
+                <div class="item">
+                    <input type="submit" value="Consultar" class="ui mini blue button" />
+
+                </div>
+            </div>
+            <div class="item">
+
+
+                <div class="ui left action right icon input">
+                    <div class="ui basic floating dropdown button mobile hidden">
+                        <div class="text">Filtrar búsqueda</div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu" id="main-table-search-filter">
+                            <div id="main-table-search-filter-all" class="active item" data-column-search="-1">TODAS LAS COLUMNAS</div>
+                        </div>
+                    </div>
+                    <div class="ui large icon input">
+                        <input type="text" id="main-table-search" placeholder="Buscar...">
+                        <i class="search icon"> </i>
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui dropdown item">
+                    <i class="list layout icon"></i>
+                    Paginar (<span id="main-table-pager-length"></span>) filas
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="active item datapager" data-pager="10">
+                            10
+                        </div>
+                        <div class="item datapager" data-pager="20">
+                            20
+                        </div>
+                        <div class="item datapager" data-pager="40">
+                            40
+                        </div>
+                        <div class="item datapager" data-pager="60">
+                            60
+                        </div>
+                        <div class="item datapager" data-pager="80">
+                            80
+                        </div>
+                        <div class="item datapager" data-pager="-1">
+                            Todas las filas
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+
+</div>
+<div class="row">
+    <div class="sixteen wide column">
+        <div class="ui raised segments">
+
+            <div class="right menu">
+
+                <a class="ui button green item" href="@Url.Action("RegistrarEquipo")"><i class="plus icon"></i>Registrar Equipo</a>
+
+            </div>
+
+            <div class="ui bottom attached raised segment">
+                <table class="ui very compact small selectable celled table datatable">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Equipos[0].AliasEquipo)</th>
+                            <th>@Html.DisplayNameFor(m => m.Equipos[0].NombreTecnico)</th>
+                            <th>@Html.DisplayNameFor(m => m.Equipos[0].FechaUltimoMonitoreo)</th>
+                            <th>Acciones</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var x in Model.Equipos)
+                        {
+
+                            <tr class="row text-center">
+
+
+                                <td>@x.AliasEquipo</td>
+                                <td>@x.NombreTecnico</td>
+                                <td>@x.FechaUltimoMonitoreo</td>
+
+                                <td>
+                                    <div class="ui mini buttons">
+                                        <a href="#" class="ui mini blue button" data-tooltip="Ver Sensores"><i class="thermometer icon"></i>Sensores</a>
+                                        <a href="#" class="ui mini green button" data-tooltip="Editar Equipo"><i class="pencil icon"></i>Editar</a>
+                                        <a href="#" class="ui mini black button" data-tooltip="Configurar"><i class="cog icon"></i>Configurar</a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+

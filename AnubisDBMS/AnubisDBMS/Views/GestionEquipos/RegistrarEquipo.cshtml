@@ -1,0 +1,126 @@
+﻿@model AnubisDBMS.Models.EquiposViewModels
+@{
+    ViewBag.Title = "RegistrarEquipo";
+}
+@using (Html.BeginForm("MonitoreoEquipos", "GestionEquipos", FormMethod.Post, new { @class = "ui row" }))
+{
+    <div class="eight wide column">
+        <div class="ui raised segments">
+            <div class="ui top attached menu bg-labcontrol-main">
+
+                <h5 class="header item bg-labcontrol-main">
+                    <i class="tablet icon"></i> Registro de Equipo Nuevo
+
+                </h5>
+                <div class="right menu">
+
+                    <button class="ui button item" type="submit"><i class="save icon"></i>Guardar</button>
+
+                </div>
+            </div>
+            <div class="ui bottom attached segment">
+
+                <div class="ui form">
+                    <div class="two fields">
+                        <div class="four wide field">
+                            <label>Alias Equipo</label>
+                            @Html.TextBoxFor(model => model.AliasEquipo)
+                        </div>
+                        <div class="four wide field">
+                            <label>#Serie</label>
+                            @Html.TextBoxFor(model => model.NumeroSerie)
+                        </div>
+                    </div>
+                 
+                    <div class="two fields">
+                        <div class="four wide field">
+                            <label>Sensores</label>
+                            @*@Html.DropDownList("IdTipoUnidadEmergencia", null, new { @class = "ui search dropdown ", data_input_group = "", data_input_trigger = "selector-contacto" })*@
+                            <select class="ui search dropdown"  >
+
+                                <option value="Sensor 1">Sensor 1</option>
+                                <option value="Sensor 2">Sensor 2</option>
+                                <option value="Sensor 3">Sensor 3</option>
+
+
+                            </select>
+                        </div>
+                        <div class="two wide field">
+                            <label>&nbsp;</label>
+                            <a class="ui compact green button"  href="#"><i class="plus icon"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="eight wide column">
+        <div class="ui raised segments">
+
+            <div class="ui top attached menu bg-labcontrol-main">
+
+                <h5 class="header item bg-labcontrol-main">
+                    <i class="user icon"></i> SENSORES
+
+                </h5>
+
+            </div>
+
+            <div class="ui bottom attached segment">
+
+                <table class="ui compact selectable celled table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                Codigo
+                            </th>
+
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*<tr>
+                                <td>POLICIA NACIONAL</td>
+                                <td>
+                                    <select class="ui search dropdown">
+                                        <option>PN-1863</option>
+                                        <option>PN-1864</option>
+                                        <option>PN-1865</option>
+
+                                    </select>
+                                </td>
+                                <td><a href="@Url.Action("SeleccionarUnidad")" class="ui compact blue button"><i class="check icon"></i></a></td>
+                            </tr>*@
+                        @*@foreach (var unidad in Model.UnidadesSeleccionadas)
+                            {
+                                <tr>
+                                    <td>
+                                        @unidad.TiposUnidadesEmergencia.NombreTipoUnidad
+                                    </td>
+                                    <td>
+                                        <select class="ui search dropdown">
+                                            @foreach (var ue in Model.UnidadesEmergencia)
+                                            {
+                                                <option id="@ue.IdUnidadEmergencia">@ue.CodigoUnidad</option>
+                                            }
+                                        </select>
+
+                                    </td>
+                                    <td><a href="@Url.Action("SeleccionarUnidad")" class="ui compact blue button"><i class="check icon"></i></a></td>
+                                </tr>
+                            }*@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+

@@ -1,0 +1,248 @@
+﻿using System;
+using Microsoft.AspNet.Identity.Owin;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using AnubisDBMS.Infraestructure.Data.Security.Entities;
+using AnubisDBMS.Infraestructure.Security.Managers;
+using AnubisDBMS.Infraestructure.Data.Security.ViewModels;
+
+namespace AnubisDBMS.Areas.Seguridad.Controllers
+{
+
+
+    public class AdministracionController : Controller
+    {
+        protected AnubisDBMSUserManager _userManager;
+        protected AnubisDBMSRoleManager _roleManager;
+
+        public AdministracionController()
+        {
+
+        }
+
+        public AdministracionController(AnubisDBMSUserManager userManager, AnubisDBMSRoleManager roleManager)
+        {
+            UserManager = userManager;
+            RoleManager = roleManager;
+        }
+
+        public AnubisDBMSUserManager UserManager
+        {
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<AnubisDBMSUserManager>();
+            private set => _userManager = value;
+        }
+
+        public AnubisDBMSRoleManager RoleManager
+        {
+            get => _roleManager ?? HttpContext.GetOwinContext().GetUserManager<AnubisDBMSRoleManager>();
+            private set => _roleManager = value;
+        }
+
+        // GET: Seguridad/Administracion
+        public ActionResult Index(long? recentId)
+        {
+            var model = new List<RoleUserListViewModel>();
+
+            var UserId = User.Identity.GetUserId<long>();
+
+            var currentRoleId = UserManager.FindById(UserId);
+            var roleid = currentRoleId?.Roles?.First();
+
+            var currentRole = RoleManager.FindById(roleid.RoleId);
+            var roles = RoleManager.AvailableEditRoles(currentRole.Prioridad).ToList();
+            foreach (var rol in roles)
+            {
+                var rolModel = new RoleUserListViewModel
+                {
+                    Id = rol.Id,
+                    Nombre = rol.Plural,
+                    Bloqueado = rol.Sistema,
+                    Descripcion = rol.Descripcion
+                };
+                var rolUsuarios = UserManager.GetUsersInRole(rol.Id, User.Identity.GetUserId<long>());
+                rolModel.Usuarios = rolUsuarios.Select(c => new RoleUserListItemViewModel
+                {
+                    Id = c.Id,
+                    Usuario = c.UserName,
+                    Celular = c.Celular,
+                    Nombres = c.Nombres,
+                    Apellidos = c.Apellidos,
+                    FechaRegistro = c.FechaRegistro
+                }).ToList();
+                model.Add(rolModel);
+            }
+            return View(model);
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult ListaUsuarioRol(RoleUserListViewModel model)
+        {
+            return PartialView(model);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> RegistrarUsuario(int? idRol)
+        {
+            var model = new RegisterNewUserViewModel();
+            if (idRol != null)
+            {
+                var role = await RoleManager.FindByIdAsync(idRol ?? 0);
+                if (role != null)
+                {
+                    model.Rol = role.Name;
+                    model.RolSeleccionado = true;
+                    model.IdRol = idRol.Value;
+                }
+            }
+            var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
+            var currentRole = RoleManager.FindById(currentRoleId.RoleId);
+            ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", idRol);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegistrarUsuario(RegisterNewUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var role =  RoleManager.FindByName(model.Rol);
+
+                var nuevoUsuario = new AnubisDBMSUser
+                {
+                    UserName = model.Usuario, 
+                    Nombres = model.Nombres,
+                    Celular = model.Celular,
+                    Apellidos = model.Apellidos,
+                    TipoUsuario = role.Name
+                };
+                var creacion = await UserManager.CreateAsync(nuevoUsuario, model.Contrasena);
+                if (creacion.Succeeded)
+                {
+                    //var role = await RoleManager.FindByIdAsync(model.IdRol);
+                    await UserManager.AddToRoleAsync(nuevoUsuario.Id, role.Name);
+                    return RedirectToAction("Index", new {recentId = nuevoUsuario.Id});
+                }
+                else
+                {
+                    ModelState.AddModelError("Usuario", creacion.Errors.First());
+                }
+            }
+            var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
+            var currentRole = RoleManager.FindById(currentRoleId.RoleId);
+            ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", model.IdRol);
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ReseteoManualClave(long id)
+        {
+            var usuario = await UserManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+            var viewModel = new ManualPasswordResetViewModel
+            {
+                Id = usuario.Id,
+                Usuario = usuario.UserName,
+               
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ReseteoManualClave(ManualPasswordResetViewModel viewModel)
+        {
+            var usuario = await UserManager.FindByIdAsync(viewModel.Id);
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                var changePass = await UserManager.ManualResetPasswordAsync(usuario.Id, viewModel.Contrasena);
+                if (changePass.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("Contrasena", changePass.Errors.First());
+            }
+            viewModel.Email = usuario.Email;
+            viewModel.Usuario = usuario.UserName;
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> EditarUsuario(long id)
+        {
+            var usuario = await UserManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+            var viewModel = new EditUserViewModel
+            {
+                Id = usuario.Id,
+                Usuario = usuario.UserName,
+                Celular = usuario.Celular,
+                Nombres = usuario.Nombres,
+                Apellidos = usuario.Apellidos
+            };
+            var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
+            var currentRole = RoleManager.FindById(currentRoleId.RoleId);
+            ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", viewModel.IdRol);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditarUsuario(EditUserViewModel viewModel)
+        {
+            var usuario = await UserManager.FindByIdAsync(viewModel.Id);
+            if (usuario == null)
+            {
+                return HttpNotFound();
+            }
+            if (usuario.UserName != viewModel.Usuario)
+            {
+                var newUserCheck = await UserManager.FindByNameAsync(viewModel.Usuario);
+                if (newUserCheck != null)
+                {
+                    ModelState.AddModelError("Usuario", "Este nombre de usuario no esta disponible");
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                if (usuario.Roles.First().RoleId != viewModel.IdRol)
+                {
+                    var currentRole = await RoleManager.FindByIdAsync(usuario.Roles.First().RoleId);
+                    var newRole = await RoleManager.FindByIdAsync(viewModel.IdRol);
+                    await UserManager.RemoveFromRoleAsync(usuario.Id, currentRole.Name);
+                    await UserManager.AddToRoleAsync(usuario.Id, newRole.Name);
+                }
+                if (usuario.UserName != viewModel.Usuario)
+                {
+                    usuario.UserName = viewModel.Usuario;
+                }
+                usuario.Nombres = viewModel.Nombres;
+                usuario.Apellidos = viewModel.Apellidos;
+                usuario.FechaModificacion = DateTime.Now;
+                usuario.Celular = viewModel.Celular;
+                var userUpdate = await UserManager.UpdateAsync(usuario);
+                if (userUpdate.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("", userUpdate.Errors.First());
+            }
+            ViewBag.IdRol = new SelectList(RoleManager.Roles, "Id", "Name", viewModel.IdRol);
+            return View(viewModel);
+        }
+    }
+}

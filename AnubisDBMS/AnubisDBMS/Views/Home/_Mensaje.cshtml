@@ -1,0 +1,22 @@
+﻿@model AnubisDBMS.Controllers.HomeController.MensajeViewModel
+@if (Model != null)
+{
+    <div class="sixteen wide column">
+        <div class="ui @(Model.Positivo ? "success" : "error") icon message">
+            <i class="@(Model.Positivo ? "check" : "exclamation") icon"></i>
+            <div class="content">
+                <div class="header">@Model.Titulo</div>
+                <p>@Model.Mensaje</p>
+                @if (Model.Detalle != null && Model.Detalle.Count > 0)
+                {
+                    <ul class="list">
+                        @foreach (var item in Model.Detalle)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+}

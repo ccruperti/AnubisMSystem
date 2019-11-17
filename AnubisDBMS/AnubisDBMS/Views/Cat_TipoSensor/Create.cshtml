@@ -1,0 +1,42 @@
+﻿@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.TipoSensorVM
+@{
+    ViewBag.Title = "Crear Tipo de Sensor";
+}
+
+<div class="sixteen wide column">
+    <h1 class="ui header">@ViewBag.Title</h1>
+</div>
+
+@using (Html.BeginForm("Create", "Cat_TipoSensor", FormMethod.Post, new { @class = "ui row" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="sixteen wide column">
+        <h2 class="ui top attached sub header">Datos </h2>
+        <div class="ui attached form segment">
+            <div class="fields">
+                <div class="field">
+                    @Html.LabelFor(model => model.NombreTipoSensor, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.NombreTipoSensor, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NombreTipoSensor, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="field">
+                    @Html.LabelFor(model => model.UnidadSensor, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.UnidadSensor, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UnidadSensor, "", new { @class = "text-danger" })
+                </div> 
+
+            </div>
+            @Html.ActionLink("Regresar a la Lista", "Index", null, new { @class = "ui secondary button" })
+            <input type="submit" value="Crear" class="ui primary button" />
+
+        </div>
+    </div>
+
+
+
+}
+ 
