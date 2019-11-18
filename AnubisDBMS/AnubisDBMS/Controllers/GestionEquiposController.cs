@@ -16,6 +16,8 @@ namespace AnubisDBMS.Controllers
     public class GestionEquiposController : Controller
     {
         private AnubisDbContext _context = new AnubisDbContext();
+        QRGenerator QR = new QRGenerator();
+
         #region Helpers
         public SelectList ListaEquipos(long? id)
         {
@@ -30,7 +32,6 @@ namespace AnubisDBMS.Controllers
             return new SelectList(data, "IdSensor", "SerieSensor", id);
         }
         #endregion
-        QRGenerator QR = new QRGenerator();
         public List<EquiposViewModels> ListaEquipos()
         {
             var lista = new List<EquiposViewModels>();
