@@ -16,8 +16,7 @@ namespace AnubisDBMS.Controllers
     public class Cat_EquiposController : Controller
     {
         private AnubisDbContext db = new AnubisDbContext();
-        QRGenerator QR = new QRGenerator();
-
+        QRGenerator QR = new QRGenerator(); 
 
         // GET: INDEX
         public ActionResult Index()

@@ -1,22 +1,49 @@
-﻿using AnubisDBMS.Models;
+﻿using AnubisDBMS.Data;
+using AnubisDBMS.Data.Entities;
+using AnubisDBMS.Data.ViewModels;
+using AnubisDBMS.Infraestructure.Security.Managers;
+using AnubisDBMS.Infraestructure.Security.Stores;
+using AnubisDBMS.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using static AnubisDBMS.Controllers.HomeController;
-using AnubisDBMS.Infraestructure.Helpers;
-using System.Drawing;
-using System.ComponentModel;
-using AnubisDBMS.Data;
-using AnubisDBMS.Data.Entities;
 
 namespace AnubisDBMS.Controllers
 {
     public class GestionEquiposController : Controller
     {
         private AnubisDbContext _context = new AnubisDbContext();
-        QRGenerator QR = new QRGenerator();
+
+        protected AnubisDBMSUserManager _userManager;
+        protected AnubisDBMSRoleManager _roleManager;
+
+        public GestionEquiposController()
+        {
+
+        }
+
+        public GestionEquiposController(AnubisDBMSUserManager userManager, AnubisDBMSRoleManager roleManager)
+        {
+            UserManager = userManager;
+            RoleManager = roleManager;
+        }
+
+        public AnubisDBMSUserManager UserManager
+        {
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<AnubisDBMSUserManager>();
+            private set => _userManager = value;
+        }
+
+        public AnubisDBMSRoleManager RoleManager
+        {
+            get => _roleManager ?? HttpContext.GetOwinContext().GetUserManager<AnubisDBMSRoleManager>();
+            private set => _roleManager = value;
+        }
 
         #region Helpers
         public SelectList ListaEquipos(long? id)
@@ -112,14 +139,10 @@ namespace AnubisDBMS.Controllers
             return View(model);
         }
         public ActionResult SensoresEquipo()
-        {
-         
-           string CodigoQR =  QR.GenerarQR("juandiegoaguilar.com"); 
+        { 
+           
             var model = new SensoresEquipos
-            {
-                QR = CodigoQR,
-                CodigoSensor="225SUERWNWRU234",
-                NombreSensor="TERMODINAMIZALIZADOR"
+            { 
             };
             return View(model);
         }
@@ -137,8 +160,37 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult PerfilUsuario()
         {
-            return View();
+
+            var user = UserManager.FindByName(User.Identity.Name);
+
+            var model = new Catalogos_viewModels.PerfilVM
+            {
+                telefono = user.Celular,
+                correo = user.Email
+            };
+            return View(model);
         }
-     
+        public ActionResult EditarPerfilUsuario()
+        {
+            var user = UserManager.FindByName(User.Identity.Name);
+
+            var model = new Catalogos_viewModels.PerfilVM
+            {
+                telefono = user.Celular,
+                correo = user.Email
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GuardarPerfilUsuario(Catalogos_viewModels.PerfilVM model)
+        {
+            var user = UserManager.FindByNameAsync(User.Identity.Name);
+            user.Result.Celular = model.telefono;
+            user.Result.Email = model.correo;
+            await UserManager.UpdateAsync(user.Result);
+            return RedirectToAction("PerfilUsuario");
+        }
+
     }
 }
