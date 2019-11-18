@@ -9,7 +9,7 @@
             <div class="ui top attached menu bg-labcontrol-main">
 
                 <h5 class="header item bg-labcontrol-main">
-                    <i class="tablet icon"></i> Registro de Equipo Nuevo
+                    <i class="tablet icon"></i> Asociacion Equipo-Sensor
 
                 </h5>
                 <div class="right menu">
@@ -21,33 +21,35 @@
             <div class="ui bottom attached segment">
 
                 <div class="ui form">
-                    <div class="two fields">
-                        <div class="four wide field">
-                            <label>Alias Equipo</label>
-                            @Html.TextBoxFor(model => model.AliasEquipo)
-                        </div>
-                        <div class="four wide field">
-                            <label>#Serie</label>
-                            @Html.TextBoxFor(model => model.NumeroSerie)
-                        </div>
+                    <div class="four wide field">
+                        <label>Equipos</label>
+                        @Html.DropDownList("IdEquipo", null, new { @class = "ui search dropdown " })
+                        @*<select class="ui search dropdown"  >
+
+                <option value="Sensor 1">Sensor 1</option>
+                <option value="Sensor 2">Sensor 2</option>
+                <option value="Sensor 3">Sensor 3</option>
+
+
+            </select>*@
                     </div>
-                 
+
                     <div class="two fields">
                         <div class="four wide field">
                             <label>Sensores</label>
-                            @*@Html.DropDownList("IdTipoUnidadEmergencia", null, new { @class = "ui search dropdown ", data_input_group = "", data_input_trigger = "selector-contacto" })*@
-                            <select class="ui search dropdown"  >
+                            @Html.DropDownList("IdSensor", null, new { @class = "ui search dropdown " })
+                            @*<select class="ui search dropdown"  >
 
-                                <option value="Sensor 1">Sensor 1</option>
-                                <option value="Sensor 2">Sensor 2</option>
-                                <option value="Sensor 3">Sensor 3</option>
+                    <option value="Sensor 1">Sensor 1</option>
+                    <option value="Sensor 2">Sensor 2</option>
+                    <option value="Sensor 3">Sensor 3</option>
 
 
-                            </select>
+                </select>*@
                         </div>
                         <div class="two wide field">
                             <label>&nbsp;</label>
-                            <a class="ui compact green button"  href="#"><i class="plus icon"></i></a>
+                            <a class="ui compact green button" href="#"><i class="plus icon"></i></a>
                         </div>
                     </div>
 
