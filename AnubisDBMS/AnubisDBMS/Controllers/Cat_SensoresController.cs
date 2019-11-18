@@ -10,23 +10,11 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Infraestructure.Helpers;
+ 
 namespace AnubisDBMS.Controllers
 {
-    public class Cat_SensoresController : Controller
-    {
-        private AnubisDbContext db = new AnubisDbContext();
-
-        public SelectList SelectListTipoSensor(string selected = null)
-        {
-
-            List<TipoSensor> TipoSensor = new List<TipoSensor>();
-             foreach(var x in db.TipoSensor.ToList())
-            {
-                TipoSensor.Add(x);
-            }
-            return new SelectList(TipoSensor, "IdTipoSensor", "NombreTipoSensor");
-
-        }
+    public class Cat_SensoresController : MainController
+    {  
 
         // GET: INDEX
         public ActionResult Index()

@@ -230,6 +230,9 @@
     <Compile Include="Controllers\GestionEquiposController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Cat_TipoSensorController.cs" />
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\MantenimientoController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -475,7 +478,6 @@
     <Content Include="Views\GestionEquipos\RegistrarEquipo.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\_Mensaje.cshtml" />
-    <Content Include="Views\GestionEquipos\SensoresEquipo.cshtml" />
     <Content Include="Views\Cat_Equipos\Create.cshtml" />
     <Content Include="Views\Cat_Equipos\Edit.cshtml" />
     <Content Include="Views\Cat_Equipos\Index.cshtml" />
@@ -488,16 +490,17 @@
     <Content Include="Views\Cat_Tecnicos\Create.cshtml" />
     <Content Include="Views\Cat_Tecnicos\Edit.cshtml" />
     <Content Include="Views\Cat_Tecnicos\Index.cshtml" />
-    <Content Include="Views\GestionEquipos\AgregarMantenimiento.cshtml" />
     <Content Include="Views\GestionEquipos\LecturaMedidoresEquipo.cshtml" />
-    <Content Include="Views\GestionEquipos\Mantenimientos.cshtml" />
-    <Content Include="Views\GestionEquipos\PerfilUsuario.cshtml" />
-    <Content Include="Views\GestionEquipos\EditarPerfilUsuario.cshtml" />
+    <Content Include="Views\Profile\PerfilUsuario.cshtml" />
+    <Content Include="Views\Profile\EditarPerfilUsuario.cshtml" />
+    <Content Include="Views\Mantenimiento\AgregarMantenimiento.cshtml" />
+    <Content Include="Views\Mantenimiento\Mantenimientos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Seguridad\Models\" />
     <Folder Include="Content\Scripts\" />
+    <Folder Include="Views\Main\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

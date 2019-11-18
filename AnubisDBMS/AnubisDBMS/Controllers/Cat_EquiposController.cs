@@ -13,10 +13,9 @@ using AnubisDBMS.Infraestructure.Helpers;
 
 namespace AnubisDBMS.Controllers
 {
-    public class Cat_EquiposController : Controller
-    {
-        private AnubisDbContext db = new AnubisDbContext();
-        QRGenerator QR = new QRGenerator(); 
+    public class Cat_EquiposController : MainController
+    { 
+      
 
         // GET: INDEX
         public ActionResult Index()

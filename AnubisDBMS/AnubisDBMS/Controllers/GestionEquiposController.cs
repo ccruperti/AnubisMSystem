@@ -15,46 +15,20 @@ using System.Web.Mvc;
 
 namespace AnubisDBMS.Controllers
 {
-    public class GestionEquiposController : Controller
+    public class GestionEquiposController : MainController
     {
-        private AnubisDbContext _context = new AnubisDbContext();
-
-        protected AnubisDBMSUserManager _userManager;
-        protected AnubisDBMSRoleManager _roleManager;
-
-        public GestionEquiposController()
-        {
-
-        }
-
-        public GestionEquiposController(AnubisDBMSUserManager userManager, AnubisDBMSRoleManager roleManager)
-        {
-            UserManager = userManager;
-            RoleManager = roleManager;
-        }
-
-        public AnubisDBMSUserManager UserManager
-        {
-            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<AnubisDBMSUserManager>();
-            private set => _userManager = value;
-        }
-
-        public AnubisDBMSRoleManager RoleManager
-        {
-            get => _roleManager ?? HttpContext.GetOwinContext().GetUserManager<AnubisDBMSRoleManager>();
-            private set => _roleManager = value;
-        }
+       
 
         #region Helpers
         public SelectList ListaEquipos(long? id)
         {
-            var data = _context.Equipos.Where(c => c.Activo).ToList();
+            var data = db.Equipos.Where(c => c.Activo).ToList();
             data.Add(new Equipo { IdEquipo = 0, Alias = "Seleccione un Equipo" });
             return new SelectList(data, "IdEquipo", "Alias", id);
         }
         public SelectList ListaSensores(long? id)
         {
-            var data = _context.Sensores.Where(c => c.Activo).ToList();
+            var data = db.Sensores.Where(c => c.Activo).ToList();
             data.Add(new Sensor { IdSensor = 0, SerieSensor  = "Seleccione un Sensor" });
             return new SelectList(data, "IdSensor", "SerieSensor", id);
         }
@@ -122,75 +96,27 @@ namespace AnubisDBMS.Controllers
             lista.Add(eq3);
             return lista;
         }
-        // GET: GestionEquipos
-        public ActionResult Index()
-        {
-            return View();
-        }
+       
         public ActionResult MonitoreoEquipos(DateTime? Desde, DateTime? Hasta)
         {
             var model =new  ListaEquipos();
-            model.Equipos = ListaEquipos();
+            model.Equipos = ListaEquipos();  
             return View(model);
         }
         public ActionResult RegistrarEquipo()
         {
             var model = new EquiposViewModels();
+            ViewBag.IdEquipo = SelectListEquipo();
+            ViewBag.IdSensor = SelectListSensores();
             return View(model);
         }
-        public ActionResult SensoresEquipo()
-        { 
-           
-            var model = new SensoresEquipos
-            { 
-            };
-            return View(model);
-        }
-        public ActionResult AgregarMantenimiento()
-        {
-            return View();
-        }
+         
         public ActionResult LecturaMedidoresEquipo()
         {
             return View();
         }
-        public ActionResult Mantenimientos()
-        {
-            return View();
-        }
-        public ActionResult PerfilUsuario()
-        {
-
-            var user = UserManager.FindByName(User.Identity.Name);
-
-            var model = new Catalogos_viewModels.PerfilVM
-            {
-                telefono = user.Celular,
-                correo = user.Email
-            };
-            return View(model);
-        }
-        public ActionResult EditarPerfilUsuario()
-        {
-            var user = UserManager.FindByName(User.Identity.Name);
-
-            var model = new Catalogos_viewModels.PerfilVM
-            {
-                telefono = user.Celular,
-                correo = user.Email
-            };
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> GuardarPerfilUsuario(Catalogos_viewModels.PerfilVM model)
-        {
-            var user = UserManager.FindByNameAsync(User.Identity.Name);
-            user.Result.Celular = model.telefono;
-            user.Result.Email = model.correo;
-            await UserManager.UpdateAsync(user.Result);
-            return RedirectToAction("PerfilUsuario");
-        }
+       
+      
 
     }
 }
