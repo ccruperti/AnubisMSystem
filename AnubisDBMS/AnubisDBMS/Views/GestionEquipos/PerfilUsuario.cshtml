@@ -1,70 +1,81 @@
 ﻿
-
+@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.PerfilVM
 
 <div class="row">
-    
-        <div class="ui card" style="display: inline-block; overflow-x: scroll;"> 
-            <div class="image">
-                <img src="~/Content/Images/perfil.png">
-            </div>
-            <div class="content">
-                <a class="header center" style="text-align:center;">Eagle&Cast</a>
-                <div class="ui sub dividing header"></div>
-                <span class="right floated">
 
-                    <div class="ui label" style="font-size:0.7em;"><i class="phone icon"></i>0991776234</div>
-                </span>
-                <div class="ui label" style="font-size:0.7em;">
-                    <i class="mail icon"></i>chcastillor@uees.edu.ec <div />
-                </div>
-                @*<div class="description">
-                        Kristy is an art director living in New York.
-                    </div>*@
-            </div>
+    <div class="ui centered card" style="display: inline-block; overflow-x: scroll;">
+        <div class="image">
+            <img src="~/Content/Images/perfil.png">
+        </div>
+        <div class="content">
+            <a class="header center" style="text-align:center;">Eagle&Cast</a>
             <div class="ui sub dividing header"></div>
+            <span class="right floated">
+                <div id="lbltelefono" class="ui label" style="font-size:0.7em;"><i class="phone icon"></i>0991776234</div>
+            </span>
 
-            <button class="ui small compact red button"><i class="unlock icon"></i>Bloquear Serv</button>
+            <div class="ui label" style="font-size:0.7em;">
+                <i id="lblcorreo" class="mail icon"></i>chcastillor@uees.edu.ec <div />
 
-            <button class="ui small compact green button"><i class="unlock icon"></i>Desb Serv</button>
-            <div class="extra content">
-                <a>
-                    <i class="tablet icon"></i>
-                    22 Equipos
-                </a>
             </div>
         </div>
-        <div class="ui card" style="display: inline-block; overflow-x: scroll;">
-            <div class="image">
-                <img src="~/Content/Images/perfil.png">
-            </div>
-            <div class="content">
-                <a class="header center" style="text-align:center;">Eagle&Cast</a>
-                <div class="ui sub dividing header"></div>
-                <span class="right floated">
+        <br />
+        <br />
+        @using (Html.BeginForm("Edit", "", FormMethod.Post, new { @class = "ui row" }))
+        {
+        <div class="field" id="editar_telefono">
+            @Html.LabelFor(model => model.telefono, htmlAttributes: new { @class = "control-label col-md-2" })
 
-                    <div class="ui label" style="font-size:0.7em;"><i class="phone icon"></i>0991776234</div>
-                </span>
-                <div class="ui label" style="font-size:0.7em;">
-                    <i class="mail icon"></i>chcastillor@uees.edu.ec <div />
-                </div>
-                @*<div class="description">
-                        Kristy is an art director living in New York.
-                    </div>*@
-            </div>
-            <div class="ui sub dividing header"></div>
-
-            <button class="ui small compact red button"><i class="unlock icon"></i>Bloquear Serv</button>
-
-            <button class="ui small compact green button"><i class="unlock icon"></i>Desb Serv</button>
-            <div class="extra content">
-                <a>
-                    <i class="tablet icon"></i>
-                    22 Equipos
-                </a>
-            </div>
+            @Html.EditorFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.telefono, "", new { @class = "text-danger" })
         </div>
+        <div class="field" id="editar_correo">
+            @Html.LabelFor(model => model.correo, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
+        </div>
+        }
+        <br />
+
+        <br />
+        <br />
+        <button class="ui button tiny right floated red" onclick="Editar" id="btnEditar">Editar</button>
+        <button class="ui button tiny right floated red" onclick="Guardar" style="visibility:hidden" id="btnGuardar">Guardar</button>
+        <div class="ui sub dividing header"></div>
+
+        <div class="extra content">
+            <a>
+                <i class="tablet icon"></i>
+                22 Equipos
+            </a>
+
+        </div>
+    </div>
+
 
 
 </div>
 
 
+@section Scripts{
+    <script type="text/javascript">
+        function Editar() {
+            $('#lbltelefono').css("visibility", "hidden");
+            $('#lblcorreo').css("visibility", "hidden");
+            $('#editar_correo').css("visibility", "visible");
+            $('#editar_telefono').css("visibility", "visible");
+
+            var tel = $('#editar_telefono').val();
+            var cor = $('#editar_correo').val();
+            console.log(tel, cor)
+        }
+
+        function Guardar() {
+            $('#lbltelefono').css("visibility", "visible");
+            $('#lblcorreo').css("visibility", "visible");
+            $('#editar_correo').css("visibility", "hidden");
+            $('#editar_telefono').css("visibility", "hidden");
+        }
+    </script>
+}

@@ -69,6 +69,10 @@ namespace AnubisDBMS.Data.ViewModels
             public List<Tecnicos> Lista { get; set; }
         }
 
+        public class PerfilVM {
 
+            public string correo { get; set; }
+            public string telefono { get; set; }
+            }
     }
 }

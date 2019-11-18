@@ -8,6 +8,7 @@
             <div class="menu">
                 @if (User.IsInRole("Administrador") || User.IsInRole("Administrador Sistema") || User.IsInRole("Developers"))
                 {
+                    @Html.ActionLink("Perfil", "PerfilUsuario", "GestionEquipos", new { area = "" }, new { @class = "item" })
                     @Html.ActionLink("Administrador de Usuarios", "Index", "Administracion", new { area = "Seguridad" }, new { @class = "item" })
                 }
                 @using (Html.BeginForm("LogOff", "Cuenta", new { area = "Seguridad" }, FormMethod.Post, new { id = "logoutForm", @class = "" }))
