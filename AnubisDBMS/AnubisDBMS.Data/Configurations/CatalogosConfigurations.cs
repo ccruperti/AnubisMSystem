@@ -77,11 +77,11 @@ namespace AnubisDBMS.Data.Configurations
             //   .IsOptional();
 
 
-            HasRequired(x => x.Equipos)
+            HasOptional(x => x.Equipos)
               .WithMany()
               .HasForeignKey(x => x.IdEquipo).WillCascadeOnDelete(false);
 
-            HasRequired(x => x.Sensores)
+            HasOptional(x => x.Sensores)
               .WithMany()
               .HasForeignKey(x => x.IdSensor).WillCascadeOnDelete(false);
 

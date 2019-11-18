@@ -36,8 +36,8 @@ namespace AnubisDBMS.Data.Entities
     public class EquipoSensor : CrudEntities
     {
         public long IdEquipoSensor { get; set; }
-        public long IdEquipo { get; set; }
-        public long IdSensor { get; set; }
+        public long? IdEquipo { get; set; }
+        public long? IdSensor { get; set; }
         public int NumeroPuerto { get; set; }
         public virtual Equipo Equipos { get; set; }
         public virtual Sensor Sensores { get; set; }
