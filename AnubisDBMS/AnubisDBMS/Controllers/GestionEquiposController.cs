@@ -8,11 +8,28 @@ using static AnubisDBMS.Controllers.HomeController;
 using AnubisDBMS.Infraestructure.Helpers;
 using System.Drawing;
 using System.ComponentModel;
+using AnubisDBMS.Data;
+using AnubisDBMS.Data.Entities;
 
 namespace AnubisDBMS.Controllers
 {
     public class GestionEquiposController : Controller
     {
+        private AnubisDbContext _context = new AnubisDbContext();
+        #region Helpers
+        public SelectList ListaEquipos(long? id)
+        {
+            var data = _context.Equipos.Where(c => c.Activo).ToList();
+            data.Add(new Equipo { IdEquipo = 0, Alias = "Seleccione un Equipo" });
+            return new SelectList(data, "IdEquipo", "Alias", id);
+        }
+        public SelectList ListaSensores(long? id)
+        {
+            var data = _context.Sensores.Where(c => c.Activo).ToList();
+            data.Add(new Sensor { IdSensor = 0, SerieSensor  = "Seleccione un Sensor" });
+            return new SelectList(data, "IdSensor", "SerieSensor", id);
+        }
+        #endregion
         QRGenerator QR = new QRGenerator();
         public List<EquiposViewModels> ListaEquipos()
         {
@@ -93,8 +110,6 @@ namespace AnubisDBMS.Controllers
             var model = new EquiposViewModels();
             return View(model);
         }
-
-       
         public ActionResult SensoresEquipo()
         {
          
