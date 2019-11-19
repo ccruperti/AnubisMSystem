@@ -94,4 +94,10 @@ namespace AnubisDBMS.Data.Entities
         public virtual Frecuencia Frecuencias { get; set; }
     }
 
+    public class Servicio :CrudEntities
+    {
+        public long IdServicio { get; set; }
+        public bool EstadoServicio { get; set; }
+
+    }
 }

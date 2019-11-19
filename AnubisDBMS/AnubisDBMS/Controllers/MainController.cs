@@ -89,7 +89,33 @@ namespace AnubisDBMS.Controllers
             return new SelectList(sensores, "Value", "Text"); 
         }
 
-        
+
+        #endregion
+
+        #region ACT_DESACT Servicios
+         public void Activar_Serivcio ()
+        {
+            if(db.Servicio.Any(x=>x.Activo))
+            {
+
+            }
+            else
+            {
+            new Servicio
+            {
+                Activo = true,
+                FechaRegistro = DateTime.Now,
+                UsuarioRegistro = User.Identity.Name,
+                EstadoServicio = true
+
+            };
+
+            }
+        }
+        public void Desactivar_Serivcio ()
+        {
+
+        }
         #endregion
     }
 }
