@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AnubisDBMS.Data.ViewModels;
 using AnubisDBMS.Infraestructure.Helpers;
 
 namespace AnubisDBMS.Controllers
@@ -10,8 +11,19 @@ namespace AnubisDBMS.Controllers
     public class HomeController : MainController
     {
         public ActionResult Index()
-        { 
-            return View();
+        {
+            var Actual = db.Servicio.FirstOrDefault(x => x.Activo);
+            var model = new SharedVM
+            {
+                Visible=Actual.EstadoServicio,
+                HomeVM=new HomeVm 
+            {
+                Estado = Actual.EstadoServicio ? "Activo" : "Desactivado",
+                EstiloCSS = (db.Servicio.FirstOrDefault(x => x.Activo).EstadoServicio ? "green" : "red")
+            }
+                    };
+            
+            return View(model);
         }
 
         public ActionResult About()

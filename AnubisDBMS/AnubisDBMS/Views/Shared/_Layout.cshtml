@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model AnubisDBMS.Data.ViewModels.SharedVM
+<!DOCTYPE html>
 <html>
 <head>
     <title>Anubis | Sistema de Monitoreo</title>
@@ -28,94 +29,91 @@
         }
     </style>
 </head>
+
+
 <body class="">
     @if (User.Identity.IsAuthenticated)
     {
-    <nav class="ui top attached raised inverted  stackable menu bg-gqm-regular" id="main-menu">
-        @Html.ActionLink("AnubisDBMS", "Index", "Home", new { area = "" }, new { @class = "header item" })
-        <div class="menu">
-            @Html.ActionLink("Monitoreo", "MonitoreoEquipos", "GestionEquipos", new { area = "" }, new { @class = "item" })
-        </div>
-        <div class="ui dropdown item" >
-            Catálogos
-            <i class="dropdown icon"></i>
-            <div class="menu">
-                @Html.ActionLink("Equipos", "Index", "Cat_Equipos", new { area = "" }, new { @class = "item" })
-                @Html.ActionLink("Técnicos", "Index", "Cat_Tecnicos", new { area = "" }, new { @class = "item" })
-                @Html.ActionLink("Sensores", "Index", "Cat_Sensores", new { area = "" }, new { @class = "item" })
-                @Html.ActionLink("Tipo de Sensor", "Index", "Cat_TipoSensor", new { area = "" }, new { @class = "item" })
-            </div>
-        </div>
-
-        <a class="item" id="main-sidebar-trigger" style="visibility:hidden;">
-            <i class="sidebar icon"></i>
-            Menú
-        </a>
-        @Html.Partial("_LoginPartial")
-    </nav>
-        <aside id="main-sidebar" class="ui vertical sidebar menu">
-            <div class="item">
-                <img class="ui fluid image" src="~/Content/Images/AnubisLogo.jpeg" alt="Logo" />
-                <h2>Menú Principal</h2>
-            </div>
-            <div class="item">
-                <div class="header">
-                    Gestion Equipos
-                </div>
-                <div class="menu">
-                    @Html.ActionLink("Monitoreo", "MonitoreoEquipos", "GestionEquipos", new { area = "" }, new { @class = "item" })
-                </div>
-            </div>
-            @if (User.IsInRole("Administrador") || User.IsInRole("Administrador Sistema") || User.IsInRole("Developers"))
-            {
-
-                @*<div class="item">
-                        <div class="header">
-                            Catálogos
-                        </div>
-                        <div class="menu">
-
-
-
-                        </div>
+         
+            <nav class="ui top attached raised inverted  stackable menu bg-gqm-regular" id="main-menu">
+                @Html.ActionLink("AnubisDBMS", "Index", "Home", new { area = "" }, new { @class = "header item" })
+                    @if (Model.Visible)
+                    {
+               
+                    <div class="menu">
+                        @Html.ActionLink("Monitoreo", "MonitoreoEquipos", "GestionEquipos", new { area = "" }, new { @class = "item" })
                     </div>
-                    <div class="item">
+                    <div class="ui dropdown item">
+                        Catálogos
+                        <i class="dropdown icon"></i>
                         <div class="menu">
-
+                            @Html.ActionLink("Equipos", "Index", "Cat_Equipos", new { area = "" }, new { @class = "item" })
+                            @Html.ActionLink("Técnicos", "Index", "Cat_Tecnicos", new { area = "" }, new { @class = "item" })
+                            @Html.ActionLink("Sensores", "Index", "Cat_Sensores", new { area = "" }, new { @class = "item" })
+                            @Html.ActionLink("Tipo de Sensor", "Index", "Cat_TipoSensor", new { area = "" }, new { @class = "item" })
                         </div>
-                    </div>*@
-            }
-        </aside>
-    }
-    <main class="ui attached pusher">
 
-        <div id="main-content">
-            <div class="ui stackable grid">
-                @Html.Action("Mensaje", "Home", new { area = "" })
-                @RenderBody()
-            </div>
-        </div>
+                    </div>
 
-    </main>
+                    <a class="item" id="main-sidebar-trigger" style="visibility:hidden;">
+                        <i class="sidebar icon"></i>
+                        Menú
+                    </a>
+                
+                    }
+                @Html.Partial("_LoginPartial")
+            </nav>
+        
+            <aside id="main-sidebar" class="ui vertical sidebar menu">
+                <div class="item">
+                    <img class="ui fluid image" src="~/Content/Images/AnubisLogo.jpeg" alt="Logo" />
+                    <h2>Menú Principal</h2>
+                </div>
+                <div class="item">
+                    <div class="header">
+                        Gestion Equipos
+                    </div>
+                    <div class="menu">
+                        @Html.ActionLink("Monitoreo", "MonitoreoEquipos", "GestionEquipos", new { area = "" }, new { @class = "item" })
+                    </div>
+                </div>
+                @if (User.IsInRole("Administrador") || User.IsInRole("Administrador Sistema") || User.IsInRole("Developers"))
+                {
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/Js")
-    @Scripts.Render("~/bundles/JsLibraries")
-
-    <script>
-        $(document).ready(function () {
-            $('#main-sidebar').sidebar('attach events', '#main-sidebar-trigger');
-
-            var defaultDropdownOptions = {
-                message: {
-                    noResults: 'No se encuentran coincidencias.'
+                    
                 }
-            };
+            </aside>
+        }
 
-            $('.ui.dropdown').dropdown(defaultDropdownOptions);
-        });
-    </script>
-    @RenderSection("scripts", false)
+        <main class="ui attached pusher">
 
-</body>
+            <div id="main-content">
+                <div class="ui stackable grid">
+                    @Html.Action("Mensaje", "Home", new { area = "" })
+                    @RenderBody()
+                </div>
+            </div>
+
+        </main>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/Js")
+        @Scripts.Render("~/bundles/JsLibraries")
+
+        <script>
+            $(document).ready(function () {
+                $('#main-sidebar').sidebar('attach events', '#main-sidebar-trigger');
+
+                var defaultDropdownOptions = {
+                    message: {
+                        noResults: 'No se encuentran coincidencias.'
+                    }
+                };
+
+                $('.ui.dropdown').dropdown(defaultDropdownOptions);
+            });
+        </script>
+        @RenderSection("scripts", false)
+
+    </body>
+ 
 </html>

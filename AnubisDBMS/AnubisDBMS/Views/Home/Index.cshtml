@@ -1,4 +1,6 @@
-﻿@{
+﻿@model AnubisDBMS.Data.ViewModels.SharedVM
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -10,15 +12,25 @@
             </div>
         </div>
         <div class="sixteen wide column">
-            <h1 class="ui huge centered header">Bienvenido!</h1>
+            @if (Model.HomeVM.Estado=="Activo")
+            {
+                <h1 class="ui huge centered header">Bienvenido!</h1>
+            }
+            else
+            {
+                <h1 class="ui huge centered header">Servicio Bloqueado!</h1>
+            }
         </div>
 
         <div>
-            <button class="ui small compact red button"><i class="unlock icon"></i>Bloquear Serv</button>
+            <i class="unlock icon"></i>
+            @Html.ActionLink("Activar", "Activar_Servicio", "Main", new { @class = "ui green button" })
 
-            <button class="ui small compact green button"><i class="unlock icon"></i>Desb Serv</button>
+            <i class="lock icon"></i>
+            @Html.ActionLink("Bloquear", "Desactivar_Servicio", "Main", new { @class = "ui red button" })
+
             <br /><br />
-            Estado Actual: <label class="ui green label" >Activo</label>
+            Estado Actual: <label class="ui @Model.HomeVM.EstiloCSS label">@Model.HomeVM.Estado</label>
         </div>
     </div>
 </div>
