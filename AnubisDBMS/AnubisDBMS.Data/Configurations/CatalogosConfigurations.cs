@@ -178,6 +178,15 @@ namespace AnubisDBMS.Data.Configurations
         }
     }
 
+    public class ServicioConfiguration : EntityTypeConfiguration<Servicio>
+    {
+        public ServicioConfiguration()
+        {
+            ToTable("Servicio", AnubisDBMSSchemas.Monitoreo);
+            HasKey(c => c.IdServicio); 
+        }
+    }
+
 
     public class MantenimientoConfiguration : EntityTypeConfiguration<Mantenimiento>
     {

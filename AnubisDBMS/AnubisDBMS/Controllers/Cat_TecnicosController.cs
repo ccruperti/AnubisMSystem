@@ -13,11 +13,8 @@ using AnubisDBMS.Infraestructure.Helpers;
 
 namespace AnubisDBMS.Controllers
 {
-    public class Cat_TecnicosController : Controller
-    {
-
-        private AnubisDbContext db = new AnubisDbContext();
-
+    public class Cat_TecnicosController : MainController
+    { 
 
         // GET: INDEX
         public ActionResult Index()

@@ -7,13 +7,10 @@ using AnubisDBMS.Infraestructure.Helpers;
 
 namespace AnubisDBMS.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : MainController
     {
         public ActionResult Index()
-        {
-
-            QRGenerator QR = new QRGenerator();
-            QR.GenerarQR("juandiegoaguilar.com");
+        { 
             return View();
         }
 

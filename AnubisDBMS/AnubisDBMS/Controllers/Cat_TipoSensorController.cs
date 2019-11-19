@@ -12,11 +12,9 @@ using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Infraestructure.Helpers;
 namespace AnubisDBMS.Controllers
 {
-    public class Cat_TipoSensorController : Controller
+    public class Cat_TipoSensorController : MainController
     {
-        private AnubisDbContext db = new AnubisDbContext();
-
-
+        
         // GET: INDEX
         public ActionResult Index()
         {

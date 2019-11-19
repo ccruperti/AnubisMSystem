@@ -1,0 +1,73 @@
+﻿
+@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.PerfilVM
+
+<div class="row">
+
+    <div class="ui centered card" style="display: inline-block; overflow-x: scroll;">
+        <div class="image">
+            <img src="~/Content/Images/perfil.png">
+        </div>
+        <div class="content">
+            <a class="header center" style="text-align:center;">Eagle&Cast</a>
+            <div class="ui sub dividing header"></div>
+
+        </div>
+        <br />
+        @using (Html.BeginForm("GuardarPerfilUsuario", "GestionEquipos", FormMethod.Post, new { @class = "ui form" }))
+        {
+            <div class="field">
+                Teléfono
+
+                @Html.EditorFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.telefono, "", new { @class = "text-danger" })
+            </div>
+            <div class="field">
+                Correo
+
+                @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
+            </div>
+            <button class="ui button  green button" onclick="submit()">Guardar</button>
+            }
+            <br />
+
+            
+
+
+            <div class="ui sub dividing header"></div>
+
+            <div class="extra content">
+                <a>
+                    <i class="tablet icon"></i>
+                    22 Equipos
+                </a>
+
+            </div>
+        </div>
+
+
+
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        function Editar() {
+            $('#lbltelefono').css("visibility", "hidden");
+            $('#lblcorreo').css("visibility", "hidden");
+            $('#editar_correo').css("visibility", "visible");
+            $('#editar_telefono').css("visibility", "visible");
+
+            var tel = $('#editar_telefono').val();
+            var cor = $('#editar_correo').val();
+            console.log(tel, cor)
+        }
+
+        function Guardar() {
+            $('#lbltelefono').css("visibility", "visible");
+            $('#lblcorreo').css("visibility", "visible");
+            $('#editar_correo').css("visibility", "hidden");
+            $('#editar_telefono').css("visibility", "hidden");
+        }
+    </script>
+}
