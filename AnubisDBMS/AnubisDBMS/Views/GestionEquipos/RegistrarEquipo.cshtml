@@ -1,8 +1,8 @@
-﻿@model AnubisDBMS.Models.EquiposViewModels
+﻿@model AnubisDBMS.Data.ViewModels.RegistroEquipoSensorViewModel
 @{
-    ViewBag.Title = "RegistrarEquipo";
+    ViewBag.Title = "";
 }
-@using (Html.BeginForm("MonitoreoEquipos", "GestionEquipos", FormMethod.Post, new { @class = "ui row" }))
+@using (Html.BeginForm("RegistrarEquipo", "GestionEquipos", FormMethod.Post, new { @class = "ui row" }))
 {
     <div class="eight wide column">
         <div class="ui raised segments">
@@ -12,7 +12,7 @@
                     <i class="tablet icon"></i> Asociacion Equipo-Sensor
 
                 </h5>
-                <div class="right menu">
+                <div class="right menu">      
 
                     <button class="ui button item" type="submit"><i class="save icon"></i>Guardar</button>
 
@@ -23,7 +23,7 @@
                 <div class="ui form">
                     <div class="four wide field">
                         <label>Equipos</label>
-                        @Html.DropDownList("IdEquipo", null, new { @class = "ui search dropdown " })
+                        @*@Html.DropDownList("IdEquipo", null, new { @class = "ui search dropdown " })*@
                         @*<select class="ui search dropdown"  >
 
                 <option value="Sensor 1">Sensor 1</option>
@@ -37,7 +37,7 @@
                     <div class="two fields">
                         <div class="four wide field">
                             <label>Sensores</label>
-                            @Html.DropDownList("IdSensor", null, new { @class = "ui search dropdown " })
+                            @*@Html.DropDownList("IdSensor", null, new { @class = "ui search dropdown " })*@
                             @*<select class="ui search dropdown"  >
 
                     <option value="Sensor 1">Sensor 1</option>
