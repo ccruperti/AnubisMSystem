@@ -184,7 +184,7 @@ namespace AnubisDBMS.Controllers
 
         public ActionResult RegistrarSensor(long? IdSensor)
         {
-
+            return View();
         }
         public ActionResult LecturaMedidoresEquipo()
         {

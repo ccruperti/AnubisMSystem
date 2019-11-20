@@ -32,6 +32,7 @@
                     <input type="submit" value="Consultar" class="ui mini blue button" />
 
                 </div>
+
             </div>
             <div class="item">
 
@@ -44,12 +45,15 @@
                             <div id="main-table-search-filter-all" class="active item" data-column-search="-1">TODAS LAS COLUMNAS</div>
                         </div>
                     </div>
-                    <div class="ui large icon input">
-                        <input type="text" id="main-table-search" placeholder="Buscar...">
-                        <i class="search icon"> </i>
+
+                </div>
+                <div class="item">
+                    <div class="ui right action left icon input" id="main-table-search">
+
                     </div>
                 </div>
             </div>
+           
             <div class="right menu">
                 <div class="ui dropdown item">
                     <i class="list layout icon"></i>
@@ -89,7 +93,7 @@
     
 
             <div class="ui bottom attached raised segment">
-                <table class="ui very compact small selectable celled table datatable">
+                <table class="ui very compact small selectable celled table datatable" datatable-search="main-table-search">
                     <thead>
                         <tr>
                             <th>Alias Equipo</th>
