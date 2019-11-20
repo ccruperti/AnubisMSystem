@@ -13,10 +13,24 @@ namespace AnubisDBMS.Data.ViewModels
         {
             Sensores = new List<EquipoSensor>();
         }
-        public long IdSensor { get; set; }
-        public long IdEquipo { get; set; }
+        public long? IdSensor { get; set; }
+        public long? IdEquipo { get; set; }
+
+        public long? IdEquipoSensor { get; set; }
         public string NumSerieEquipo { get; set; }
         public string NumIdentificacionSensor { get; set; }
         public List<EquipoSensor> Sensores { get; set; }
+    }
+    public class ListaEquipos
+    {
+        public ListaEquipos()
+        {
+            EquiposDb = new List<Equipo>();
+        }
+    
+        public List<Equipo> EquiposDb { get; set; }
+        public DateTime? Desde { get; set; }
+        public DateTime? Hasta { get; set; }
+
     }
 }

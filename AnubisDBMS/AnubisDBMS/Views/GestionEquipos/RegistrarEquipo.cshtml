@@ -1,9 +1,10 @@
-﻿@model AnubisDBMS.Data.ViewModels.RegistroEquipoSensorViewModel
+﻿@model AnubisDBMS.Data.ViewModels.GestionEquiposViewModels
 @{
     ViewBag.Title = "";
 }
-@using (Html.BeginForm("RegistrarEquipo", "GestionEquipos", FormMethod.Post, new { @class = "ui row" }))
+@using (Html.BeginForm("RegistrarEquipo", "GestionEquipos", FormMethod.Post, new { @class = "ui row" , id = "form-registro-equipo"}))
 {
+    @Html.HiddenFor(m => m.IdEquipoSensor)
     <div class="eight wide column">
         <div class="ui raised segments">
             <div class="ui top attached menu bg-labcontrol-main">
@@ -12,9 +13,14 @@
                     <i class="tablet icon"></i> Asociacion Equipo-Sensor
 
                 </h5>
-                <div class="right menu">      
+                <div class="right menu">
 
-                    <button class="ui button item" type="submit"><i class="save icon"></i>Guardar</button>
+                    <a class="item" data-submit-form="form-registro-equipo" data-submit-form-parameter="?a=gc">
+                        <i class="save icon"></i> Guardar y Continuar
+                    </a>
+                    <a class="item" data-submit-form="form-registro-equipo" data-submit-form-parameter="?a=gf">
+                        <i class="save icon"></i> Guardar y Finalizar
+                    </a>
 
                 </div>
             </div>
@@ -23,7 +29,7 @@
                 <div class="ui form">
                     <div class="four wide field">
                         <label>Equipos</label>
-                        @*@Html.DropDownList("IdEquipo", null, new { @class = "ui search dropdown " })*@
+                        @Html.DropDownList("IdEquipo", null, new { @class = "ui search dropdown " })
                         @*<select class="ui search dropdown"  >
 
                 <option value="Sensor 1">Sensor 1</option>
@@ -37,7 +43,7 @@
                     <div class="two fields">
                         <div class="four wide field">
                             <label>Sensores</label>
-                            @*@Html.DropDownList("IdSensor", null, new { @class = "ui search dropdown " })*@
+                            @Html.DropDownList("IdSensor", null, new { @class = "ui search dropdown " })
                             @*<select class="ui search dropdown"  >
 
                     <option value="Sensor 1">Sensor 1</option>

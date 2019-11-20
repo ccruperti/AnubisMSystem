@@ -1,4 +1,4 @@
-﻿@model AnubisDBMS.Models.ListaEquipos
+﻿@model AnubisDBMS.Data.ViewModels.ListaEquipos
 @{
     ViewBag.Title = "Monitoreo de Equipos";
 }
@@ -86,39 +86,33 @@
     <div class="sixteen wide column">
         <div class="ui raised segments">
 
-            <div class="right menu">
-
-                <a class="ui button green item" href="@Url.Action("RegistrarEquipo")"><i class="plus icon"></i>Registrar Equipo</a>
-
-            </div>
+    
 
             <div class="ui bottom attached raised segment">
                 <table class="ui very compact small selectable celled table datatable">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(m => m.Equipos[0].AliasEquipo)</th>
-                            <th>@Html.DisplayNameFor(m => m.Equipos[0].NombreTecnico)</th>
-                            <th>@Html.DisplayNameFor(m => m.Equipos[0].FechaUltimoMonitoreo)</th>
+                            <th>Alias Equipo</th>
+                            <th>#Serie</th>
                             <th>Acciones</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var x in Model.Equipos)
+                        @foreach (var x in Model.EquiposDb)
                         {
 
                             <tr class="row text-center">
 
 
-                                <td>@x.AliasEquipo</td>
-                                <td>@x.NombreTecnico</td>
-                                <td>@x.FechaUltimoMonitoreo</td>
+                                <td>@x.Alias</td>
+                                <td>@x.SerieEquipo</td>
 
                                 <td>
                                     <div class="ui mini buttons">
                                         <a href="#" class="ui mini blue button" data-tooltip="Ver Sensores"><i class="thermometer icon"></i>Sensores</a>
                                         <a href="#" class="ui mini green button" data-tooltip="Editar Equipo"><i class="pencil icon"></i>Editar</a>
-                                        <a href="#" class="ui mini black button" data-tooltip="Configurar"><i class="cog icon"></i>Configurar</a>
+                                        <a href="@Url.Action("RegistrarEquipo", new { IdEquipo = x.IdEquipo})" class="ui mini black button" data-tooltip="Configurar Sensores"><i class="cog icon"></i>Configurar</a>
 
                                     </div>
                                 </td>
