@@ -11,26 +11,55 @@ namespace AnubisDBMS.Data.ViewModels
     {
         public GestionEquiposViewModels()
         {
-            Sensores = new List<EquipoSensor>();
+            EquiposSensores = new List<EquipoSensor>();
         }
-        public long? IdSensor { get; set; }
-        public long? IdEquipo { get; set; }
+        public long IdSensor { get; set; }
+        public long IdEquipo { get; set; }
 
-        public long? IdEquipoSensor { get; set; }
+        public long IdEquipoSensor { get; set; }
         public string NumSerieEquipo { get; set; }
+        public int NumPuerto { get; set; }
         public string NumIdentificacionSensor { get; set; }
-        public List<EquipoSensor> Sensores { get; set; }
+        public List<EquipoSensor> EquiposSensores { get; set; }
     }
     public class ListaEquipos
     {
         public ListaEquipos()
         {
-            EquiposDb = new List<Equipo>();
+            EquiposSensor = new List<EquipoSensorVM>();
         }
-    
-        public List<Equipo> EquiposDb { get; set; }
+
         public DateTime? Desde { get; set; }
         public DateTime? Hasta { get; set; }
 
+        public List<EquipoSensorVM> EquiposSensor { get; set; }
+
     }
+
+    public class EquipoSensorVM
+    {
+        public Equipo EquipoDb { get; set; }
+        public int Sensores { get; set; }
+
+    }
+    public class MonitoreoSensoresVM
+    {
+        public MonitoreoSensoresVM()
+        {
+            DatosSensores = new List<DataSensoresVM>();
+        }
+        public long IdEquipo { get; set; }
+        public string QR { get; set; }
+        public string AliasEquipo { get; set; }
+        public List<DataSensoresVM> DatosSensores { get; set; }
+    }
+
+    public class DataSensoresVM
+    {
+        public string SerieSensor { get; set; }
+        public string TipoSensor { get; set; }
+        public string Lectura { get; set; }
+        public string UnidadMedida { get; set; }
+    }
+
 }

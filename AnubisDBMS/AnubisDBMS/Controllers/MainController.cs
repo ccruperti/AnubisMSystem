@@ -89,11 +89,26 @@ namespace AnubisDBMS.Controllers
             return new SelectList(sensores, "Value", "Text"); 
         }
 
-
+        public SelectList SelectListPuertos(long idEquipo, int selected = 0)
+        {
+            List<int> puertosOcupados = new List<int>();
+            List<int> puertosDisponibles = new List<int>();
+            var Equipos = db.EquipoSensor.Where(x => x.IdEquipo == idEquipo && x.Activo && x.NumeroPuerto!=0).ToList();
+            for(var x=1;x<=8;x++)
+            {
+                puertosDisponibles.Add(x);
+            }
+            foreach(var eq in Equipos)
+            {
+            puertosOcupados.Add(eq.NumeroPuerto);
+            }
+            List<int> Puertos = puertosDisponibles.Except(puertosOcupados).ToList(); 
+            return new SelectList(Puertos);
+        }
         #endregion
 
         #region ACT_DESACT Servicios
-         public ActionResult Activar_Servicio ()
+        public ActionResult Activar_Servicio ()
         {
             if (!db.Servicio.Any(x => x.Activo))
             {

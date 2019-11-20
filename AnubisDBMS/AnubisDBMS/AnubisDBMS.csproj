@@ -475,7 +475,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\GestionEquipos\MonitoreoEquipos.cshtml" />
-    <Content Include="Views\GestionEquipos\RegistrarEquipo.cshtml" />
+    <Content Include="Views\GestionEquipos\RegistrarEquipoSensor.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\_Mensaje.cshtml" />
     <Content Include="Views\Cat_Equipos\Create.cshtml" />

@@ -1,5 +1,4 @@
-﻿
-
+﻿@model AnubisDBMS.Data.ViewModels.MonitoreoSensoresVM
     <div class="sixteen wide column">
     @*<div class="ui top attached tabular menu">
         <div class="active item" data-tab="tab-sensores"><i class="chart bar icon"></i>Sensores</div>
@@ -20,10 +19,10 @@
                         <div class="ui link cards">
                             <div class="card">
                                 <div class="small image">
-                                    <img src="~/Content/Images/qrcode.png">
+                                    <img src="data:image/gif;base64,@Model.QR" width="500" height="500" />
                                 </div>
                                 <div class="content">
-                                    <div class="header">EQUIPO 1</div>
+                                    <div class="header">@Model.AliasEquipo</div>
 
 
                                 </div>
@@ -31,7 +30,7 @@
                             
                                     <span>
                                         <i class="thermometer icon"></i>
-                                        3 Sensores
+                                       @Model.DatosSensores.Count Sensores
                                     </span>
                                 </div>
                             </div>
@@ -41,57 +40,51 @@
                     </div>
                 </div>
             </div>
-            <div class="four wide column">
+            <div class="six wide column">
                 <div class="ui raised segments">
                     <div class="ui bottom attached raised menu">
                         <div class="header item">
-                            <i class="list icon"></i> Lectura de Medidores
+                            <i class="list icon"></i> Lectura de Sensores
                         </div>
                     </div>
                     <div class="ui raised segment">
-                        <table class="ui tiny compact celled selectable table">
+                        <table class="ui  compact celled selectable table">
                             <thead>
                                 <tr class="centered">
 
                                     <th>
-                                        Medidor
+                                        Serie Sensor
                                     </th>
                                     <th>
-                                        Dato
+                                        Tipo Sensor
+                                    </th>
+                                    <th>
+                                        Unidad Medida
+                                    </th>
+                                    <th>
+                                       Lectura
                                     </th>
 
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach (var x in Model.DatosSensores)
+                                {
                                 <tr class="center">
                                     <td>
-                                        Medidor 1
+                                        @x.SerieSensor
                                     </td>
                                     <td>
-                                        24%
+                                        @x.TipoSensor
                                     </td>
-
-
-
+                                    <td>
+                                        @x.UnidadMedida
+                                    </td>
+                                    <td>
+                                        @(x.Lectura == "0" ? "Revisar Sensor":x.Lectura)
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        Medidor 2
-                                    </td>
-                                    <td>
-                                        67%
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Medidor 3
-                                    </td>
-                                    <td>
-                                        12%
-                                    </td>
-
-                                </tr>
+                                }
                             </tbody>
                         </table>
                     </div>

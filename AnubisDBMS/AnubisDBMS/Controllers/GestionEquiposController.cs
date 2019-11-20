@@ -99,96 +99,183 @@ namespace AnubisDBMS.Controllers
        
         public ActionResult MonitoreoEquipos(DateTime? Desde, DateTime? Hasta)
         {
-            var model =new  ListaEquipos();
-            //model.Equipos = ListaEquiposVM();
-            model.EquiposDb = db.Equipos.Where(c => c.Activo).ToList();
+
+            var model = new ListaEquipos();
+            var equipos = db.Equipos.Where(x => x.Activo).ToList();
+            foreach(var eq in equipos) 
+            {
+                model.EquiposSensor.Add(new EquipoSensorVM
+                {
+                    EquipoDb=eq,
+                    Sensores = db.EquipoSensor.Count(x => x.IdEquipo == eq.IdEquipo && x.Activo)
+                });
+            } 
             return View(model);
         }
-        public ActionResult RegistrarEquipo(long? IdEquipo)
+        public ActionResult RegistrarEquipoSensor(long IdEquipo)
         {
-            ViewBag.IdEquipo = ListaEquipos(IdEquipo ?? 0);
+            ViewBag.IdEquipo = ListaEquipos(IdEquipo);
             ViewBag.IdSensor = ListaSensores();
-            var regtemporal = new EquipoSensor();
-            var model = new GestionEquiposViewModels();
-            if (!db.EquipoSensor.Any(c => c.IdEquipo == IdEquipo))
-            {
-                regtemporal = new EquipoSensor
-                {
-                    Activo = false,
-                    FechaRegistro = DateTime.Now,
-                    UsuarioRegistro = User.Identity.Name,
+            ViewBag.NumPuerto = SelectListPuertos(IdEquipo);
+            #region RegistroTemporal
+            //var model = new GestionEquiposViewModels();
+            //var regtemporal = new EquipoSensor();
+            //if (!db.EquipoSensor.Any(c => c.IdEquipo == IdEquipo))
+            //{
+            //    regtemporal = new EquipoSensor
+            //    {
+            //        Activo = false,
+            //        FechaRegistro = DateTime.Now,
+            //        UsuarioRegistro = User.Identity.Name,
 
-                };
-                db.EquipoSensor.Add(regtemporal);
-                db.SaveChanges();
-            }
-            else
+            //    };
+            //    db.EquipoSensor.Add(regtemporal);
+            //    db.SaveChanges();
+            //}
+            //else
+            //{
+            //    regtemporal = db.EquipoSensor.FirstOrDefault(c => c.IdEquipo == IdEquipo && c.Activo == false);
+            //}
+            //var model = new GestionEquiposViewModels {
+            //    Sensores = IdEquipo != null ? db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo).ToList() : new List<EquipoSensor>(),
+            //    IdEquipoSensor = regtemporal?.IdEquipoSensor,
+            //    IdEquipo = IdEquipo
+            //};
+            #endregion
+            var EquiposSensores = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo && x.Activo).OrderBy(x=>x.NumeroPuerto).ToList();
+            var model = new GestionEquiposViewModels
             {
-                regtemporal = db.EquipoSensor.FirstOrDefault(c => c.IdEquipo == IdEquipo && c.Activo == false);
-            }
-        
-          
-            model = new GestionEquiposViewModels {
-                Sensores = IdEquipo != null ? db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo).ToList() : new List<EquipoSensor>(),
-                IdEquipoSensor = regtemporal?.IdEquipoSensor,
+                EquiposSensores = EquiposSensores,
                 IdEquipo = IdEquipo
             };
-      
             return View(model);
         }
         [HttpPost]
-         public ActionResult RegistrarEquipo(GestionEquiposViewModels model, string a)
+         public ActionResult RegistrarEquipoSensor(GestionEquiposViewModels model)
         {
-            var transaction = db.Database.BeginTransaction();
-            if (ModelState.IsValid)
+            #region GuardadoTemporal
+            //var transaction = db.Database.BeginTransaction();
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+
+            //        if(a == "gc" && model.IdEquipoSensor !=null)
+            //        {
+            //            var eqsen = db.EquipoSensor.Find(model.IdEquipoSensor);
+            //            eqsen.IdEquipo = model.IdEquipo;
+            //            db.SaveChanges();
+            //            transaction.Commit();
+            //            ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
+            //            ViewBag.IdSensor = ListaSensores();
+            //            return View(model);
+
+            //        }
+            //        else if(a == "gf")
+            //        {
+            //            var eqsen = db.EquipoSensor.Find(model.IdEquipoSensor);
+            //            eqsen.Activo = true;
+            //            eqsen.FechaModificacion = DateTime.Now;
+            //            db.SaveChanges();
+            //            transaction.Commit();
+            //            return RedirectToAction("MonitoreoEquipos");
+
+            //        }
+
+            //    }
+            //    catch(Exception e)
+            //    {
+            //        transaction.Rollback();
+            //        ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
+            //        ViewBag.IdSensor = ListaSensores();
+            //        return View(model);
+            //    }
+
+            //}
+            #endregion
+            if(ModelState.IsValid)
             {
-                try
+                var val = db.EquipoSensor.Any(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.Activo==false);
+                if(val)
                 {
-                   
-                    if(a == "gc" && model.IdEquipoSensor !=null)
-                    {
-                        var eqsen = db.EquipoSensor.Find(model.IdEquipoSensor);
-                        eqsen.IdEquipo = model.IdEquipo;
-                        db.SaveChanges();
-                        transaction.Commit();
-                        ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
-                        ViewBag.IdSensor = ListaSensores();
-                        return View(model);
-
-                    }
-                    else if(a == "gf")
-                    {
-                        var eqsen = db.EquipoSensor.Find(model.IdEquipoSensor);
-                        eqsen.Activo = true;
-                        eqsen.FechaModificacion = DateTime.Now;
-                        db.SaveChanges();
-                        transaction.Commit();
-                        return RedirectToAction("MonitoreoEquipos");
-
-                    }
-
-                }
-                catch(Exception e)
-                {
-                    transaction.Rollback();
+                    var activar = db.EquipoSensor.FirstOrDefault(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.Activo == false);
+                    activar.Activo = true;
+                    activar.FechaModificacion = DateTime.Now;
+                    activar.UsuarioModificacion = User.Identity.Name;
+                    db.SaveChanges();
                     ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
-                    ViewBag.IdSensor = ListaSensores();
-                    return View(model);
+                    ViewBag.IdSensor = ListaSensores(model.IdSensor);
+                    ViewBag.NumPuerto = SelectListPuertos(model.IdEquipo);
+                    return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = model.IdEquipo });
                 }
-            
+                else
+                {
+                    var EquipoSensor = new EquipoSensor
+                    {
+                        IdEquipo = model.IdEquipo,
+                        IdSensor = model.IdSensor,
+                        NumeroPuerto = model.NumPuerto,
+                        UsuarioRegistro = User.Identity.Name,
+                        FechaRegistro = DateTime.Now,
+                        Activo = true
+
+                    };
+                    db.EquipoSensor.Add(EquipoSensor);
+                    db.SaveChanges();
+                }
+                ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
+                ViewBag.IdSensor = ListaSensores(model.IdSensor);
+                ViewBag.NumPuerto = SelectListPuertos(model.IdEquipo);
+                return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = model.IdEquipo });
             }
             ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
-            ViewBag.IdSensor = ListaSensores();
-            return View(model);
+            ViewBag.IdSensor = ListaSensores(model.IdSensor);
+            ViewBag.NumPuerto = SelectListPuertos(model.IdEquipo);
+            return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = model.IdEquipo });
         }
 
         public ActionResult RegistrarSensor(long? IdSensor)
         {
             return View();
         }
-        public ActionResult LecturaMedidoresEquipo()
+
+        public ActionResult EliminarRelacionEquipoSensor(long IdEquipoSensor)
         {
-            return View();
+            var es = db.EquipoSensor.FirstOrDefault(x => x.IdEquipoSensor == IdEquipoSensor);
+            es.Activo = false;
+            es.FechaModificacion = DateTime.Now;
+            es.UsuarioModificacion = User.Identity.Name;
+            db.SaveChanges();
+            ViewBag.IdEquipo = ListaEquipos();
+            ViewBag.IdSensor = ListaSensores();
+            ViewBag.NumPuerto = SelectListPuertos(es.IdEquipo?? 0);
+            return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = es.IdEquipo });
+        }
+        public ActionResult LecturaMedidoresEquipo(long IdEquipo)
+        {
+            var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo);
+            var model = new MonitoreoSensoresVM
+            {
+                IdEquipo = equipo.IdEquipo,
+                QR = equipo.CodigoQR,
+                AliasEquipo=equipo.Alias
+
+            }; 
+            var equiposSensores = db.EquipoSensor.Where(x => x.IdEquipo == equipo.IdEquipo && x.Activo).ToList();
+            foreach(var es in equiposSensores)
+            {
+                var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
+                 //var lectura =  db.DataSensores.LastOrDefault(x=>x.SerieSensor==sensor.SerieSensor);
+                    model.DatosSensores.Add(new DataSensoresVM
+                    {
+                        SerieSensor=sensor?.SerieSensor,
+                        TipoSensor=sensor?.TipoSensor?.NombreTipoSensor,
+                        UnidadMedida=sensor?.TipoSensor?.UnidadSensor,
+                        Lectura=0
+                    });
+                
+            }
+            return View(model);
         }
        
       
