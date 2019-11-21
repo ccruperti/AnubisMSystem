@@ -100,4 +100,16 @@ namespace AnubisDBMS.Data.Entities
         public bool EstadoServicio { get; set; }
 
     }
+    public class DataSensores : CrudEntities
+    {
+        public long IdDataSensor { get; set; }
+        public string ModeloSensor { get; set; }
+        public string TipoSensor { get; set; }
+        public DateTime FechaLectura { get; set; }
+        public double lectura { get; set; }
+        public string UnidadMedida { get; set; } 
+
+
+
+    }
 }
