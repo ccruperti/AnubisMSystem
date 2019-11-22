@@ -11,44 +11,57 @@ using System.Web.Routing;
 
 namespace AnubisDBMS.Infraestructure.Filters.WebFilters
 {
-    public class CustomAuthorizationAttribute : ActionFilterAttribute
+    public class CustomAuthorizationAttribute : AuthorizeAttribute
     {
 
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        private readonly AnubisDbContext dbContext;
+        public CustomAuthorizationAttribute(AnubisDbContext dbContext)
         {
-
-            if (!IsAuthorized(filterContext))
-            {
-                filterContext.Result =
-                    new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied" , action =""}));
-            }
+            this.dbContext = dbContext;
+        }
+        public CustomAuthorizationAttribute()
+        {
+          
+        }
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        {
+            //filterContext.Result = new HttpUnauthorizedResult(); // Try this but i'm not sure
+            filterContext.Result =
+                   new RedirectToRouteResult(new RouteValueDictionary(new { area="", controller = "GestionEquipos" , action ="AccesoBloqueado"}));
         }
 
-        private bool IsAuthorized(ActionExecutingContext filterContext)
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            if (IsAuthorized(filterContext))
+            {
+                base.OnAuthorization(filterContext);
+            }
+            else
+            {
+                this.HandleUnauthorizedRequest(filterContext);
+            }
+        }
+     
+        //public override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+
+        //    if (!IsAuthorized(filterContext))
+        //    {
+        //        filterContext.Result =
+        //            new RedirectToRouteResult(new RouteValueDictionary(new { area="", controller = "GestionEquipos" , action ="AccesoBloqueado"}));
+        //    }
+        //}
+
+        private bool IsAuthorized(AuthorizationContext filterContext)
         {
             var descriptor = filterContext.ActionDescriptor;
             var authorizeAttr = descriptor.GetCustomAttributes(typeof(AuthorizeAttribute), false).FirstOrDefault() as AuthorizeAttribute;
-            var db = filterContext.HttpContext.GetRequiredService<AnubisDbContext>() ;
-            if (authorizeAttr != null)
-            {
-                if (!authorizeAttr.Users.Contains(filterContext.HttpContext.User.ToString()))
-                {
-                    return false;
-                }
-                else
-                {
-                    if (db.Servicio.FirstOrDefault().EstadoServicio)
+ 
+                    if (dbContext.Servicio.FirstOrDefault().EstadoServicio)
                     {
                         return true;
                     }
                     return false;
-                }
-                   
-            }
-           
-                return true;
-            
-
 
         }
     }

@@ -10,5 +10,6 @@ namespace CruzRoja.Web.Areas.Seguridad.Controllers
         {
             return View();
         }
+      
     }
 }

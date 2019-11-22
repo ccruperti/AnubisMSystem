@@ -10,10 +10,12 @@ using System.Web.Mvc;
 using AnubisDBMS.Infraestructure.Data.Security.ViewModels;
 using AnubisDBMS.Infraestructure.Data.Security.Entities;
 using AnubisDBMS.Infraestructure.Security.Managers;
+using AnubisDBMS.Infraestructure.Filters.WebFilters;
 
 namespace AnubisDBMS.Areas.Seguridad.Controllers
 //URPlataform.Web
 {
+    [CustomAuthorization]
     public class CuentaController : Controller
     {
         protected AnubisDBMSSignInManager _signInManager;

@@ -271,14 +271,17 @@ namespace AnubisDBMS.Controllers
                         SerieSensor=sensor?.SerieSensor,
                         TipoSensor=sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida=sensor?.TipoSensor?.UnidadSensor,
-                        Lectura="0"
+                        Lectura=0
                     });
                 
             }
             return View(model);
         }
-       
-      
+
+        public ActionResult AccesoBloqueado()
+        {
+            return View();
+        }
 
     }
 }

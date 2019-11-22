@@ -403,6 +403,7 @@
     <Content Include="Areas\Seguridad\Views\Servicio\Index.cshtml" />
     <Content Include="Areas\Seguridad\Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Areas\Seguridad\Views\_ViewStart.cshtml" />
+    <Content Include="Views\GestionEquipos\AccesoBloqueado.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -495,6 +496,7 @@
     <Content Include="Views\Profile\EditarPerfilUsuario.cshtml" />
     <Content Include="Views\Mantenimiento\AgregarMantenimiento.cshtml" />
     <Content Include="Views\Mantenimiento\Mantenimientos.cshtml" />
+    <Content Include="Views\Home\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

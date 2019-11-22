@@ -81,14 +81,17 @@
 
             db.Frecuencia.AddRange(FrecuenciaList);
             db.SaveChanges();
-
-            db.Servicio.Add(new Servicio
+            if (!db.Servicio.Any())
             {
-                Activo = true,
-                FechaRegistro = DateTime.Now,
-                EstadoServicio = true,
-                UsuarioRegistro= "System"
-            }) ;
+                db.Servicio.Add(new Servicio
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    EstadoServicio = true,
+                    UsuarioRegistro = "System"
+                });
+            }
+       
             db.SaveChanges();
 
         }
