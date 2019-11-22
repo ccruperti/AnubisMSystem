@@ -17,6 +17,7 @@ namespace AnubisDBMS
         protected void Application_Start()
         {
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //AreaRegistration.RegisterAllAreas();
 

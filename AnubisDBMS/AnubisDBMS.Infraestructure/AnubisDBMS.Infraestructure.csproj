@@ -182,6 +182,7 @@
     <Compile Include="Filters\ApiFilters\MimeMultipartFilter.cs" />
     <Compile Include="Filters\ApiFilters\MimeMultipartFilters.cs" />
     <Compile Include="Filters\ApiFilters\ServiceClientFilters.cs" />
+    <Compile Include="Filters\WebFilters\CustomAuthorizationFilter.cs" />
     <Compile Include="Filters\WebFilters\XSRFInvalidTokenFilters.cs" />
     <Compile Include="Geography\ExternalApis\GoogleMapsDistanceMatrixApiClient.cs" />
     <Compile Include="Globalization\Cultures\ApptelinkCultureInfo.cs" />
@@ -214,6 +215,10 @@
     <Folder Include="WebmailManagement\Providers\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AnubisDBMS.Data\AnubisDBMS.Data.csproj">
+      <Project>{32c337a4-0204-4db9-a02b-276c555579c2}</Project>
+      <Name>AnubisDBMS.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AnubisDBMS.Infraestructure.Data\AnubisDBMS.Infraestructure.Data.csproj">
       <Project>{ABBFEF5C-69CF-43BF-9788-94314D64FD43}</Project>
       <Name>AnubisDBMS.Infraestructure.Data</Name>

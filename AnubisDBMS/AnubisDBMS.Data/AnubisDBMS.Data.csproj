@@ -198,10 +198,6 @@
       <Project>{ABBFEF5C-69CF-43BF-9788-94314D64FD43}</Project>
       <Name>AnubisDBMS.Infraestructure.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AnubisDBMS.Infraestructure\AnubisDBMS.Infraestructure.csproj">
-      <Project>{3c73e1cc-02ce-4dcd-bddd-5b61a7129d16}</Project>
-      <Name>AnubisDBMS.Infraestructure</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911141928281_AnubisDBMS1.0.resx">
