@@ -195,7 +195,7 @@ namespace AnubisDBMS.Controllers
             #endregion
             if(ModelState.IsValid)
             {
-                var val = db.EquipoSensor.Any(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.Activo==false);
+                var val = db.EquipoSensor.Any(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.NumeroPuerto==model.NumPuerto && x.Activo==false);
                 if(val)
                 {
                     var activar = db.EquipoSensor.FirstOrDefault(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.Activo == false);
@@ -271,7 +271,7 @@ namespace AnubisDBMS.Controllers
                         SerieSensor=sensor?.SerieSensor,
                         TipoSensor=sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida=sensor?.TipoSensor?.UnidadSensor,
-                        Lectura=0
+                        Lectura="0"
                     });
                 
             }

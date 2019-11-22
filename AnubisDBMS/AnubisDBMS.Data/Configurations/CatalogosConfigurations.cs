@@ -188,6 +188,16 @@ namespace AnubisDBMS.Data.Configurations
     }
 
 
+    public class DataSensoresConfiguration : EntityTypeConfiguration<DataSensores>
+    {
+        public DataSensoresConfiguration()
+        {
+            ToTable("DataSensores", AnubisDBMSSchemas.Monitoreo);
+            HasKey(c => c.IdDataSensor);
+        }
+    }
+
+
     public class MantenimientoConfiguration : EntityTypeConfiguration<Mantenimiento>
     {
         public MantenimientoConfiguration()
