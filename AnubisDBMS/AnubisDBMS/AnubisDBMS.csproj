@@ -404,6 +404,7 @@
     <Content Include="Areas\Seguridad\Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Areas\Seguridad\Views\_ViewStart.cshtml" />
     <Content Include="Views\GestionEquipos\AccesoBloqueado.cshtml" />
+    <Content Include="Areas\Seguridad\Views\Servicio\AccessoBloqueado.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -459,6 +460,7 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Scripts\vfs_fonts.js" />
     <Content Include="Scripts\wickedpicker.min.js" />
+    <Content Include="Views\AccesoNegado.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -1,6 +1,7 @@
 ﻿using AnubisDBMS.Data;
 using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Data.ViewModels;
+using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using AnubisDBMS.Infraestructure.Security.Managers;
 using AnubisDBMS.Infraestructure.Security.Stores;
 using AnubisDBMS.Models;
@@ -96,7 +97,7 @@ namespace AnubisDBMS.Controllers
         //    lista.Add(eq3);
         //    return lista;
         //}
-       
+        [CustomAuthorization]
         public ActionResult MonitoreoEquipos(DateTime? Desde, DateTime? Hasta)
         {
 

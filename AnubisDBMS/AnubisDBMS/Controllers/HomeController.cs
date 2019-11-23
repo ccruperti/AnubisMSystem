@@ -4,12 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AnubisDBMS.Data.ViewModels;
+using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using AnubisDBMS.Infraestructure.Helpers;
 
 namespace AnubisDBMS.Controllers
 {
+
     public class HomeController : MainController
+
     {
+        
         public ActionResult Index()
         {
             var Actual = db.Servicio.FirstOrDefault(x => x.Activo);

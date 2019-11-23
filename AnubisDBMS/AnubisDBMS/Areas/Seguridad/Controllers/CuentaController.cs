@@ -15,7 +15,6 @@ using AnubisDBMS.Infraestructure.Filters.WebFilters;
 namespace AnubisDBMS.Areas.Seguridad.Controllers
 //URPlataform.Web
 {
-    [CustomAuthorization]
     public class CuentaController : Controller
     {
         protected AnubisDBMSSignInManager _signInManager;

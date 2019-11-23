@@ -34,9 +34,7 @@ namespace AnubisDBMS
 
             Infraestructure.Security.StartupData.DefaultRoles(new Infraestructure.Security.Managers.AnubisDBMSRoleManager(new AnubisDBMSRoleStore(context)), applicationRoles);
             StartupData.DefaultUsers(new Infraestructure.Security.Managers.AnubisDBMSUserManager(new Infraestructure.Security.Stores.AnubisDBMSUserStore(context)));
-            var dbcontext = new AnubisDbContext();
-
-            GlobalFilters.Filters.Add(new CustomAuthorizationAttribute(dbcontext));
+        
             context.Dispose();
         }
        

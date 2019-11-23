@@ -23,11 +23,17 @@
         </div>
 
         <div>
-            <i class="unlock icon"></i>
-            @Html.ActionLink("Activar", "Activar_Servicio", "Main", new { @class = "ui green button" })
+            @if (User.IsInRole("Administrador") || User.IsInRole("Administrador Sistema"))
+            {
 
-            <i class="lock icon"></i>
-            @Html.ActionLink("Bloquear", "Desactivar_Servicio", "Main", new { @class = "ui red button" })
+                <i class="unlock icon"></i>
+                @Html.ActionLink("Activar", "Activar_Servicio", "Main", new { @class = "ui green button" })
+
+                <i class="lock icon"></i>
+                @Html.ActionLink("Bloquear", "Desactivar_Servicio", "Main", new { @class = "ui red button" })
+
+            }
+
 
             <br /><br />
             Estado Actual: <label class="ui @Model.HomeVM.EstiloCSS label">@Model.HomeVM.Estado</label>

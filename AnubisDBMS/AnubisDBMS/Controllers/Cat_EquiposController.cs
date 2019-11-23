@@ -10,14 +10,17 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Infraestructure.Helpers;
+using AnubisDBMS.Infraestructure.Filters.WebFilters;
 
 namespace AnubisDBMS.Controllers
 {
+    [CustomAuthorization]
     public class Cat_EquiposController : MainController
-    { 
-      
+    {
+
 
         // GET: INDEX
+       
         public ActionResult Index()
         {
             var lista = db.Equipos.Where(x => x.Activo).OrderBy(x => x.IdEquipo).ToList();
