@@ -49,6 +49,7 @@ namespace AnubisDBMS.Infraestructure.Filters.WebFilters
 
         private bool IsAuthorized(AuthorizationContext filterContext)
         {
+
             var descriptor = filterContext.ActionDescriptor;
             var authorizeAttr = descriptor.GetCustomAttributes(typeof(AuthorizeAttribute), false).FirstOrDefault() as AuthorizeAttribute;
 
