@@ -62,7 +62,7 @@ namespace AnubisDBMS.Controllers
                         UsuarioRegistro = User.Identity.Name,
                         //Audit end
                       NombreTipoSensor=model.NombreTipoSensor,
-                      UnidadSensor=model.UnidadSensor
+                      //UnidadSensor=model.UnidadSensor
                     };
 
                     db.TipoSensor.Add(nuevo);
@@ -82,7 +82,7 @@ namespace AnubisDBMS.Controllers
             {
                 IdTipoSensor = id,
                 NombreTipoSensor = bdd.NombreTipoSensor.Trim().ToUpper(),
-                UnidadSensor = bdd.UnidadSensor.Trim()
+                //UnidadSensor = bdd.UnidadSensor.Trim()
 
             };
             return View(model);
@@ -94,7 +94,7 @@ namespace AnubisDBMS.Controllers
             var bdd = db.TipoSensor.Find(model.IdTipoSensor);
             bdd.IdTipoSensor = model.IdTipoSensor;
             bdd.NombreTipoSensor = model.NombreTipoSensor;
-            bdd.UnidadSensor = model.UnidadSensor;
+            //bdd.UnidadSensor = model.UnidadSensor;
             //AUDIT
             bdd.UsuarioModificacion = User.Identity.Name;
             bdd.FechaModificacion = DateTime.Now;

@@ -58,7 +58,7 @@ namespace AnubisDBMS.Data.ViewModels
     {
         public string SerieSensor { get; set; }
         public string TipoSensor { get; set; }
-        public int Lectura { get; set; }
+        public double Lectura { get; set; }
         public string UnidadMedida { get; set; }
     }
 

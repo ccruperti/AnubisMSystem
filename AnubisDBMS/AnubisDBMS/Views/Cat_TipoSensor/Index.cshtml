@@ -12,9 +12,9 @@
     <table class="ui striped celled   table">
         <thead>
             <tr>
-                <th>Id</th>
+              
                 <th>Nombre Tipo</th>
-                <th>Unidad de medición</th>
+                @*<th>Unidad de medición</th>*@
                 <th>Editar</th>
                 <th>Eliminar</th>
 
@@ -26,9 +26,9 @@
 
             <tr>
 
-                <td>@item.IdTipoSensor</td>
+                
                 <td>@item.NombreTipoSensor</td>
-                <td>@item.UnidadSensor</td>
+                @*<td>@item.UnidadSensor</td>*@
                
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.IdTipoSensor }, new { @class = "ui orange   button" })

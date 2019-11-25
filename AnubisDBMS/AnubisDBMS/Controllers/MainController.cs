@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
-using System.Data.Entity;
+using System.Data.Entity; 
 
 namespace AnubisDBMS.Controllers
 {
@@ -131,14 +131,14 @@ namespace AnubisDBMS.Controllers
                 var Actual = db.Servicio.FirstOrDefault(x => x.Activo);
                 Actual.FechaModificacion = DateTime.Now;
                 Actual.UsuarioModificacion = User.Identity.Name;
-                Actual.EstadoServicio = false;
-                //db.Servicio.Add(new Servicio
-                //{
-                //    Activo = true,
-                //    FechaRegistro = DateTime.Now,
-                //    UsuarioRegistro = User.Identity.Name,
-                //    EstadoServicio = true
-                //});
+                Actual.Activo = false;
+                db.Servicio.Add(new Servicio
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    UsuarioRegistro = User.Identity.Name,
+                    EstadoServicio = true
+                });
                 db.SaveChanges();
             }
             return Redirect("Index");
@@ -163,17 +163,20 @@ namespace AnubisDBMS.Controllers
                 Actual.FechaModificacion = DateTime.Now;
                 Actual.UsuarioModificacion = User.Identity.Name;
                 Actual.EstadoServicio = false;
-                //db.Servicio.Add(new Servicio
-                //{
-                //    Activo = true,
-                //    FechaRegistro = DateTime.Now,
-                //    UsuarioRegistro = User.Identity.Name,
-                //    EstadoServicio = false
-                //});
+                Actual.Activo = false;
+                db.Servicio.Add(new Servicio
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    UsuarioRegistro = User.Identity.Name,
+                    EstadoServicio = false
+                });
                 db.SaveChanges();
             }
            return Redirect("Index");
         }
         #endregion
+
+      
     }
 }

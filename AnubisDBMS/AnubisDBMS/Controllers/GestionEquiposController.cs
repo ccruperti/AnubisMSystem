@@ -266,19 +266,20 @@ namespace AnubisDBMS.Controllers
             foreach(var es in equiposSensores)
             {
                 var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
-                 //var lectura =  db.DataSensores.LastOrDefault(x=>x.SerieSensor==sensor.SerieSensor);
+                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.ModeloSensor==sensor.SerieSensor);
                     model.DatosSensores.Add(new DataSensoresVM
                     {
                         SerieSensor=sensor?.SerieSensor,
                         TipoSensor=sensor?.TipoSensor?.NombreTipoSensor,
-                        UnidadMedida=sensor?.TipoSensor?.UnidadSensor,
-                        Lectura=0
+                        UnidadMedida=lectura.UnidadMedida,
+                        Lectura=lectura.lectura
                     });
                 
             }
             return View(model);
         }
 
+      
         public ActionResult AccesoBloqueado()
         {
             return View();
