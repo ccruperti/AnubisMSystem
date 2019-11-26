@@ -8,7 +8,7 @@
         <h1 class="ui header">@ViewBag.Title</h1>
         @using (Html.BeginForm("MonitoreoEquipos", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui menu", id = "" }))
         {
-            <div class="item">
+            @*<div class="item">
                 <div class="item header" style="color:black !important">
                     <h4>Desde</h4>
                 </div>
@@ -33,7 +33,7 @@
 
                 </div>
 
-            </div>
+            </div>*@
             <div class="item">
 
 
@@ -97,8 +97,9 @@
                     <thead>
                         <tr>
                             <th>Alias Equipo</th>
-                            <th>#Serie</th>
-                            <th>#Sensores</th>
+                            <th>Núm. Serie</th>
+                            <th>Sensores Asignados</th>
+                            <th>Mantenimientos Activos</th>
                             <th>Acciones</th>
 
                         </tr>
@@ -113,6 +114,7 @@
                                 <td>@x.EquipoDb.Alias</td>
                                 <td>@x.EquipoDb.SerieEquipo</td>
                                 <td>@x.Sensores</td>
+                                <td>@x.Mantenimeintos</td>
 
                                 <td>
                                     <div class="ui mini buttons">
@@ -120,8 +122,8 @@
                                         <a href="@Url.Action("RegistrarEquipoSensor", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini green button" data-tooltip="Editar Sensores Equipo"><i class="pencil icon"></i>Editar</a>
 
                                         @*AQUI DEBE IR RESTRICCION DE PAGO PARA VER BOTÓN*@
-                                        <a href="@Url.Action("AgregarMantenimiento", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configurar Mantenimientos"><i class="cog icon"></i>Configurar</a>
-                                        <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini  white button" data-tooltip="Editar Mantenimientos"><i class="edit icon"></i>Editar Mant.</a>
+                                       
+                                        <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
 
 
                                     </div>

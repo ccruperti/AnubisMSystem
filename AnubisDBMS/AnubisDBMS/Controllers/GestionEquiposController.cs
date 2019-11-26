@@ -23,13 +23,22 @@ namespace AnubisDBMS.Controllers
         {
 
             var model = new ListaEquipos();
-            var equipos = db.Equipos.Where(x => x.Activo).ToList();
-            foreach(var eq in equipos) 
+            List<Equipo> equipos = db.Equipos.Where(x => x.Activo).ToList();
+            List<EquipoSensor> EquipoSensor = new List<EquipoSensor>();
+            List<Mantenimiento> Mant = new List<Mantenimiento>();
+            foreach (var eq in equipos) 
             {
+                EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == eq.IdEquipo && x.Activo).ToList();
+                foreach (var es in EquipoSensor)
+                {
+                    Mant = db.Mantenimiento.Where(x => x.Activo && x.IdEquipoSensor == es.IdEquipoSensor).ToList();
+                
+                }
                 model.EquiposSensor.Add(new EquipoSensorVM
                 {
                     EquipoDb=eq,
-                    Sensores = db.EquipoSensor.Count(x => x.IdEquipo == eq.IdEquipo && x.Activo)
+                    Sensores = EquipoSensor.Count(),
+                    Mantenimeintos= Mant.Count()
                 });
             } 
             return View(model);

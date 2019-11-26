@@ -3,7 +3,7 @@
 
 @using (Html.BeginForm("Mantenimientos", "Mantenimiento", new { }, FormMethod.Get, new { @class = "ui row", id = "" }))
 {
-    <div class="sixteen wide column">
+    <div class="sixteen wide column" style="margin-top:30px;">
 
         <div class="ui raised segments">
             <div class="ui bottom attached menu">
@@ -13,7 +13,7 @@
 
 
                 <div class="item">
-                    <a href="#" class="ui green button compact" data-tooltip="Nuevo Mantenimiento"><i class="plus icon"></i>Ageregar Nuevo</a>
+                    <a href="@Url.Action("AgregarMantenimiento", "Mantenimiento",new { IdEquipo = Model.IdEquipo} )"  data-tooltip="Nuevo Mantenimiento" class="ui green button compact"><i class="plus icon"></i>Agregar Nuevo</a>
                 </div>
 
             </div>

@@ -29,11 +29,14 @@ namespace AnubisDBMS.Controllers
             return View(model);
         }
 
-        public ActionResult Mantenimientos(long? IdEquipo)
+        public ActionResult Mantenimientos(long IdEquipo)
         {
+            var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo);
             var model = new MantenimientoVM
             {
-                Lista = db.Mantenimiento.Where(c => c.Activo && c.EquiposSensor.IdEquipo == IdEquipo).ToList()
+                Lista = db.Mantenimiento.Where(c => c.Activo && c.EquiposSensor.IdEquipo == IdEquipo).ToList(),
+                IdEquipo=Eq.IdEquipo
+                
             };
             return View(model);
         }

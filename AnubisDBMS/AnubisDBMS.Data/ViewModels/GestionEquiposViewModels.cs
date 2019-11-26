@@ -40,6 +40,7 @@ namespace AnubisDBMS.Data.ViewModels
     {
         public Equipo EquipoDb { get; set; }
         public int Sensores { get; set; }
+        public int Mantenimeintos { get; set; }
 
     }
     public class MonitoreoSensoresVM
