@@ -31,6 +31,10 @@ namespace AnubisDBMS.Data.ViewModels
         public DateTime FechaMant { get; set; }
         public long? IdEquipo { get; set; }
 
+        
+        public string QR { get; set; }
+        public string AliasEquipo { get; set; }
+
         public List<EquipoSensor> EquiposSensores { get; set; }
         public List<Mantenimiento> Lista = new List<Mantenimiento>();
     }

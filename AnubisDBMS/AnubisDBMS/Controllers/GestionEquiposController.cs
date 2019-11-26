@@ -21,18 +21,18 @@ namespace AnubisDBMS.Controllers
 
 
         #region Helpers
-        public SelectList ListaEquipos(long? id = null)
-        {
-            var data = db.Equipos.Where(c => c.Activo).ToList();
-            data.Add(new Equipo { IdEquipo = 0, Alias = "Seleccione un Equipo" });
-            return new SelectList(data.OrderByDescending(c => c.IdEquipo), "IdEquipo", "Alias", id);
-        }
-        public SelectList ListaSensores(long? id = null)
-        {
-            var data = db.Sensores.Where(c => c.Activo).ToList();
-            data.Add(new Sensor { IdSensor = 0, SerieSensor = "Seleccione un Sensor" });
-            return new SelectList(data.OrderByDescending(c => c.IdSensor), "IdSensor", "SerieSensor", id);
-        }
+        //public SelectList ListaEquipos(long? id = null)
+        //{
+        //    var data = db.Equipos.Where(c => c.Activo).ToList();
+        //    data.Add(new Equipo { IdEquipo = 0, Alias = "Seleccione un Equipo" });
+        //    return new SelectList(data.OrderByDescending(c => c.IdEquipo), "IdEquipo", "Alias", id);
+        //}
+        //public SelectList ListaSensores(long? id = null)
+        //{
+        //    var data = db.Sensores.Where(c => c.Activo).ToList();
+        //    data.Add(new Sensor { IdSensor = 0, SerieSensor = "Seleccione un Sensor" });
+        //    return new SelectList(data.OrderByDescending(c => c.IdSensor), "IdSensor", "SerieSensor", id);
+        //}
         #endregion
         //public List<EquiposViewModels> ListaEquiposVM()
         //{
@@ -115,8 +115,8 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult RegistrarEquipoSensor(long IdEquipo)
         {
-            ViewBag.IdEquipo = ListaEquipos(IdEquipo);
-            ViewBag.IdSensor = ListaSensores();
+            ViewBag.IdEquipo = SelectListEquipo();
+            ViewBag.IdSensor = SelectListSensores();
             ViewBag.NumPuerto = SelectListPuertos(IdEquipo);
             #region RegistroTemporal
             //var model = new GestionEquiposViewModels();
@@ -204,8 +204,8 @@ namespace AnubisDBMS.Controllers
                     activar.FechaModificacion = DateTime.Now;
                     activar.UsuarioModificacion = User.Identity.Name;
                     db.SaveChanges();
-                    ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
-                    ViewBag.IdSensor = ListaSensores(model.IdSensor);
+                    ViewBag.IdEquipo = SelectListEquipo(model.IdEquipo);
+                    ViewBag.IdSensor = SelectListSensores(model.IdSensor);
                     ViewBag.NumPuerto = SelectListPuertos(model.IdEquipo);
                     return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = model.IdEquipo });
                 }
@@ -224,13 +224,13 @@ namespace AnubisDBMS.Controllers
                     db.EquipoSensor.Add(EquipoSensor);
                     db.SaveChanges();
                 }
-                ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
-                ViewBag.IdSensor = ListaSensores(model.IdSensor);
+                ViewBag.IdEquipo = SelectListEquipo(model.IdEquipo);
+                ViewBag.IdSensor = SelectListSensores(model.IdSensor);
                 ViewBag.NumPuerto = SelectListPuertos(model.IdEquipo);
                 return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = model.IdEquipo });
             }
-            ViewBag.IdEquipo = ListaEquipos(model.IdEquipo);
-            ViewBag.IdSensor = ListaSensores(model.IdSensor);
+            ViewBag.IdEquipo = SelectListEquipo(model.IdEquipo);
+            ViewBag.IdSensor = SelectListSensores(model.IdSensor);
             ViewBag.NumPuerto = SelectListPuertos(model.IdEquipo);
             return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = model.IdEquipo });
         }
@@ -247,8 +247,8 @@ namespace AnubisDBMS.Controllers
             es.FechaModificacion = DateTime.Now;
             es.UsuarioModificacion = User.Identity.Name;
             db.SaveChanges();
-            ViewBag.IdEquipo = ListaEquipos();
-            ViewBag.IdSensor = ListaSensores();
+            ViewBag.IdEquipo = SelectListEquipo();
+            ViewBag.IdSensor = SelectListSensores();
             ViewBag.NumPuerto = SelectListPuertos(es.IdEquipo?? 0);
             return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = es.IdEquipo });
         }

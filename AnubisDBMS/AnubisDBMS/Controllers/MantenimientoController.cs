@@ -14,15 +14,19 @@ namespace AnubisDBMS.Controllers
     {
           
 
-        public ActionResult AgregarMantenimiento(long? IdEquipo)
+        public ActionResult AgregarMantenimiento(long IdEquipo)
         {
-            ViewBag.IdFrecuencia = SelectListFrecuencias();
+            var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo);
             var model = new MantenimientoVM{
                 FechaMant = DateTime.Now,
-                IdEquipo = IdEquipo
-             
+                IdEquipo = equipo.IdEquipo,
+                AliasEquipo=equipo.Alias,
+                QR=equipo.CodigoQR,
+                Descripcion="" 
             };
-            return View();
+            ViewBag.IdFrecuencia = SelectListFrecuencias();
+            ViewBag.IdTecnico = SelectListTecnico();
+            return View(model);
         }
 
         public ActionResult Mantenimientos(long? IdEquipo)

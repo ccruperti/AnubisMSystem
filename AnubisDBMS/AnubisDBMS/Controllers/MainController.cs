@@ -54,7 +54,7 @@ namespace AnubisDBMS.Controllers
         #endregion
 
         #region SelectLists
-        public SelectList SelectListTipoSensor(string selected = null)
+        public SelectList SelectListTipoSensor(long selected = 0)
         {
 
             List<TipoSensor> TipoSensor = new List<TipoSensor>();
@@ -62,29 +62,30 @@ namespace AnubisDBMS.Controllers
             {
                 TipoSensor.Add(x);
             }
+            TipoSensor.Add(new TipoSensor { IdTipoSensor = 0, NombreTipoSensor = "--- Seleccione Tipo de Sensor ---" });
             return new SelectList(TipoSensor, "IdTipoSensor", "NombreTipoSensor");
 
         }
 
-            public SelectList SelectListEquipo(string selected = null)
+            public SelectList SelectListEquipo(long selected = 0)
             {
 
                 List<Equipo> Equipo = new List<Equipo>();
-                foreach (var x in db.Equipos.ToList())
+                foreach (var x in db.Equipos.Where(x => x.Activo).ToList())
                 {
                 Equipo.Add(x); 
                 }
-                return new SelectList(Equipo, "IdEquipo", "SerieEquipo");
+            Equipo.Add(new Equipo { IdEquipo = 0, Alias = "Seleccione Equipo" });
+            return new SelectList(Equipo, "IdEquipo", "Alias");
 
             }
         public SelectList SelectListEquipoSensor(long? id = null)
         {
 
-            List<SelectListItem> data = db.EquipoSensor.Select(x => new SelectListItem{ 
+            List<SelectListItem> data = db.EquipoSensor.Where(x => x.Activo).Select(x => new SelectListItem{ 
              Text = x.Equipos.Alias + " - "+ x.Equipos.SerieEquipo,
              Value = x.IdEquipoSensor.ToString()
-            }).ToList();
-            data.Add(new SelectListItem { Text = "Seleccione un equipo", Value = "0" });
+            }).ToList(); 
             return new SelectList(data, "Value", "Text", id);
 
         }
@@ -96,18 +97,29 @@ namespace AnubisDBMS.Controllers
             return new SelectList(data, "IdFrecuencia", "NombreFrecuencia", id);
 
         }
-        public SelectList SelectListSensores(string selected = null)
+        public SelectList SelectListSensores(long selected = 0)
         {
+            List<long> sensoresIDs = db.EquipoSensor.Where(x => x.Activo).Select(i =>i.IdSensor??0).ToList();
             List<SelectListItem> sensores = db.Sensores.AsNoTracking()
-                   .OrderBy(n => n.SerieSensor)
+                   .OrderBy(n => n.SerieSensor).Where(x=>x.Activo)
                        .Select(n =>
                        new SelectListItem
                        {
                            Value = n.IdSensor.ToString(),
                            Text = n.TipoSensor.NombreTipoSensor+ " - " + n.SerieSensor
                        }).ToList();
-              
-            return new SelectList(sensores, "Value", "Text"); 
+
+           
+           
+            var filtered = sensores
+                              .Where(x => !sensoresIDs.Contains(Convert.ToInt64(x.Value))).ToList();
+            var sensorNull = new SelectListItem()
+            {
+                Value = null,
+                Text = "Seleccione Sensor"
+            };
+            filtered.Insert(0, sensorNull);
+            return new SelectList(filtered, "Value", "Text"); 
         }
 
         public SelectList SelectListPuertos(long idEquipo, int selected = 0)
@@ -126,8 +138,21 @@ namespace AnubisDBMS.Controllers
             List<int> Puertos = puertosDisponibles.Except(puertosOcupados).ToList(); 
             return new SelectList(Puertos);
         }
+
+        public SelectList SelectListTecnico(string selected = null)
+        {
+
+            List<Tecnicos> Tecnicos = new List<Tecnicos>();
+            foreach (var x in db.Tecnicos.Where(x => x.Activo).ToList())
+            {
+                Tecnicos.Add(x);
+            }
+            Tecnicos.Add(new Tecnicos { IdTecnico = 0, NombreTecnico = "Seleccione Técnico" });
+            return new SelectList(Tecnicos, "IdTecnico", "NombreTecnico");
+
+        }
         #endregion
-       
+
 
         #region ACT_DESACT Servicios
         public ActionResult Activar_Servicio ()

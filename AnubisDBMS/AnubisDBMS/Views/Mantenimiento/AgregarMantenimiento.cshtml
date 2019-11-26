@@ -1,9 +1,9 @@
 ﻿@model AnubisDBMS.Data.ViewModels.MantenimientoVM
 
 
-@using (Html.BeginForm("AgregarMantenimiento", "Mantenimiento", new { }, FormMethod.Post, new { @class = "ui grid", id = "" }))
+@using (Html.BeginForm("AgregarMantenimiento", "Mantenimiento", new { }, FormMethod.Post, new { @class = "ui row", id = "" }))
 {
-    <div class="eight wide column">
+    <div class="ten wide column">
 
         <div class="ui raised segments">
             <div class="ui bottom attached raised menu">
@@ -11,17 +11,18 @@
                     Nuevo Mantenimiento
                 </div>
                 <div class="right menu">
-                    <button type="submit" class="item"><i class="save icon"></i>Guardar</button>
+                  
                 </div>
             </div>
             <div class="ui compact raised segment">
-                <div class="ui tiny form">
+                <div class="ui  form">
                     <div class="two fields">
                         @*<div class="six wide field">
-                                <label>Tipo de Mantenimiento</label>
-                                @Html.TextBox("test")
-                            </div>*@
-                        <div class="six wide field">
+            <label>Tipo de Mantenimiento</label>
+            @Html.TextBox("test")
+        </div>*@
+
+                        <div class="four wide field">
                             <label>Fecha de Mantenimiento</label>
                             <div class="ui labeled input">
 
@@ -32,20 +33,30 @@
 
                             </div>
                         </div>
+                        <div class="six wide field">
+                            <div class="ui toggle checkbox" style="margin-top:30px  !important; margin-left:20px !important;">
 
-                        <div class="ui toggle checkbox" style="padding-left: 60px">
+                                <input type="checkbox" name="Notificaciones">
+                                <label>Recibir Notificaciones</label>
 
-                            <input type="checkbox" name="Notificaciones">
-                            <label>Recibir Notificaciones</label>
+                            </div>
+                        </div>
+
+                       
+                            <div class="four wide field">
+                                <label>Técnico</label>
+                                @Html.DropDownList("IdTecnico", null, new { @class = "ui search dropdown " })
+
+                            </div>
+
+                            <div class="four wide field">
+                                <label>Frecuencia</label>
+                                @Html.DropDownList("IdFrecuencia", null, new { @class = "ui search dropdown " })
+
+                            </div>
 
                         </div>
-                        @*<div class="ui input" style="max-width:15% !important">
-
-                                <input  type="text" />
-                            </div>*@
-
                     </div>
-                </div>
             </div>
             <div class="ui raised segment orange">
                 <div class="ui form">
@@ -55,48 +66,42 @@
 
                         @Html.TextAreaFor(m => m.Descripcion, htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
                     </div>
+
+
+                    <button type="submit" style="color:white !important;" class="ui green button"><i class="save icon"></i>Guardar</button>
                 </div>
 
             </div>
         </div>
     </div>
-    <div class="five wide column">
-
-        <div class="ui raised segments">
-            <div class="ui bottom attached raised menu">
-                <div class="header item">
-                    Datos de contacto
-                </div>
-
+    <div class="ui raised segments" style="margin-top:-2.2px;">
+        <div class="ui bottom attached raised menu">
+            <div class="header item">
+                <i class="qrcode icon"></i> Codigo QR
             </div>
-            <div class="ui compact raised segment">
-                <div class="ui tiny form">
-                    <div class="two fields">
-                        <div class="six wide field">
-                            <div class="ui labeled input">
-
-                                <div class="ui label">
-                                    <i class="mail icon"></i>E-mail
-                                </div>
-                                <input type="text" placeholder="">
-                            </div>
-                        </div>
-                        <div class="six wide field">
-                            <div class="ui labeled input">
-
-                                <div class="ui label">
-                                    <i class="phone icon"></i> #Celular
-                                </div>
-                                <input type="text" placeholder="">
-                            </div>
-                        </div>
+        </div>
+        <div class="ui raised segment">
+            <div class="ui link cards">
+                <div class="card">
+                    <div class="small image">
+                        <img src="data:image/gif;base64,@Model.QR" width="500" height="500" />
+                    </div>
+                    <div class="content">
+                        <div class="header">@Model.AliasEquipo</div>
 
 
                     </div>
+                    @* <div class="extra content">
+
+                    <span>
+                        <i class="thermometer icon"></i>
+                        @Model.DatosSensores.Count Sensores
+                    </span>
+                </div>*@
                 </div>
 
-            </div>
 
+            </div>
         </div>
     </div>
 
