@@ -1,85 +1,109 @@
-﻿
+﻿@model AnubisDBMS.Data.ViewModels.MantenimientoVM
 
-<div class="row">
 
+@using (Html.BeginForm("Mantenimientos", "Mantenimiento", new { }, FormMethod.Get, new { @class = "ui row", id = "" }))
+{
     <div class="sixteen wide column">
 
         <div class="ui raised segments">
             <div class="ui bottom attached menu">
                 <div class="header item">
-                    <h4>Mantenimiento</h4>
+                    <h4>Mantenimientos</h4>
                 </div>
-                <div class="item">   
-                    <button class="ui red compact button"><i class="lock icon"></i>Bloquear Servicio</button>
 
-                </div>
+
                 <div class="item">
-                    <button class="ui green compact button"><i class="unlock icon"></i>Desbloquear Servicio</button>
-
+                    <a href="#" class="ui green button compact" data-tooltip="Nuevo Mantenimiento"><i class="plus icon"></i>Ageregar Nuevo</a>
                 </div>
+
             </div>
             <div class="ui raised segment">
                 <table class="ui compact celled selectable table">
                     <thead>
                         <tr class="centered">
                             <th>
-                            <input type="checkbox" />
+                                <input type="checkbox" />
                             </th>
                             <th>
                                 Fecha Mant.
                             </th>
                             <th>
-                               Alias Equipo
+                                Alias Equipo
                             </th>
                             <th>
                                 Estado
                             </th>
-                        
+
                             <th>
                                 Acciones
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="center">
-                            <td><input type="checkbox" /></td>
-                            <td>
-                                11/11/2019
-                            </td>
-                            <td>
-                                Equipo1
-                            </td>
-                            <td>
-                                <a href="#" class="ui yellow compact button disabled"><i class="warning icon"></i></a>
-                            </td>
+                        @foreach (var mant in Model.Lista)
+                        {
 
-                            <td>
-                                <div class="ui small buttons">
-                                    <a href="#" class="ui green button compact"><i class="pencil icon"></i>Editar</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" /></td>
-                            <td>
-                                11/11/2019
-                            </td>
-                            <td>
-                                Equipo2
-                            </td>
-                            <td>
-                                <a href="#" class="ui green compact button disabled"><i class="check icon"></i></a>
-                            </td>
 
-                            <td>
-                                <div class="ui small buttons">
-                                    <a href="#" class="ui green button compact"><i class="pencil icon"></i>Editar</a>
-                                </div>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>@mant.FechaMantenimiento</td>
+                                <td>@mant.EquiposSensor.Equipos.Alias</td>
+                                <td>
+                                    @if (mant.Estados.EstiloCss == "warning")
+                                    {
+                                        <a href="#" class="ui yellow compact button disabled"><i class="warning icon"></i>@mant.Estados.NombreEstado</a>
+
+                                    }
+                                    else if (mant.Estados.EstiloCss == "positive")
+                                    {
+                                        <a href="#" class="ui green compact button disabled"><i class="check icon"></i>@mant.Estados.NombreEstado</a>
+
+                                    }
+                                    else if (mant.Estados.EstiloCss == "negative")
+                                    {
+                                        <a href="#" class="ui red compact button disabled"><i class="x icon"></i>@mant.Estados.NombreEstado</a>
+
+                                    }
+                                    else if (mant.Estados.EstiloCss == "blocked")
+                                    {
+                                        <a href="#" class="ui gray compact button disabled"><i class="negative icon"></i>@mant.Estados.NombreEstado</a>
+
+                                    }
+                                </td>
+                                <td>
+                                    <div class="ui small buttons">
+
+                                        <a href="#" class="ui blue button compact"><i class="pencil icon"></i>Editar</a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                        @*<tr class="center">
+                                <td><input type="checkbox" /></td>
+                                <td>
+                                    11/11/2019
+                                </td>
+                                <td>
+                                    Equipo1
+                                </td>
+                                <td>
+                                    <a href="#" class="ui yellow compact button disabled"><i class="warning icon"></i></a>
+                                </td>
+
+                                <td>
+                                    <div class="ui small buttons">
+                                        <a href="#" class="ui green button compact"><i class="pencil icon"></i>Editar</a>
+                                    </div>
+                                </td>
+                            </tr>*@
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>
+}
+

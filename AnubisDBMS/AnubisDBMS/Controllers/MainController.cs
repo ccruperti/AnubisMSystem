@@ -77,7 +77,25 @@ namespace AnubisDBMS.Controllers
                 return new SelectList(Equipo, "IdEquipo", "SerieEquipo");
 
             }
+        public SelectList SelectListEquipoSensor(long? id = null)
+        {
 
+            List<SelectListItem> data = db.EquipoSensor.Select(x => new SelectListItem{ 
+             Text = x.Equipos.Alias + " - "+ x.Equipos.SerieEquipo,
+             Value = x.IdEquipoSensor.ToString()
+            }).ToList();
+            data.Add(new SelectListItem { Text = "Seleccione un equipo", Value = "0" });
+            return new SelectList(data, "Value", "Text", id);
+
+        }
+        public SelectList SelectListFrecuencias(long? id = null)
+        {
+
+            List<Frecuencia> data = db.Frecuencia.Where(c => c.Activo).ToList();
+            data.Add(new Frecuencia { IdFrecuencia = 0 , NombreFrecuencia = "Seleccione frecuencia" });
+            return new SelectList(data, "IdFrecuencia", "NombreFrecuencia", id);
+
+        }
         public SelectList SelectListSensores(string selected = null)
         {
             List<SelectListItem> sensores = db.Sensores.AsNoTracking()

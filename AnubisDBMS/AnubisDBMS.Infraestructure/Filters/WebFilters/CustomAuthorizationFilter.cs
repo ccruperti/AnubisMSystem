@@ -54,7 +54,9 @@ namespace AnubisDBMS.Infraestructure.Filters.WebFilters
             var authorizeAttr = descriptor.GetCustomAttributes(typeof(AuthorizeAttribute), false).FirstOrDefault() as AuthorizeAttribute;
 
             using (var db = new AnubisDbContext()) {
-                if (db.Servicio.FirstOrDefault(c => c.Activo).EstadoServicio)
+
+                var servicio = db.Servicio.FirstOrDefault(c => c.Activo);
+                if (servicio.EstadoServicio)
                 {
                     return true;
                 }
