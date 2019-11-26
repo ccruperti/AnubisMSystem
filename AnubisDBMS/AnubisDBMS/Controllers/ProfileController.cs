@@ -6,11 +6,7 @@ using System.Web.Mvc;
 namespace AnubisDBMS.Controllers
 {
     public class ProfileController : MainController
-    {
-
-       
-
-        // GET: Profile
+    { 
         public ActionResult PerfilUsuario()
         {
 

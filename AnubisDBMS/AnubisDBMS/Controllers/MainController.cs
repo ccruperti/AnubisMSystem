@@ -15,8 +15,7 @@ namespace AnubisDBMS.Controllers
 {
 
     public class MainController : Controller
-    {
-
+    { 
         #region DB&Users
         public AnubisDbContext db = new AnubisDbContext();
 
@@ -65,9 +64,8 @@ namespace AnubisDBMS.Controllers
             TipoSensor.Add(new TipoSensor { IdTipoSensor = 0, NombreTipoSensor = "--- Seleccione Tipo de Sensor ---" });
             return new SelectList(TipoSensor, "IdTipoSensor", "NombreTipoSensor");
 
-        }
-
-            public SelectList SelectListEquipo(long selected = 0)
+        } 
+        public SelectList SelectListEquipo(long selected = 0)
             {
 
                 List<Equipo> Equipo = new List<Equipo>();
@@ -120,8 +118,7 @@ namespace AnubisDBMS.Controllers
             };
             filtered.Insert(0, sensorNull);
             return new SelectList(filtered, "Value", "Text"); 
-        }
-
+        } 
         public SelectList SelectListPuertos(long idEquipo, int selected = 0)
         {
             List<int> puertosOcupados = new List<int>();
@@ -137,8 +134,7 @@ namespace AnubisDBMS.Controllers
             }
             List<int> Puertos = puertosDisponibles.Except(puertosOcupados).ToList(); 
             return new SelectList(Puertos);
-        }
-
+        } 
         public SelectList SelectListTecnico(string selected = null)
         {
 
@@ -152,8 +148,7 @@ namespace AnubisDBMS.Controllers
 
         }
         #endregion
-
-
+         
         #region ACT_DESACT Servicios
         public ActionResult Activar_Servicio ()
         {
@@ -218,8 +213,6 @@ namespace AnubisDBMS.Controllers
             }
            return Redirect("Index");
         }
-        #endregion
-
-      
+        #endregion 
     }
 }

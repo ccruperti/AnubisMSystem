@@ -10,10 +10,8 @@ using AnubisDBMS.Infraestructure.Helpers;
 namespace AnubisDBMS.Controllers
 {
 
-    public class HomeController : MainController
-
-    {
-        
+    public class HomeController : MainController 
+    { 
         public ActionResult Index()
         {
             var Actual = db.Servicio.FirstOrDefault(x => x.Activo);
