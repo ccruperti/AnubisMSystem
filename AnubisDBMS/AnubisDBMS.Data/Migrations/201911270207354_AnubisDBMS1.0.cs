@@ -1,4 +1,4 @@
-﻿namespace AnubisDBMS.Data.Migrations
+namespace AnubisDBMS.Data.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -7,6 +7,26 @@
     {
         public override void Up()
         {
+            CreateTable(
+                "MON.DataSensores",
+                c => new
+                    {
+                        IdDataSensor = c.Long(nullable: false, identity: true),
+                        ModeloSensor = c.String(),
+                        TipoSensor = c.String(),
+                        FechaLectura = c.DateTime(nullable: false),
+                        lectura = c.Double(nullable: false),
+                        UnidadMedida = c.String(),
+                        Activo = c.Boolean(nullable: false),
+                        FechaRegistro = c.DateTime(nullable: false),
+                        FechaModificacion = c.DateTime(),
+                        FechaEliminacion = c.DateTime(),
+                        UsuarioRegistro = c.String(),
+                        UsuarioModificacion = c.String(),
+                        UsuarioEliminacion = c.String(),
+                    })
+                .PrimaryKey(t => t.IdDataSensor);
+            
             CreateTable(
                 "CAT.Equipos",
                 c => new
@@ -31,8 +51,8 @@
                 c => new
                     {
                         IdEquipoSensor = c.Long(nullable: false, identity: true),
-                        IdEquipo = c.Long(nullable: false),
-                        IdSensor = c.Long(nullable: false),
+                        IdEquipo = c.Long(),
+                        IdSensor = c.Long(),
                         NumeroPuerto = c.Int(nullable: false),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),
@@ -54,7 +74,7 @@
                     {
                         IdSensor = c.Long(nullable: false, identity: true),
                         IdTipoSensor = c.Long(nullable: false),
-                        FechaConsulta = c.DateTime(nullable: false),
+                        FechaConsulta = c.DateTime(),
                         SerieSensor = c.String(),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),
@@ -125,7 +145,7 @@
                 c => new
                     {
                         IdManteniemiento = c.Long(nullable: false, identity: true),
-                        IdEquipoSensor = c.Long(nullable: false),
+                        IdEquipo = c.Long(nullable: false),
                         IdEstado = c.Long(nullable: false),
                         IdTecnico = c.Long(nullable: false),
                         IdUsuario = c.String(),
@@ -134,6 +154,7 @@
                         ServicioActivo = c.Boolean(nullable: false),
                         Notificiaciones = c.Boolean(nullable: false),
                         Descripcion = c.String(),
+                        FechaMantenimiento = c.DateTime(nullable: false),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),
                         FechaModificacion = c.DateTime(),
@@ -143,11 +164,11 @@
                         UsuarioEliminacion = c.String(),
                     })
                 .PrimaryKey(t => t.IdManteniemiento)
-                .ForeignKey("MON.EquipoSensores", t => t.IdEquipoSensor)
+                .ForeignKey("CAT.Equipos", t => t.IdEquipo)
                 .ForeignKey("CAT.Estados", t => t.IdEstado)
                 .ForeignKey("CAT.Frecuencias", t => t.IdFrecuencia)
                 .ForeignKey("CAT.Tecnicos", t => t.IdTecnico)
-                .Index(t => t.IdEquipoSensor)
+                .Index(t => t.IdEquipo)
                 .Index(t => t.IdEstado)
                 .Index(t => t.IdTecnico)
                 .Index(t => t.IdFrecuencia);
@@ -171,6 +192,22 @@
                     })
                 .PrimaryKey(t => t.IdTecnico);
             
+            CreateTable(
+                "MON.Servicio",
+                c => new
+                    {
+                        IdServicio = c.Long(nullable: false, identity: true),
+                        EstadoServicio = c.Boolean(nullable: false),
+                        Activo = c.Boolean(nullable: false),
+                        FechaRegistro = c.DateTime(nullable: false),
+                        FechaModificacion = c.DateTime(),
+                        FechaEliminacion = c.DateTime(),
+                        UsuarioRegistro = c.String(),
+                        UsuarioModificacion = c.String(),
+                        UsuarioEliminacion = c.String(),
+                    })
+                .PrimaryKey(t => t.IdServicio);
+            
         }
         
         public override void Down()
@@ -178,17 +215,18 @@
             DropForeignKey("MON.Mantenimientos", "IdTecnico", "CAT.Tecnicos");
             DropForeignKey("MON.Mantenimientos", "IdFrecuencia", "CAT.Frecuencias");
             DropForeignKey("MON.Mantenimientos", "IdEstado", "CAT.Estados");
-            DropForeignKey("MON.Mantenimientos", "IdEquipoSensor", "MON.EquipoSensores");
+            DropForeignKey("MON.Mantenimientos", "IdEquipo", "CAT.Equipos");
             DropForeignKey("MON.EquipoSensores", "IdSensor", "CAT.Sensores");
             DropForeignKey("CAT.Sensores", "IdTipoSensor", "CAT.TipoSensores");
             DropForeignKey("MON.EquipoSensores", "IdEquipo", "CAT.Equipos");
             DropIndex("MON.Mantenimientos", new[] { "IdFrecuencia" });
             DropIndex("MON.Mantenimientos", new[] { "IdTecnico" });
             DropIndex("MON.Mantenimientos", new[] { "IdEstado" });
-            DropIndex("MON.Mantenimientos", new[] { "IdEquipoSensor" });
+            DropIndex("MON.Mantenimientos", new[] { "IdEquipo" });
             DropIndex("CAT.Sensores", new[] { "IdTipoSensor" });
             DropIndex("MON.EquipoSensores", new[] { "IdSensor" });
             DropIndex("MON.EquipoSensores", new[] { "IdEquipo" });
+            DropTable("MON.Servicio");
             DropTable("CAT.Tecnicos");
             DropTable("MON.Mantenimientos");
             DropTable("CAT.Frecuencias");
@@ -197,6 +235,7 @@
             DropTable("CAT.Sensores");
             DropTable("MON.EquipoSensores");
             DropTable("CAT.Equipos");
+            DropTable("MON.DataSensores");
         }
     }
 }

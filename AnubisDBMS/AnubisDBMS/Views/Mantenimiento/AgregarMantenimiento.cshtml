@@ -3,24 +3,29 @@
 
 @using (Html.BeginForm("AgregarMantenimiento", "Mantenimiento", new { }, FormMethod.Post, new { @class = "ui row", id = "" }))
 {
+    @Html.HiddenFor(m => m.IdEquipo)
+    @Html.HiddenFor(m => m.QR)
+    @Html.HiddenFor(m => m.AliasEquipo)
+
+
     <div class="ten wide column">
 
         <div class="ui raised segments">
             <div class="ui bottom attached raised menu">
                 <div class="header item">
-                    Nuevo Mantenimiento
+                    Nuevo Mantenimiento: @Model.AliasEquipo
                 </div>
                 <div class="right menu">
-                  
+
                 </div>
             </div>
             <div class="ui compact raised segment">
                 <div class="ui  form">
                     <div class="two fields">
                         @*<div class="six wide field">
-            <label>Tipo de Mantenimiento</label>
-            @Html.TextBox("test")
-        </div>*@
+                                <label>Tipo de Mantenimiento</label>
+                                @Html.TextBox("test")
+                            </div>*@
 
                         <div class="four wide field">
                             <label>Fecha de Mantenimiento</label>
@@ -42,21 +47,21 @@
                             </div>
                         </div>
 
-                       
-                            <div class="four wide field">
-                                <label>Técnico</label>
-                                @Html.DropDownList("IdTecnico", null, new { @class = "ui search dropdown " })
 
-                            </div>
-
-                            <div class="four wide field">
-                                <label>Frecuencia</label>
-                                @Html.DropDownList("IdFrecuencia", null, new { @class = "ui search dropdown " })
-
-                            </div>
+                        <div class="four wide field">
+                            <label>Técnico</label>
+                            @Html.DropDownList("IdTecnico", null, new { @class = "ui search dropdown " })
 
                         </div>
+
+                        <div class="four wide field">
+                            <label>Frecuencia</label>
+                            @Html.DropDownList("IdFrecuencia", null, new { @class = "ui search dropdown " })
+
+                        </div>
+
                     </div>
+                </div>
             </div>
             <div class="ui raised segment orange">
                 <div class="ui form">
@@ -93,11 +98,11 @@
                     </div>
                     @* <div class="extra content">
 
-                    <span>
-                        <i class="thermometer icon"></i>
-                        @Model.DatosSensores.Count Sensores
-                    </span>
-                </div>*@
+                            <span>
+                                <i class="thermometer icon"></i>
+                                @Model.DatosSensores.Count Sensores
+                            </span>
+                        </div>*@
                 </div>
 
 

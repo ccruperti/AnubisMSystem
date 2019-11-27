@@ -51,6 +51,33 @@
                     TipoEstado = "Monitoreo",
                     UsuarioRegistro = "System"
                 });
+                EstadosList.Add(new Estados
+                {
+                    NombreEstado = "Pendiente",
+                    EstiloCss = "warning",
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    TipoEstado = "Mantenimiento",
+                    UsuarioRegistro = "System"
+                });
+                EstadosList.Add(new Estados
+                {
+                    NombreEstado = "Completado",
+                    EstiloCss = "positive",
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    TipoEstado = "Mantenimiento",
+                    UsuarioRegistro = "System"
+                });
+                EstadosList.Add(new Estados
+                {
+                    NombreEstado = "Sin Servicio",
+                    EstiloCss = "negative",
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    TipoEstado = "Mantenimiento",
+                    UsuarioRegistro = "System"
+                });
                 db.Estados.AddRange(EstadosList);
                 db.SaveChanges();
 

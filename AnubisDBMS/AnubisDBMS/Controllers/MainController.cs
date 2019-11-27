@@ -92,7 +92,7 @@ namespace AnubisDBMS.Controllers
 
             List<Frecuencia> data = db.Frecuencia.Where(c => c.Activo).ToList();
             data.Add(new Frecuencia { IdFrecuencia = 0 , NombreFrecuencia = "Seleccione frecuencia" });
-            return new SelectList(data, "IdFrecuencia", "NombreFrecuencia", id);
+            return new SelectList(data.OrderBy(c => c.IdFrecuencia), "IdFrecuencia", "NombreFrecuencia", id);
 
         }
         public SelectList SelectListSensores(long selected = 0)
@@ -135,7 +135,7 @@ namespace AnubisDBMS.Controllers
             List<int> Puertos = puertosDisponibles.Except(puertosOcupados).ToList(); 
             return new SelectList(Puertos);
         } 
-        public SelectList SelectListTecnico(string selected = null)
+        public SelectList SelectListTecnico(long? id = null)
         {
 
             List<Tecnicos> Tecnicos = new List<Tecnicos>();
@@ -144,7 +144,7 @@ namespace AnubisDBMS.Controllers
                 Tecnicos.Add(x);
             }
             Tecnicos.Add(new Tecnicos { IdTecnico = 0, NombreTecnico = "Seleccione Técnico" });
-            return new SelectList(Tecnicos, "IdTecnico", "NombreTecnico");
+            return new SelectList(Tecnicos.OrderBy(c => c.IdTecnico), "IdTecnico", "NombreTecnico", id);
 
         }
         #endregion

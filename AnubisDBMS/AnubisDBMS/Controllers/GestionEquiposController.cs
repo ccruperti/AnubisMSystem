@@ -31,7 +31,7 @@ namespace AnubisDBMS.Controllers
                 EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == eq.IdEquipo && x.Activo).ToList();
                 foreach (var es in EquipoSensor)
                 {
-                    Mant = db.Mantenimiento.Where(x => x.Activo && x.IdEquipoSensor == es.IdEquipoSensor).ToList();
+                    Mant = db.Mantenimiento.Where(x => x.Activo && x.IdEquipo == es.IdEquipo).ToList();
                 
                 }
                 model.EquiposSensor.Add(new EquipoSensorVM

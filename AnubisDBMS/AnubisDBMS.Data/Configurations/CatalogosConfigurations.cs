@@ -221,9 +221,9 @@ namespace AnubisDBMS.Data.Configurations
             //  .HasColumnType(ColumnTypes.Bool)
             //  .IsRequired();
 
-            HasRequired(x => x.EquiposSensor)
+            HasRequired(x => x.Equipo)
               .WithMany()
-              .HasForeignKey(x => x.IdEquipoSensor).WillCascadeOnDelete(false);
+              .HasForeignKey(x => x.IdEquipo).WillCascadeOnDelete(false);
 
 
             HasRequired(x => x.Estados)

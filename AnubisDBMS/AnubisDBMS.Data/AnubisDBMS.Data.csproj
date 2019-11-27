@@ -162,33 +162,9 @@
     <Compile Include="AnubisDBMSSchemas.cs" />
     <Compile Include="Configurations\CatalogosConfigurations.cs" />
     <Compile Include="Entities\CatalogosEntities.cs" />
-    <Compile Include="Migrations\201911141928281_AnubisDBMS1.0.cs" />
-    <Compile Include="Migrations\201911141928281_AnubisDBMS1.0.designer.cs">
-      <DependentUpon>201911141928281_AnubisDBMS1.0.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911151531003_AnubisDBMS1.1.cs" />
-    <Compile Include="Migrations\201911151531003_AnubisDBMS1.1.Designer.cs">
-      <DependentUpon>201911151531003_AnubisDBMS1.1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911180045455_AnubisDBMS1.2.cs" />
-    <Compile Include="Migrations\201911180045455_AnubisDBMS1.2.Designer.cs">
-      <DependentUpon>201911180045455_AnubisDBMS1.2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911182211012_AnubisDBMS1.3.cs" />
-    <Compile Include="Migrations\201911182211012_AnubisDBMS1.3.Designer.cs">
-      <DependentUpon>201911182211012_AnubisDBMS1.3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911182227216_AnubisDBMS1.4.cs" />
-    <Compile Include="Migrations\201911182227216_AnubisDBMS1.4.Designer.cs">
-      <DependentUpon>201911182227216_AnubisDBMS1.4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911212022387_AnubisDBMS1.5.cs" />
-    <Compile Include="Migrations\201911212022387_AnubisDBMS1.5.Designer.cs">
-      <DependentUpon>201911212022387_AnubisDBMS1.5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911260150326_AnubisDBMS1.6.cs" />
-    <Compile Include="Migrations\201911260150326_AnubisDBMS1.6.Designer.cs">
-      <DependentUpon>201911260150326_AnubisDBMS1.6.cs</DependentUpon>
+    <Compile Include="Migrations\201911270207354_AnubisDBMS1.0.cs" />
+    <Compile Include="Migrations\201911270207354_AnubisDBMS1.0.Designer.cs">
+      <DependentUpon>201911270207354_AnubisDBMS1.0.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -208,26 +184,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911141928281_AnubisDBMS1.0.resx">
-      <DependentUpon>201911141928281_AnubisDBMS1.0.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911151531003_AnubisDBMS1.1.resx">
-      <DependentUpon>201911151531003_AnubisDBMS1.1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911180045455_AnubisDBMS1.2.resx">
-      <DependentUpon>201911180045455_AnubisDBMS1.2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911182211012_AnubisDBMS1.3.resx">
-      <DependentUpon>201911182211012_AnubisDBMS1.3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911182227216_AnubisDBMS1.4.resx">
-      <DependentUpon>201911182227216_AnubisDBMS1.4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911212022387_AnubisDBMS1.5.resx">
-      <DependentUpon>201911212022387_AnubisDBMS1.5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911260150326_AnubisDBMS1.6.resx">
-      <DependentUpon>201911260150326_AnubisDBMS1.6.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911270207354_AnubisDBMS1.0.resx">
+      <DependentUpon>201911270207354_AnubisDBMS1.0.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

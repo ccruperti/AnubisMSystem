@@ -78,7 +78,7 @@ namespace AnubisDBMS.Data.Entities
     public class Mantenimiento : CrudEntities
     {
         public long IdManteniemiento { get; set; }
-        public long IdEquipoSensor { get; set; }
+        public long? IdEquipo { get; set; }
         public long IdEstado { get; set; }
         public long IdTecnico { get; set; }
         public string IdUsuario { get; set; }
@@ -88,7 +88,7 @@ namespace AnubisDBMS.Data.Entities
         public bool Notificiaciones { get; set; }
         public string Descripcion { get; set; }
         public DateTime FechaMantenimiento { get; set; }
-        public virtual EquipoSensor EquiposSensor { get; set; }
+        public virtual Equipo Equipo { get; set; }
         public virtual Estados Estados { get; set; }
         public virtual Tecnicos Tecnicos { get; set; }
         //public virtual AnubisDBMSUser Usuarios { get; set; }
