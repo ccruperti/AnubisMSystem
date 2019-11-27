@@ -15,7 +15,7 @@
             </div>
 
             <div class="ui bottom attached segment">
-                @using (Html.BeginForm("RegistrarEquipoSensor", "GestionEquipos", FormMethod.Post, new { @class = "ui form" }))
+                @using (Html.BeginForm("RegistrarEquipoSensor", "GestionEquipos", FormMethod.Post, new { @class = "ui form", @id="myform" }))
                 {
 
                     <div class="four wide field">
@@ -106,5 +106,12 @@
  
 
 
+@section Scripts
+{
+<script type="text/javascript">
+    $('#myform').submit(function() {
+    $(this).find(':submit').attr('disabled', 'disabled');
+});
 
-
+    </script>    
+}

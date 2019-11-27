@@ -16,7 +16,7 @@ namespace AnubisDBMS.Controllers
     {
           
 
-        public ActionResult AgregarMantenimiento(long IdEquipo)
+        public ActionResult AgregarMantenimiento(long IdEquipo, bool Registro=false)
         {
             ViewBag.IdFrecuencia = SelectListFrecuencias();
             ViewBag.IdTecnico = SelectListTecnico();
@@ -28,56 +28,93 @@ namespace AnubisDBMS.Controllers
                 QR=equipo.CodigoQR,
                 Descripcion="" 
             };
-          
+            if(Registro)
+            { 
+            TempData["Mensaje"] = new MensajeViewModel(true, "Registro Exitoso!", "Se ingreso un mantenimiento para el equipo: " + equipo.Alias);
+            }
             return View(model);
         }
         [HttpPost]
-        public ActionResult AgregarMantenimiento(MantenimientoVM model)
+        public ActionResult AgregarMantenimiento(MantenimientoVM model, string submitButton)
         {
-            var transaction = db.Database.BeginTransaction();
-            if (ModelState.IsValid)
+            switch (submitButton)
             {
-                try
-                {
-                    var mantenimiento = new Mantenimiento
+                case "SaveAndCont":
+                    var transaction = db.Database.BeginTransaction();
+                    if (ModelState.IsValid)
                     {
-                        IdTecnico = model.IdTecnico,
-                        IdEquipo= model.IdEquipo,
-                        FechaRegistro = DateTime.Now,
-                        UsuarioRegistro = User.Identity.Name,
-                        Activo = true,
-                        IdEstado = db.Estados.FirstOrDefault(c => c.Activo && c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Pendiente").IdEstado,
-                        IdFrecuencia = model.IdFrecuencia,
-                        Descripcion = model.Descripcion,
-                        FechaMantenimiento = model.FechaMant
-
-
-                    };
-                    db.Mantenimiento.Add(mantenimiento);
-                    db.SaveChanges();
-                    var eq = db.Equipos.Find(model.IdEquipo);
-                    TempData["Mensaje"] = new MensajeViewModel(true, "Registro Exitoso!", "Se ingreso un mantenimiento para el equipo: " + eq.Alias);
-                    transaction.Commit();
-                    ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
-                    ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
+                        try
+                        {
+                            var mantenimiento = new Mantenimiento
+                            {
+                                IdTecnico = model.IdTecnico,
+                                IdEquipo = model.IdEquipo,
+                                FechaRegistro = DateTime.Now,
+                                UsuarioRegistro = User.Identity.Name,
+                                Activo = true,
+                                IdEstado = db.Estados.FirstOrDefault(c => c.Activo && c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Pendiente").IdEstado,
+                                IdFrecuencia = model.IdFrecuencia,
+                                Descripcion = model.Descripcion,
+                                FechaMantenimiento = model.FechaMant 
+                            };
+                            db.Mantenimiento.Add(mantenimiento);
+                            db.SaveChanges();
+                            transaction.Commit();
+                            ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
+                            ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
+                            return RedirectToAction("AgregarMantenimiento", new { model.IdEquipo, Registro = true });
+                        }
+                        catch (Exception e)
+                        {
+                            transaction.Rollback();
+                            ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
+                            ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
+                            TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un erorr al guardar los datos.");
+                            return View(model);
+                        } 
+                    }
+                    TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al registrar el mantenimiento, revise que todos los campos esten ingresados correctamente.");
                     return View(model);
-                }
-                catch(Exception e)
-                {
-                    transaction.Rollback();
-                    ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
-                    ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
-                    TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un erorr al guardar los datos.");
-                    return View(model);
-                }
-            
-
+                case "SaveAndBack":
+                    var transaction2 = db.Database.BeginTransaction();
+                    if (ModelState.IsValid)
+                    {
+                        try
+                        {
+                            var mantenimiento = new Mantenimiento
+                            {
+                                IdTecnico = model.IdTecnico,
+                                IdEquipo = model.IdEquipo,
+                                FechaRegistro = DateTime.Now,
+                                UsuarioRegistro = User.Identity.Name,
+                                Activo = true,
+                                IdEstado = db.Estados.FirstOrDefault(c => c.Activo && c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Pendiente").IdEstado,
+                                IdFrecuencia = model.IdFrecuencia,
+                                Descripcion = model.Descripcion,
+                                FechaMantenimiento = model.FechaMant 
+                            };
+                            db.Mantenimiento.Add(mantenimiento);
+                            db.SaveChanges();
+                            transaction2.Commit();
+                            ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
+                            ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
+                            return RedirectToAction("Mantenimientos", new { model.IdEquipo, Registro=true});
+                        }
+                        catch (Exception e)
+                        {
+                            transaction2.Rollback();
+                            ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
+                            ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
+                            TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un erorr al guardar los datos.");
+                            return View(model);
+                        } 
+                    }
+                    TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al registrar el mantenimiento, revise que todos los campos esten ingresados correctamente.");
+                    return View(model); 
+                default: return View();
             }
-            TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al registrar el mantenimiento, revise que todos los campos esten ingresados correctamente.");
-
-            return View(model);
         }
-            public ActionResult Mantenimientos(long IdEquipo)
+            public ActionResult Mantenimientos(long IdEquipo, bool Registro=false)
         {
             var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo);
             var model = new MantenimientoVM
@@ -85,7 +122,11 @@ namespace AnubisDBMS.Controllers
                 Lista = db.Mantenimiento.Where(c => c.Activo && c.IdEquipo == IdEquipo).ToList(),
                 IdEquipo=Eq.IdEquipo
                 
-            };
+            }; 
+            if (Registro)
+            {
+                TempData["Mensaje"] = new MensajeViewModel(true, "Registro Exitoso!", "Se ingreso un mantenimiento para el equipo: " + Eq.Alias);
+            }
             return View(model);
         }
     }

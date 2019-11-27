@@ -140,8 +140,8 @@ namespace AnubisDBMS.Controllers
                     return RedirectToAction("RegistrarEquipoSensor", new { Idequipo = model.IdEquipo });
                 }
                 else
-                {
-                    var EquipoSensor = new EquipoSensor
+                { 
+                        var EquipoSensor = new EquipoSensor
                     {
                         IdEquipo = model.IdEquipo,
                         IdSensor = model.IdSensor,
@@ -153,7 +153,7 @@ namespace AnubisDBMS.Controllers
                     };
                     db.EquipoSensor.Add(EquipoSensor);
                     db.SaveChanges();
-                }
+                    } 
                 ViewBag.IdEquipo = SelectListEquipo(model.IdEquipo);
                 ViewBag.IdSensor = SelectListSensores(model.IdSensor);
                 ViewBag.NumPuerto = SelectListPuertos(model.IdEquipo);

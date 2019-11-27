@@ -16,8 +16,7 @@ namespace AnubisDBMS.Data.ViewModels
         Lista= new List<Mantenimiento>();
             EquiposSensores = new List<EquipoSensor>();
         }
-        public long? IdManteniemiento { get; set; }
-        public long IdEquipoSensor { get; set; }
+        public long? IdManteniemiento { get; set; } 
         public long IdEstado { get; set; }
         [Display(Name = "Tecnico")]
         public long IdTecnico { get; set; }
@@ -26,10 +25,11 @@ namespace AnubisDBMS.Data.ViewModels
         public long IdFrecuencia { get; set; }
         public string Notas { get; set; }
         public bool ServicioActivo { get; set; }
-        public bool Notificiaciones { get; set; }
+        [DisplayName("Notificaciones")]
+        public bool Notificaciones { get; set; }
         public string Descripcion { get; set; }
         public DateTime FechaMant { get; set; }
-        public long? IdEquipo { get; set; }
+        public long IdEquipo { get; set; }
 
         
         public string QR { get; set; }

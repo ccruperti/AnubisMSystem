@@ -48,7 +48,7 @@
                                 <td>
                                     <input type="checkbox" />
                                 </td>
-                                <td>@mant.FechaMantenimiento</td>
+                                <td>@mant.FechaMantenimiento.ToShortDateString()</td>
                                 <td>@mant.Equipo.Alias</td>
                                 <td>
                                     @if (mant.Estados.EstiloCss == "warning")
