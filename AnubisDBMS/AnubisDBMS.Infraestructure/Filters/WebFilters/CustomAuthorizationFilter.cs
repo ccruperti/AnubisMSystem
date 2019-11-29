@@ -62,8 +62,8 @@ namespace AnubisDBMS.Infraestructure.Filters.WebFilters
                 }
                 else
                 {
-                    var user = HttpContext.Current.User.IsInRole("Administrador Sistema" ?? "Administrador");
-               if(user)
+                    var user = HttpContext.Current.User.IsInRole("Developers");
+                    if(user)
                     {
 
                         return true;

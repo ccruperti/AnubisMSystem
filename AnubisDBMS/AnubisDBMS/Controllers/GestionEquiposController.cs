@@ -208,8 +208,38 @@ namespace AnubisDBMS.Controllers
             }
             return View(model);
         }
+        public ActionResult HabilitarMantenimiento(long IdEquipo, bool IsHab)
+        {
+            var transaction = db.Database.BeginTransaction();
+            try
+            {
+                if (IsHab)
+                {
+                    var equipo = db.Equipos.Find(IdEquipo);
+                    equipo.AplicaMantenimiento = true;
+                    equipo.FechaModificacion = DateTime.Now;
+                    equipo.UsuarioModificacion = User.Identity.Name;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var equipo = db.Equipos.Find(IdEquipo);
+                    equipo.AplicaMantenimiento = false;
+                    equipo.FechaModificacion = DateTime.Now;
+                    equipo.UsuarioModificacion = User.Identity.Name;
+                    db.SaveChanges();
+                }
+                transaction.Commit();
 
-      
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+            }
+            return RedirectToAction("MonitoreoEquipos");
+
+        }
+
         public ActionResult AccesoBloqueado()
         {
             return View();

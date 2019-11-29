@@ -65,7 +65,23 @@ namespace AnubisDBMS.Controllers
                     return View(model);
             }
         }
+        [HttpPost]
+        public ActionResult CambiarEstadoMantenimiento(long? IdMant, string Desc)
+        {
+            if(IdMant != null)
+            {
+                var mant = db.Mantenimiento.Find(IdMant);
+                mant.FechaModificacion = DateTime.Now;
+                mant.FechaFinMantenimiento = DateTime.Now;
+                mant.UsuarioModificacion = User.Identity.Name;
+                mant.Notas = Desc;
+                mant.IdEstado = db.Estados.FirstOrDefault(c => c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Completado").IdEstado;
+                db.SaveChanges();
+                return View();
+            }
+            return View();
 
+        }
         public MantenimientoVM GuardarMantenimiento (MantenimientoVM model)
         {
             var transaction = db.Database.BeginTransaction();
@@ -120,5 +136,6 @@ namespace AnubisDBMS.Controllers
             }
             return View(model);
         }
+
     }
 }

@@ -89,6 +89,7 @@ namespace AnubisDBMS.Data.Entities
         public bool Notificiaciones { get; set; }
         public string Descripcion { get; set; }
         public DateTime FechaMantenimiento { get; set; }
+        public DateTime? FechaFinMantenimiento { get; set; }
         public virtual Equipo Equipo { get; set; }
         public virtual Estados Estados { get; set; }
         public virtual Tecnicos Tecnicos { get; set; }

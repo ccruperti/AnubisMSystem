@@ -41,7 +41,7 @@ namespace AnubisDBMS.Infraestructure.Security
             {
                 var creation = userManager.Create(systemAdmin, "test2019");
                 if (creation.Succeeded)
-                    userManager.AddToRole(systemAdmin.Id, "Administrador Sistema");
+                    userManager.AddToRole(systemAdmin.Id, "Developers");
             }
 
             var systemDev = new AnubisDBMSUser

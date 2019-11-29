@@ -3,7 +3,7 @@
 
 @using (Html.BeginForm("Mantenimientos", "Mantenimiento", new { }, FormMethod.Get, new { @class = "ui row", id = "" }))
 {
-    @Html.HiddenFor(m => m.IdEquipo)
+    @Html.HiddenFor(m => m.IdEquipo, new { id = "id-equipo" })
     @Html.HiddenFor(m => m.AliasEquipo)
 
     <div class="sixteen wide column" style="margin-top:30px;">
@@ -24,9 +24,7 @@
                 <table class="ui compact celled selectable table">
                     <thead>
                         <tr class="centered">
-                            <th>
-                                <input type="checkbox" />
-                            </th>
+                         
                             <th>
                                 Fecha Mant.
                             </th>
@@ -39,7 +37,12 @@
                             <th>
                                 Estado
                             </th>
-
+                            <th>
+                                Fecha Fin Mantenimiento
+                            </th>
+                            <th>
+                                Notas
+                            </th>
                             <th>
                                 Acciones
                             </th>
@@ -50,44 +53,51 @@
                         {
 
 
-                            <tr>
-                                <td>
-                                    <input type="checkbox" />
-                                </td>
-                                <td>@mant.FechaMantenimiento.ToShortDateString()</td>
-                                <td>@mant.Equipo.Alias</td>
-                                <td>@mant.Descripcion</td>
+                        <tr class="centered">
 
-                                <td>
-                                    @if (mant.Estados.EstiloCss == "warning")
+                            <td>@mant.FechaMantenimiento.ToShortDateString()</td>
+                            <td>@mant.Equipo.Alias</td>
+                            <td>@mant.Descripcion</td>
+                            <td>
+                                @if (mant.Estados.EstiloCss == "warning")
+                                {
+                                    <a href="#" class="ui yellow compact button" readonly="readonly"><i class="warning icon"></i>@mant.Estados.NombreEstado</a>
+
+                                }
+                                else if (mant.Estados.EstiloCss == "positive")
+                                {
+                                    <a href="#" class="ui green compact button" readonly="readonly"><i class="check icon"></i>@mant.Estados.NombreEstado</a>
+
+                                }
+                                else if (mant.Estados.EstiloCss == "negative")
+                                {
+                                    <a href="#" class="ui red compact button" readonly="readonly"><i class="x icon"></i>@mant.Estados.NombreEstado</a>
+
+                                }
+                                else if (mant.Estados.EstiloCss == "blocked")
+                                {
+                                    <a href="#" class="ui gray compact button" readonly="readonly"><i class="negative icon"></i>@mant.Estados.NombreEstado</a>
+
+                                }
+                            </td>
+                            <td>@(mant.FechaFinMantenimiento != null ? mant.FechaFinMantenimiento.Value.ToShortDateString() : "---")</td>
+                            <td>@(!String.IsNullOrEmpty(mant.Notas) ? mant.Notas : "---")</td>
+
+
+                            <td class="centered">
+                                <div class="ui small buttons">
+
+                                    <a href="#" class="ui blue button compact"><i class="pencil icon"></i>Editar</a>
+                                    @if (mant.Estados.NombreEstado != "Completado")
                                     {
-                                        <a href="#" class="ui yellow compact button disabled"><i class="warning icon"></i>@mant.Estados.NombreEstado</a>
+                                        <a href="#" data-idmant="@mant.IdManteniemiento" id="show-modal-mant" class="ui green button compact show-modal-mant"><i class="check icon"></i>Completar Mantenimiento</a>
 
                                     }
-                                    else if (mant.Estados.EstiloCss == "positive")
-                                    {
-                                        <a href="#" class="ui green compact button disabled"><i class="check icon"></i>@mant.Estados.NombreEstado</a>
 
-                                    }
-                                    else if (mant.Estados.EstiloCss == "negative")
-                                    {
-                                        <a href="#" class="ui red compact button disabled"><i class="x icon"></i>@mant.Estados.NombreEstado</a>
+                                </div>
+                            </td>
 
-                                    }
-                                    else if (mant.Estados.EstiloCss == "blocked")
-                                    {
-                                        <a href="#" class="ui gray compact button disabled"><i class="negative icon"></i>@mant.Estados.NombreEstado</a>
-
-                                    }
-                                </td>
-                                <td>
-                                    <div class="ui small buttons">
-
-                                        <a href="#" class="ui blue button compact"><i class="pencil icon"></i>Editar</a>
-                                    </div>
-                                </td>
-
-                            </tr>
+                        </tr>
                         }
                         @*<tr class="center">
                                 <td><input type="checkbox" /></td>
@@ -113,5 +123,63 @@
             </div>
         </div>
     </div>
+
+    <div class="ui fullscreen modal transition"  id="modal-mant">
+        <i class="close icon"></i>
+        <div class="header" id="cabecera-modal" data-nombre="@Model.AliasEquipo">
+            Completar Mantenimiento
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <labe>Detalle de Mantenimiento Completado</labe>
+                    <textarea id="text-desc"></textarea>
+                </div>
+       
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui button"><i class="x icon"></i>Cancelar</div>
+            <button data-mant="" id="id-mant" class="ui green button guardarmant"><i class="save icon"></i>Guardar</button>
+        </div>
+    </div>
 }
 
+@section Scripts{
+
+    <script>
+        $(".show-modal-mant").on("click", function () {
+            var nomEquipo = $("#cabecera-modal").data("nombre");
+            var idmant = $(".show-modal-mant").data("idmant");
+
+            $("id-mant").data("mant",idmant) 
+            var idequipo = $("#id-equipo").val();
+            
+            $("#cabecera-modal").html("");
+            $("#cabecera-modal").html("Completar Mantenimiento: " + nomEquipo);
+               $('#modal-mant')
+                   .modal('show', function () {
+                       $(".guardarmant").on("click", function () {
+                           var texto = $("#text-desc").val();
+                           $.ajax({
+                cache: false,
+                type: "POST",
+                url: '/Mantenimiento/CambiarEstadoMantenimiento?IdMant=' + idmant + "&Desc=" + texto,
+                                success: function () {
+                                    $('#modal-mant').modal('close');
+                                    window.location.reload();
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                    window.location.reload();
+                }
+            });
+
+                       });
+                       
+        });
+
+                   });
+
+ 
+    </script>
+}

@@ -122,8 +122,30 @@
                                         <a href="@Url.Action("RegistrarEquipoSensor", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini green button" data-tooltip="Editar Sensores Equipo"><i class="pencil icon"></i>Editar</a>
 
                                         @*AQUI DEBE IR RESTRICCION DE PAGO PARA VER BOTÓN*@
-                                       
-                                        <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+                                        @if (User.IsInRole("Developers"))
+                                        {
+                                            <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+                                            if (x.EquipoDb.AplicaMantenimiento)
+                                            {
+                                    <a href="@Url.Action("HabilitarMantenimiento", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo, IsHab = false}  )" class="ui red red button" data-tooltip="Deshabilitar Mantenimiento"><i class="x icon"></i>Deshabilitar Mantenimiento</a>
+
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("HabilitarMantenimiento", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo , IsHab = true} )" class="ui mini green button" data-tooltip="Habilitar Mantenimiento"><i class="check icon"></i>Habilitar Mantenimiento</a>
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (x.EquipoDb.AplicaMantenimiento)
+                                            {
+                                                <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+
+                                            }
+                                        }
+
 
 
                                     </div>
