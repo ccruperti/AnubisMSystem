@@ -13,9 +13,7 @@ namespace AnubisDBMS.Controllers
 {
     [CustomAuthorization]
     public class MantenimientoController : MainController
-    {
-          
-
+    { 
         public ActionResult AgregarMantenimiento(long IdEquipo, bool Registro=false)
         {
             ViewBag.IdFrecuencia = SelectListFrecuencias();

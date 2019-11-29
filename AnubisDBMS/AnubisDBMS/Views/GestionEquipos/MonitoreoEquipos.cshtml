@@ -99,7 +99,7 @@
                             <th>Alias Equipo</th>
                             <th>Núm. Serie</th>
                             <th>Sensores Asignados</th>
-                            <th>Mantenimientos Activos</th>
+                            <th>Mantenimientos Pendientes</th>
                             <th>Acciones</th>
 
                         </tr>
@@ -118,30 +118,34 @@
 
                                 <td>
                                     <div class="ui mini buttons">
-                                        <a href="@Url.Action("LecturaMedidoresEquipo", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini blue button" data-tooltip="Ver Lectura de Sensores"><i class="thermometer icon"></i>Sensores</a>
-                                        <a href="@Url.Action("RegistrarEquipoSensor", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini green button" data-tooltip="Editar Sensores Equipo"><i class="pencil icon"></i>Editar</a>
 
                                         @*AQUI DEBE IR RESTRICCION DE PAGO PARA VER BOTÓN*@
-                                        @if (User.IsInRole("Developers"))
+                                        @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
                                         {
-                                            <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
-                                            if (x.EquipoDb.AplicaMantenimiento)
-                                            {
-                                    <a href="@Url.Action("HabilitarMantenimiento", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo, IsHab = false}  )" class="ui red red button" data-tooltip="Deshabilitar Mantenimiento"><i class="x icon"></i>Deshabilitar Mantenimiento</a>
 
+                                            <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+                                            <a href="@Url.Action("LecturaMedidoresEquipo", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini blue button" data-tooltip="Ver Lectura de Sensores"><i class="thermometer icon"></i>Sensores</a>
+                                            <a href="@Url.Action("RegistrarEquipoSensor", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini green button" data-tooltip="Editar Sensores Equipo"><i class="pencil icon"></i>Editar</a>
+
+                                            if (x.EquipoDb.AplicaMonitoreo)
+                                            {
+                                                <a href="@Url.Action("HabilitarMonitoreo", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo, IsHab = false}  )" class="ui red red button" data-tooltip="Deshabilitar Opciones de Monitoreo"><i class="x icon"></i>Deshabilitar Monitoreo</a>
                                             }
                                             else
                                             {
-                                                <a href="@Url.Action("HabilitarMantenimiento", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo , IsHab = true} )" class="ui mini green button" data-tooltip="Habilitar Mantenimiento"><i class="check icon"></i>Habilitar Mantenimiento</a>
-
+                                                <a href="@Url.Action("HabilitarMonitoreo", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo , IsHab = true} )" class="ui mini inverted green button" data-tooltip="Habilitar Opciones de Monitoreo"><i class="check icon"></i>Habilitar Monitoreo</a>
                                             }
 
                                         }
                                         else
                                         {
-                                            if (x.EquipoDb.AplicaMantenimiento)
+                                            <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+
+                                            if (x.EquipoDb.AplicaMonitoreo)
                                             {
-                                                <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+                                                <a href="@Url.Action("LecturaMedidoresEquipo", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini blue button" data-tooltip="Ver Lectura de Sensores"><i class="thermometer icon"></i>Sensores</a>
+                                                <a href="@Url.Action("RegistrarEquipoSensor", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini green button" data-tooltip="Editar Sensores Equipo"><i class="pencil icon"></i>Editar</a>
+
 
                                             }
                                         }

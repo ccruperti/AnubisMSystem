@@ -16,7 +16,7 @@ namespace AnubisDBMS.Data.Entities
         public string SerieEquipo { get; set; }
         public string CodigoQR { get; set; }
         public string IdUsuario { get; set; }
-        public bool AplicaMantenimiento { get; set; }
+        public bool AplicaMonitoreo { get; set; }
 
         //public virtual AnubisDBMSUser Usuarios { get; set; }
        //public IEnumerable<User> Usuarios { get; set; }
