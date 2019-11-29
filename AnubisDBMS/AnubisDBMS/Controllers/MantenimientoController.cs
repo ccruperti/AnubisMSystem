@@ -120,7 +120,8 @@ namespace AnubisDBMS.Controllers
             var model = new MantenimientoVM
             {
                 Lista = db.Mantenimiento.Where(c => c.Activo && c.IdEquipo == IdEquipo).ToList(),
-                IdEquipo=Eq.IdEquipo
+                IdEquipo=Eq.IdEquipo,
+                AliasEquipo = Eq.Alias
                 
             }; 
             if (Registro)

@@ -3,17 +3,20 @@
 
 @using (Html.BeginForm("Mantenimientos", "Mantenimiento", new { }, FormMethod.Get, new { @class = "ui row", id = "" }))
 {
+    @Html.HiddenFor(m => m.IdEquipo)
+    @Html.HiddenFor(m => m.AliasEquipo)
+
     <div class="sixteen wide column" style="margin-top:30px;">
 
         <div class="ui raised segments">
             <div class="ui bottom attached menu">
                 <div class="header item">
-                    <h4>Mantenimientos</h4>
+                    <h4>Mantenimientos: @Model.AliasEquipo</h4>
                 </div>
 
 
                 <div class="item">
-                    <a href="@Url.Action("AgregarMantenimiento", "Mantenimiento",new { IdEquipo = Model.IdEquipo} )"  data-tooltip="Nuevo Mantenimiento" class="ui green button compact"><i class="plus icon"></i>Agregar Nuevo</a>
+                    <a href="@Url.Action("AgregarMantenimiento", "Mantenimiento",new { IdEquipo = Model.IdEquipo} )" data-tooltip="Nuevo Mantenimiento" class="ui green button compact"><i class="plus icon"></i>Agregar Nuevo</a>
                 </div>
 
             </div>
@@ -29,6 +32,9 @@
                             </th>
                             <th>
                                 Alias Equipo
+                            </th>
+                            <th>
+                                Descripcion Mant.
                             </th>
                             <th>
                                 Estado
@@ -50,6 +56,8 @@
                                 </td>
                                 <td>@mant.FechaMantenimiento.ToShortDateString()</td>
                                 <td>@mant.Equipo.Alias</td>
+                                <td>@mant.Descripcion</td>
+
                                 <td>
                                     @if (mant.Estados.EstiloCss == "warning")
                                     {
