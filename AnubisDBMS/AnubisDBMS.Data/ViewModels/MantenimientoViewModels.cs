@@ -34,7 +34,7 @@ namespace AnubisDBMS.Data.ViewModels
         
         public string QR { get; set; }
         public string AliasEquipo { get; set; }
-        public bool AplicaConfiguracion { get; set; }
+        public bool AplicaMantenimiento { get; set; }
         public List<EquipoSensor> EquiposSensores { get; set; }
         public List<Mantenimiento> Lista = new List<Mantenimiento>();
     }
