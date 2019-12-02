@@ -57,11 +57,11 @@ namespace AnubisDBMS.Controllers
         {
 
             List<TipoSensor> TipoSensor = new List<TipoSensor>();
+            TipoSensor.Add(new TipoSensor { IdTipoSensor = 0, NombreTipoSensor = "--- Seleccione Tipo de Sensor ---" });
             foreach (var x in db.TipoSensor.ToList())
             {
                 TipoSensor.Add(x);
             }
-            TipoSensor.Add(new TipoSensor { IdTipoSensor = 0, NombreTipoSensor = "--- Seleccione Tipo de Sensor ---" });
             return new SelectList(TipoSensor, "IdTipoSensor", "NombreTipoSensor");
 
         } 
@@ -213,6 +213,72 @@ namespace AnubisDBMS.Controllers
             }
            return Redirect("Index");
         }
-        #endregion 
+        #endregion
+
+        #region SensorMinMaxCheck
+        public bool CheckMinMax (long IdSensor,string ModeloSensor)
+        {
+            var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == IdSensor);
+            var data = db.DataSensores.Where(x => x.Activo &&
+            x.ModeloSensor == ModeloSensor).ToList();// &&
+           // x.FechaLectura <= DateTime.Now &&
+            //x.FechaLectura >= DateTime.Now.AddHours(-1)).ToList();
+
+            foreach (var lec in data)
+            {
+                var TodoBien = 1;
+                if (sensor.Min == null)
+                {
+                    //SI MIN ES NULO REVISO MAX
+                    if (CheckRange(null, sensor.Max, lec.lectura))
+                         TodoBien=1;
+                    else  TodoBien=0;
+
+                }
+                if (sensor.Max == null)
+                {
+                    //SI MAX ES NULO REVISO MIN
+                    if (CheckRange(sensor.Min, null, lec.lectura))
+                        TodoBien = 1;
+                    else TodoBien = 0;
+                }
+                if (sensor.Min != null && sensor.Max != null)
+                {
+                    //SI NINGUNO ES NULL REVISO AMBOS
+                    if (CheckRange(null, sensor.Max, lec.lectura) &&
+                    CheckRange(sensor.Max, null, lec.lectura))
+                    {
+                        TodoBien = 1;
+                    }
+                    else TodoBien = 0;  
+                }
+                if(TodoBien==0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool CheckRange( double? Min, double? Max, double? Lectura)
+        {
+            if(Min==null)
+            {
+                //SI MIN ES NULO REVISO MAX
+                if (Lectura <= Max)
+                    return true;
+                else return false;
+            }
+            if (Max==null)
+            {
+                //SI MAX ES NULO REVISO MIN
+                if (Lectura >= Min)
+                    return true;
+                else return false;
+            }
+            return false;
+       
+        }
+        #endregion
     }
 }
