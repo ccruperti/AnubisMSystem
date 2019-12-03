@@ -6,6 +6,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using System.Web;
 
     internal sealed class Configuration : DbMigrationsConfiguration<AnubisDBMS.Data.AnubisDbContext>
     {
@@ -14,7 +15,11 @@
         {
             AutomaticMigrationsEnabled = false;
         }
-
+        public double GetRandomNumber(double minimum, double maximum)
+        {
+            Random random = new Random();
+            return random.NextDouble() * (maximum - minimum) + minimum;
+        }
         protected override void Seed(AnubisDBMS.Data.AnubisDbContext context)
         {
             //  This method will be called after migrating to the latest version.
@@ -126,7 +131,29 @@
                     UsuarioRegistro = "System"
                 });
             }
-       
+            if (db.EquipoSensor.Any(x => x.Activo))
+            {
+                var countdatos = db.EquipoSensor.Count();
+                if (!db.DataSensores.Any())
+                {
+                    var rnd = new Random();
+                    var eqsen = db.EquipoSensor.FirstOrDefault(x => x.Activo && x.IdEquipoSensor == rnd.Next(1, countdatos));
+                    for (int i =0; i < 500; i++)
+                    {
+                        var lectura =GetRandomNumber(1.0, 4.0);
+                        var data = new DataSensores();
+                        data.Activo = true;
+                        data.FechaRegistro = DateTime.Now;
+                        data.UsuarioRegistro = HttpContext.Current.User.Identity.Name;
+                        data.lectura = lectura;
+                        data.UnidadMedida = eqsen.Sensores.TipoSensor.UnidadSensor;
+                        data.IdEquipoSensor = eqsen.IdEquipoSensor;
+                        db.DataSensores.Add(data);
+                    }
+                    db.SaveChanges();
+
+                }
+            }
             db.SaveChanges();
 
         }

@@ -134,6 +134,9 @@ namespace AnubisDBMS.Controllers
             }
             return View(model);
         }
-
+        //public ActionResult GraficosLecturasMedidores()
+        //{
+            
+        //}
     }
 }

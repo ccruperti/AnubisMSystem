@@ -168,18 +168,23 @@ namespace AnubisDBMS.Controllers
                 AliasEquipo=equipo.Alias
 
             }; 
-            var equiposSensores = db.EquipoSensor.Where(x => x.IdEquipo == equipo.IdEquipo && x.Activo).ToList();
+            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo).ToList();
             foreach(var es in equiposSensores)
             {
                 var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
-                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.ModeloSensor==sensor.SerieSensor);
+
+                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.IdEquipoSensor==es.IdEquipoSensor);
+                if(lectura != null)
+                {
                     model.DatosSensores.Add(new DataSensoresVM
                     {
-                        SerieSensor=sensor?.SerieSensor,
-                        TipoSensor=sensor?.TipoSensor?.NombreTipoSensor,
-                        UnidadMedida=lectura.UnidadMedida,
-                        Lectura=lectura.lectura
+                        SerieSensor = sensor?.SerieSensor,
+                        TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
+                        UnidadMedida = lectura?.UnidadMedida,
+                        Lectura = lectura.lectura
                     });
+                }
+               
                 
             }
             return View(model);
@@ -215,7 +220,14 @@ namespace AnubisDBMS.Controllers
             return RedirectToAction("MonitoreoEquipos");
 
         }
-
+        public ActionResult GraficosLecturasMedidores(long IdEquipo)
+        {
+            var lecturas = db.DataSensores.Where(c => c.EquipoSensor.IdEquipo == IdEquipo).Select(x => new { 
+            lec = x.lectura,
+            equipo = x.EquipoSensor.Equipos.Alias
+            }).ToList();
+            return Json(lecturas, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult AccesoBloqueado()
         {
             return View();

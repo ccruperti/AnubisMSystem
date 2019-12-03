@@ -111,8 +111,8 @@ namespace AnubisDBMS.Data.Entities
         public DateTime FechaLectura { get; set; }
         public double lectura { get; set; }
         public string UnidadMedida { get; set; } 
-
-
+        public long? IdEquipoSensor { get; set; }
+        public virtual EquipoSensor EquipoSensor { get; set; }
 
     }
 }

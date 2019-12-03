@@ -1,75 +1,75 @@
 ﻿@model AnubisDBMS.Data.ViewModels.MonitoreoSensoresVM
-    <div class="sixteen wide column">
+<div class="sixteen wide column">
     @*<div class="ui top attached tabular menu">
-        <div class="active item" data-tab="tab-sensores"><i class="chart bar icon"></i>Sensores</div>
-        <div class="item" data-tab="tab-graficos"><i class="chart bar icon"></i>Graficos y Exportacion de datos</div>
+            <div class="active item" data-tab="tab-sensores"><i class="chart bar icon"></i>Sensores</div>
+            <div class="item" data-tab="tab-graficos"><i class="chart bar icon"></i>Graficos y Exportacion de datos</div>
 
 
-    </div>*@
-
-        <div class="ui grid">
-            <div class="four wide column">
-                <div class="ui raised segments">
-                    <div class="ui bottom attached raised menu">
-                        <div class="header item">
-                           <i class="qrcode icon"></i> Codigo QR
-                        </div>
+        </div>*@
+    @Html.HiddenFor(m => m.IdEquipo, new { id = "id-equipo" })
+    <div class="ui grid">
+        <div class="four wide column">
+            <div class="ui raised segments">
+                <div class="ui bottom attached raised menu">
+                    <div class="header item">
+                        <i class="qrcode icon"></i> Codigo QR
                     </div>
-                    <div class="ui raised segment">
-                        <div class="ui link cards">
-                            <div class="card">
-                                <div class="small image">
-                                    <img src="data:image/gif;base64,@Model.QR" width="500" height="500" />
-                                </div>
-                                <div class="content">
-                                    <div class="header">@Model.AliasEquipo</div>
-
-
-                                </div>
-                                <div class="extra content">
-                            
-                                    <span>
-                                        <i class="thermometer icon"></i>
-                                       @Model.DatosSensores.Count Sensores
-                                    </span>
-                                </div>
+                </div>
+                <div class="ui raised segment">
+                    <div class="ui link cards">
+                        <div class="card">
+                            <div class="small image">
+                                <img src="data:image/gif;base64,@Model.QR" width="500" height="500" />
                             </div>
+                            <div class="content">
+                                <div class="header">@Model.AliasEquipo</div>
 
 
+                            </div>
+                            <div class="extra content">
+
+                                <span>
+                                    <i class="thermometer icon"></i>
+                                    @Model.DatosSensores.Count Sensores
+                                </span>
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
-            <div class="six wide column">
-                <div class="ui raised segments">
-                    <div class="ui bottom attached raised menu">
-                        <div class="header item">
-                            <i class="list icon"></i> Lectura de Sensores
-                        </div>
+        </div>
+        <div class="six wide column">
+            <div class="ui raised segments">
+                <div class="ui bottom attached raised menu">
+                    <div class="header item">
+                        <i class="list icon"></i> Lectura de Sensores
                     </div>
-                    <div class="ui raised segment">
-                        <table class="ui  compact celled selectable table">
-                            <thead>
-                                <tr class="centered">
+                </div>
+                <div class="ui raised segment">
+                    <table class="ui  compact celled selectable table">
+                        <thead>
+                            <tr class="centered">
 
-                                    <th>
-                                        Serie Sensor
-                                    </th>
-                                    <th>
-                                        Tipo Sensor
-                                    </th>
-                                    <th>
-                                        Unidad Medida
-                                    </th>
-                                    <th>
-                                       Lectura
-                                    </th>
+                                <th>
+                                    Serie Sensor
+                                </th>
+                                <th>
+                                    Tipo Sensor
+                                </th>
+                                <th>
+                                    Unidad Medida
+                                </th>
+                                <th>
+                                    Lectura
+                                </th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var x in Model.DatosSensores)
-                                {
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in Model.DatosSensores)
+                            {
                                 <tr class="center">
                                     <td>
                                         @x.SerieSensor
@@ -84,25 +84,73 @@
                                         @x.Lectura
                                     </td>
                                 </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="six wide column">
-                <div class="ui raised segments">
-                    <div class="ui bottom attached raised menu">
-                        <div class="header item">
-                            <i class="graph line icon"></i> Graficos
-                        </div>
-                    </div>
-                    <div class="ui raised segment">
-                        
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+        <div class="six wide column">
+            <div class="ui raised segments">
+                <div class="ui bottom attached raised menu">
+                    <div class="header item">
+                        <i class="graph line icon"></i> Graficos
+                    </div>
+                </div>
+                <div class="ui raised segment">
+                    <div id="linechart_div"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </div>
+@section Scripts{
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                url: '@Url.Action("GraficosLecturasMedidores", "GestionEquipos", new { IdEquipo =Model.IdEquipo})',
+                success: function (result) {
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                }
+            });
+        });
+
+        function drawChart(result) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Equipo');
+            data.addColumn('number', 'Lectura');
+            var dataArray = [];
+
+            $.each(result, function (i, obj) {
+                dataArray.push([obj.equipo, obj.lec]);
+            });
+            data.addRows(dataArray);
+
+            var columnChartOptions = {
+                title: "Lectura Medidores",
+                width: 1000,
+                height: 400,
+                bar: { groupWidth: "20%" },
+            };
+
+            var columnChart = new google.visualization.LineChart(document
+                .getElementById('linechart_div'));
+
+            columnChart.draw(data, columnChartOptions);
+        }
+    </script>
+}
