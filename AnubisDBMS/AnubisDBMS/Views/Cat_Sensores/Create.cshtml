@@ -36,18 +36,18 @@
 
 
                 <div class="field">
+                    @Html.LabelFor(model => model.Min, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Min, new { htmlAttributes = new { @class = " number"} })
+                    @Html.ValidationMessageFor(model => model.Min, "", new { @class = "text-danger" })
+                </div>
+                <div class="field">
                     @Html.LabelFor(model => model.Max, htmlAttributes: new { @class = "control-label col-md-2" })
 
                     @Html.EditorFor(model => model.Max, new { htmlAttributes = new { @class = "number" } })
                     @Html.ValidationMessageFor(model => model.Max, "", new { @class = "text-danger"})
                 </div>
 
-                <div class="field">
-                    @Html.LabelFor(model => model.Min, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                    @Html.EditorFor(model => model.Min, new { htmlAttributes = new { @class = " number"} })
-                    @Html.ValidationMessageFor(model => model.Min, "", new { @class = "text-danger" })
-                </div>
 
 
             </div>

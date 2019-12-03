@@ -58,7 +58,7 @@ namespace AnubisDBMS.Controllers
 
             List<TipoSensor> TipoSensor = new List<TipoSensor>();
             TipoSensor.Add(new TipoSensor { IdTipoSensor = 0, NombreTipoSensor = "--- Seleccione Tipo de Sensor ---" });
-            foreach (var x in db.TipoSensor.ToList())
+            foreach (var x in db.TipoSensor.Where(x=>x.Activo).ToList())
             {
                 TipoSensor.Add(x);
             }
@@ -220,33 +220,28 @@ namespace AnubisDBMS.Controllers
         {
             var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == IdSensor);
             var data = db.DataSensores.Where(x => x.Activo &&
-            x.ModeloSensor == ModeloSensor).ToList();// &&
-           // x.FechaLectura <= DateTime.Now &&
-            //x.FechaLectura >= DateTime.Now.AddHours(-1)).ToList();
-
+            x.SerieSensor == ModeloSensor &&
+            x.Chequeado==false
+            ).ToList();
             foreach (var lec in data)
             {
                 var TodoBien = 1;
                 if (sensor.Min == null)
-                {
-                    //SI MIN ES NULO REVISO MAX
-                    if (CheckRange(null, sensor.Max, lec.lectura))
-                         TodoBien=1;
-                    else  TodoBien=0;
-
+                { //SI MIN ES NULO REVISO MAX
+                    if (CheckRange(null, sensor.Max, lec.Medida))
+                        TodoBien = 1;
+                    else TodoBien=0;
                 }
                 if (sensor.Max == null)
-                {
-                    //SI MAX ES NULO REVISO MIN
-                    if (CheckRange(sensor.Min, null, lec.lectura))
+                {//SI MAX ES NULO REVISO MIN
+                    if (CheckRange(sensor.Min, null, lec.Medida))
                         TodoBien = 1;
                     else TodoBien = 0;
                 }
                 if (sensor.Min != null && sensor.Max != null)
-                {
-                    //SI NINGUNO ES NULL REVISO AMBOS
-                    if (CheckRange(null, sensor.Max, lec.lectura) &&
-                    CheckRange(sensor.Max, null, lec.lectura))
+                {//SI NINGUNO ES NULL REVISO AMBOS
+                    if (CheckRange(null, sensor.Max, lec.Medida) &&
+                    CheckRange(sensor.Min, null, lec.Medida))
                     {
                         TodoBien = 1;
                     }
@@ -254,8 +249,12 @@ namespace AnubisDBMS.Controllers
                 }
                 if(TodoBien==0)
                 {
-                    return false;
+                    lec.Chequeado = true;
+                    lec.Error = true;
+                    db.SaveChanges();
                 }
+                lec.Chequeado = true;
+                db.SaveChanges();
             }
             return true;
         }
@@ -275,6 +274,10 @@ namespace AnubisDBMS.Controllers
                 if (Lectura >= Min)
                     return true;
                 else return false;
+            }
+            if(Min==null && Max==null)
+            {
+                return true;
             }
             return false;
        

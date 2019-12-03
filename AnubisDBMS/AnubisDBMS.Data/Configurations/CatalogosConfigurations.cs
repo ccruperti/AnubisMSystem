@@ -194,7 +194,7 @@ namespace AnubisDBMS.Data.Configurations
         {
             ToTable("DataSensores", AnubisDBMSSchemas.Monitoreo);
             HasKey(c => c.IdDataSensor);
-            HasOptional(c => c.EquipoSensor).WithMany().HasForeignKey(x => x.IdEquipoSensor).WillCascadeOnDelete(false);
+           
         }
     }
 

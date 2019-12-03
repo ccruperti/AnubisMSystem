@@ -3,7 +3,7 @@ namespace AnubisDBMS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AnubisDBMS10 : DbMigration
+    public partial class Anubis10 : DbMigration
     {
         public override void Up()
         {
@@ -12,11 +12,13 @@ namespace AnubisDBMS.Data.Migrations
                 c => new
                     {
                         IdDataSensor = c.Long(nullable: false, identity: true),
-                        ModeloSensor = c.String(),
+                        SerieSensor = c.String(),
                         TipoSensor = c.String(),
-                        FechaLectura = c.DateTime(nullable: false),
-                        lectura = c.Double(nullable: false),
+                        Medida = c.Double(nullable: false),
                         UnidadMedida = c.String(),
+                        Chequeado = c.Boolean(nullable: false),
+                        Error = c.Boolean(nullable: false),
+                        Notificado = c.Boolean(nullable: false),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),
                         FechaModificacion = c.DateTime(),
@@ -36,6 +38,7 @@ namespace AnubisDBMS.Data.Migrations
                         SerieEquipo = c.String(),
                         CodigoQR = c.String(),
                         IdUsuario = c.String(),
+                        AplicaMonitoreo = c.Boolean(nullable: false),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),
                         FechaModificacion = c.DateTime(),
@@ -76,6 +79,8 @@ namespace AnubisDBMS.Data.Migrations
                         IdTipoSensor = c.Long(nullable: false),
                         FechaConsulta = c.DateTime(),
                         SerieSensor = c.String(),
+                        Max = c.Double(),
+                        Min = c.Double(),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),
                         FechaModificacion = c.DateTime(),
@@ -155,6 +160,7 @@ namespace AnubisDBMS.Data.Migrations
                         Notificiaciones = c.Boolean(nullable: false),
                         Descripcion = c.String(),
                         FechaMantenimiento = c.DateTime(nullable: false),
+                        FechaFinMantenimiento = c.DateTime(),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),
                         FechaModificacion = c.DateTime(),

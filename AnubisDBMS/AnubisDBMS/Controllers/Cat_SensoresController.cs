@@ -119,7 +119,7 @@ namespace AnubisDBMS.Controllers
             {
                 model.Min = bdd.Min;
             }
-            ViewBag.IdTipoSensor = SelectListTipoSensor();
+            ViewBag.IdTipoSensor = SelectListTipoSensor(bdd.IdTipoSensor);
             return View(model);
         }
         //EDIT POST
@@ -142,7 +142,7 @@ namespace AnubisDBMS.Controllers
             bdd.UsuarioModificacion = User.Identity.Name;
             bdd.FechaModificacion = DateTime.Now;
             db.SaveChanges();
-            ViewBag.IdTipoSensor = SelectListTipoSensor();
+            ViewBag.IdTipoSensor = SelectListTipoSensor(bdd.IdTipoSensor);
             return RedirectToAction("Index");
         }
 

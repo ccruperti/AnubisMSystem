@@ -53,10 +53,9 @@ namespace AnubisDBMS
                         data.Activo = true;
                         data.FechaRegistro = DateTime.Now;
                         data.UsuarioRegistro = "System";
-                        data.lectura = GetRandomNumber(0.1, 4.9);
-                        data.FechaLectura = RandomDay();
+                        data.Medida = GetRandomNumber(0.1, 4.9);
                         data.UnidadMedida = eqsen.Sensores.TipoSensor.UnidadSensor;
-                        data.IdEquipoSensor = eqsen.IdEquipoSensor;
+                        //data.IdEquipoSensor = eqsen.IdEquipoSensor;
                         db.DataSensores.Add(data);
                     db.SaveChanges();
 

@@ -173,7 +173,7 @@ namespace AnubisDBMS.Controllers
             {
                 var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
 
-                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.IdEquipoSensor==es.IdEquipoSensor);
+                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.SerieSensor==sensor.SerieSensor);
                 if(lectura != null)
                 {
                     model.DatosSensores.Add(new DataSensoresVM
@@ -181,7 +181,7 @@ namespace AnubisDBMS.Controllers
                         SerieSensor = sensor?.SerieSensor,
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
-                        Lectura = lectura.lectura
+                        Lectura = lectura.Medida
                     });
                 }
                
@@ -222,11 +222,14 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult GraficosLecturasMedidores(long IdEquipo)
         {
-            var lecturas = db.DataSensores.Where(c => c.EquipoSensor.IdEquipo == IdEquipo).Select(x => new { 
-            lec = x.lectura,
-            sensor = x.EquipoSensor.Sensores.SerieSensor
-            }).ToList();
-            return Json(lecturas, JsonRequestBehavior.AllowGet);
+            //var EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo).ToList();
+            //AQUI HAY QUE BUSCAR LOS SENSORES DEL EQUIPO QUE VIENE Y LUEGO LSA LECTURSA DE CADA SENSOR PARA EL JSON
+            //CREERIA QUE VAN DIFERENTES JSON POR SENSOR PARA PODER MOSTRAR UN GRAFICO DIFERENTE POR SENSOR EN LA PÁGINA
+            //var lecturas = db.DataSensores.Where(c => c.SerieSensor == ).Select(x => new { 
+            //lec = x.Medida,
+            //sensor = x.EquipoSensor.Sensores.SerieSensor
+            //}).ToList();
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {

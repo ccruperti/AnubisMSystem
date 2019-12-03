@@ -16,8 +16,8 @@
                 <th>Alias</th>
                 <th>Tipo</th>
                 <th>Unidad</th>
-                <th>Lectura Máxima</th>
                 <th>Lectura Mínima</th>
+                <th>Lectura Máxima</th>
 
                 <th>Editar</th>
                 <th>Eliminar</th>
@@ -34,8 +34,8 @@
                 <td>@item.SerieSensor</td>
                 <td>@item.NombreTipoSensor</td>
                 <td>@item.UnidadSensor</td>
-                <td>@(item.Max == null ? "-" : item.Max.ToString())</td>
                 <td>@(item.Min == null ? "-" : item.Min.ToString())</td>
+                <td>@(item.Max == null ? "-" : item.Max.ToString())</td>
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.IdSensor }, new { @class = "ui orange   button" })
                 </td>

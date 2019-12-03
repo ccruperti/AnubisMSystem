@@ -145,9 +145,9 @@
                         data.Activo = true;
                         data.FechaRegistro = DateTime.Now;
                         data.UsuarioRegistro = HttpContext.Current.User.Identity.Name;
-                        data.lectura = lectura;
+                        data.Medida = lectura;
                         data.UnidadMedida = eqsen.Sensores.TipoSensor.UnidadSensor;
-                        data.IdEquipoSensor = eqsen.IdEquipoSensor;
+                        //data.IdEquipoSensor = eqsen.IdEquipoSensor;
                         db.DataSensores.Add(data);
                     }
                     db.SaveChanges();
