@@ -34,6 +34,14 @@ namespace AnubisDBMS.Controllers
                      NombreTipoSensor=x.TipoSensor?.NombreTipoSensor,
                      Activo=x.Activo, 
                 }; 
+                if(x.Max!=null)
+                {
+                    model.Max = x.Max;
+                }
+                if(x.Min!=null)
+                {
+                    model.Min = x.Min;
+                }
                 VM.Lista.Add(model);
             } 
             return View(VM);
@@ -74,7 +82,15 @@ namespace AnubisDBMS.Controllers
                         //Audit end
                         SerieSensor = model.SerieSensor.Trim().ToUpper(), 
                         IdTipoSensor=model.IdTipoSensor??0,
-                    }; 
+                    };
+                    if (model.Max != null)
+                    {
+                        nuevo.Max = model.Max;
+                    }
+                    if (model.Min != null)
+                    {
+                        nuevo.Min = model.Min;
+                    }
                     db.Sensores.Add(nuevo);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -95,6 +111,14 @@ namespace AnubisDBMS.Controllers
                 SerieSensor = bdd.SerieSensor,
                 IdTipoSensor=bdd.IdTipoSensor, 
             };
+            if (bdd.Max != null)
+            {
+                model.Max = bdd.Max;
+            }
+            if (bdd.Min != null)
+            {
+                model.Min = bdd.Min;
+            }
             ViewBag.IdTipoSensor = SelectListTipoSensor();
             return View(model);
         }
@@ -105,7 +129,15 @@ namespace AnubisDBMS.Controllers
             var bdd = db.Sensores.Find(model.IdSensor);
             bdd.IdSensor = model.IdSensor;
             bdd.IdTipoSensor = model.IdTipoSensor??0;
-            bdd.SerieSensor = model.SerieSensor.Trim().ToUpper(); 
+            bdd.SerieSensor = model.SerieSensor.Trim().ToUpper();
+            if (model.Max != null)
+            {
+                bdd.Max = model.Max;
+            }
+            if (model.Min != null)
+            {
+               bdd.Min = model.Min ;
+            }
             //AUDIT
             bdd.UsuarioModificacion = User.Identity.Name;
             bdd.FechaModificacion = DateTime.Now;
@@ -121,6 +153,13 @@ namespace AnubisDBMS.Controllers
             area.Activo = false;
             area.UsuarioEliminacion = User.Identity.Name;
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ProbarRangos(long id)
+        {
+            var area = db.Sensores.Find(id);
+            var trip =CheckMinMax(id, area.SerieSensor);
             return RedirectToAction("Index");
         }
     }

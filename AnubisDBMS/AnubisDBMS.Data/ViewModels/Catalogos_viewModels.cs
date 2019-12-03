@@ -2,6 +2,7 @@
 using AnubisDBMS.Infraestructure.Data.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,11 @@ namespace AnubisDBMS.Data.ViewModels
             }
             public long IdSensor { get; set; }
             public long? IdTipoSensor { get; set; }
-            public string SerieSensor { get; set; }
+            [Required]
+            public string SerieSensor { get; set; } 
+            public double? Max { get; set; } 
+
+            public double? Min { get; set; }
             public string NombreTipoSensor { get; set; }
             public string UnidadSensor { get; set; }
             public List<SensorVM> Lista { get; set; }
