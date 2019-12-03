@@ -224,7 +224,7 @@ namespace AnubisDBMS.Controllers
         {
             var lecturas = db.DataSensores.Where(c => c.EquipoSensor.IdEquipo == IdEquipo).Select(x => new { 
             lec = x.lectura,
-            equipo = x.EquipoSensor.Equipos.Alias
+            sensor = x.EquipoSensor.Sensores.SerieSensor
             }).ToList();
             return Json(lecturas, JsonRequestBehavior.AllowGet);
         }

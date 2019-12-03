@@ -97,8 +97,8 @@
                         <i class="graph line icon"></i> Graficos
                     </div>
                 </div>
-                <div class="ui raised segment">
-                    <div id="linechart_div"></div>
+                <div class="ui raised segment" id="linechart_div" style="overflow-x:auto;">
+                 
 
                 </div>
             </div>
@@ -131,12 +131,12 @@
 
         function drawChart(result) {
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Equipo');
+            data.addColumn('string', 'Sensor');
             data.addColumn('number', 'Lectura');
             var dataArray = [];
 
             $.each(result, function (i, obj) {
-                dataArray.push([obj.equipo, obj.lec]);
+                dataArray.push([obj.sensor, obj.lec]);
             });
             data.addRows(dataArray);
 
