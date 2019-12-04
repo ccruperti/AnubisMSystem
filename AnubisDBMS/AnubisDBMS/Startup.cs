@@ -1,10 +1,9 @@
 ﻿using AnubisDBMS.Controllers;
-using AnubisDBMS.Models;
+using AnubisDBMS.Infraestructure.Helpers;
 using Hangfire;
 using Microsoft.Owin;
 using Owin;
 using System.Linq;
-using System.Web.Http;
 using GlobalConfiguration = Hangfire.GlobalConfiguration;
 
 [assembly: OwinStartup(typeof(AnubisDBMS.Startup))]
@@ -16,15 +15,14 @@ namespace AnubisDBMS
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            //GlobalConfiguration.Configuration
-            //.UseSqlServerStorage("DefaultConnection");
-            //app.UseHangfireDashboard("/HangfireTrip", new DashboardOptions()
-            //{
-            //    Authorization = new[] { new HangfireAuthorizatonFilter() }
-            //});
-            ////BackgroundJob.Enqueue(() => Console.WriteLine("Fire-and-forget!"));
-            //RecurringJob.AddOrUpdate(() => Check(),Cron.Hourly);
-            //app.UseHangfireServer();
+            GlobalConfiguration.Configuration
+            .UseSqlServerStorage("DefaultConnection");
+            app.UseHangfireDashboard("/HangfireTrip", new DashboardOptions()
+            {
+                Authorization = new[] { new HangfireAuthorizatonFilter() }
+            });
+            RecurringJob.AddOrUpdate(() => Check(), Cron.Hourly);
+            app.UseHangfireServer();
 
         }
 

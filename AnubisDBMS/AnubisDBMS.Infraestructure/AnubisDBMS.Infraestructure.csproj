@@ -192,6 +192,7 @@
     <Compile Include="Filters\WebFilters\XSRFInvalidTokenFilters.cs" />
     <Compile Include="Geography\ExternalApis\GoogleMapsDistanceMatrixApiClient.cs" />
     <Compile Include="Globalization\Cultures\ApptelinkCultureInfo.cs" />
+    <Compile Include="Helpers\HangfireAuthorizatonFilter.cs" />
     <Compile Include="Helpers\labelControl.cs" />
     <Compile Include="Helpers\MvcActionResultHelpers.cs" />
     <Compile Include="Helpers\QRGenerator.cs" />

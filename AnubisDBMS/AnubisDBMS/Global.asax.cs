@@ -40,8 +40,7 @@ namespace AnubisDBMS
             StartupData.DefaultUsers(new Infraestructure.Security.Managers.AnubisDBMSUserManager(new Infraestructure.Security.Stores.AnubisDBMSUserStore(context)));
 
         
-            if (db.EquipoSensor.Any(x => x.Activo))
-            {
+            
                 var countdatos = db.EquipoSensor.Count(c => c.Activo);
             
                 string[] numserie = new string[4];
@@ -68,7 +67,7 @@ namespace AnubisDBMS
                 }
 
 
-            }
+             
 
             context.Dispose();
         }
