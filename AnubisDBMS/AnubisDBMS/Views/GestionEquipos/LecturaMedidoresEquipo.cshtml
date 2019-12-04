@@ -130,13 +130,13 @@
         });
 
         function drawChart(result) {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Sensor');
-            data.addColumn('number', 'Lectura');
+            var data = new google.visualization.arrayToDataTable();
+            //data.addColumn('string', 'Sensor');
+            //data.addColumn('number', 'Lectura');
             var dataArray = [];
 
             $.each(result, function (i, obj) {
-                dataArray.push([obj.sensor, obj.lec]);
+                dataArray.push([obj.fecha, obj.lec]);
             });
             data.addRows(dataArray);
 
@@ -144,10 +144,11 @@
                 title: "Lectura Medidores",
                 width: 1000,
                 height: 400,
-                bar: { groupWidth: "20%" },
+               hAxis: {title: 'Lectura', minValue: 0, maxValue: 5},
+          vAxis: {title: 'Fecha', minValue: 0, maxValue: 15},
             };
 
-            var columnChart = new google.visualization.LineChart(document
+            var columnChart = new google.visualization.ScatterChart(document
                 .getElementById('linechart_div'));
 
             columnChart.draw(data, columnChartOptions);

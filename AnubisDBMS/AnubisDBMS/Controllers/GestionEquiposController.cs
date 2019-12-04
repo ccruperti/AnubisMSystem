@@ -222,14 +222,16 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult GraficosLecturasMedidores(long IdEquipo)
         {
-            //var EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo).ToList();
+            var EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo).Select(c => c.Sensores.SerieSensor).ToList();
             //AQUI HAY QUE BUSCAR LOS SENSORES DEL EQUIPO QUE VIENE Y LUEGO LSA LECTURSA DE CADA SENSOR PARA EL JSON
             //CREERIA QUE VAN DIFERENTES JSON POR SENSOR PARA PODER MOSTRAR UN GRAFICO DIFERENTE POR SENSOR EN LA PÁGINA
-            //var lecturas = db.DataSensores.Where(c => c.SerieSensor == ).Select(x => new { 
-            //lec = x.Medida,
-            //sensor = x.EquipoSensor.Sensores.SerieSensor
-            //}).ToList();
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor)).Select(x => new
+            {
+                lec = x.Medida,
+                sensor = x.SerieSensor,
+                fecha = x.FechaRegistro
+            }).ToList();
+            return Json(lecturas, JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {

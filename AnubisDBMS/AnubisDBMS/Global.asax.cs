@@ -19,6 +19,7 @@ namespace AnubisDBMS
     {
         Random rnd = new Random();
         Random random = new Random();
+        Random rstring = new Random();
         protected void Application_Start()
         {
          
@@ -42,22 +43,27 @@ namespace AnubisDBMS
             if (db.EquipoSensor.Any(x => x.Activo))
             {
                 var countdatos = db.EquipoSensor.Count(c => c.Activo);
+            
+                string[] numserie = new string[4];
+                numserie[0] = "HAU3R7J3IDF72K3";
+                numserie[1] = "WIEFW74JF3U3JK3";
+                numserie[2] = "AD23D28UDI22FED";
+                numserie[3] = "W4F3O3F83HOI33";
 
-                
                 for (int i = 0; i < 500; i++)
                     {
 
-                    var ideq = rnd.Next(1, 2);
-                    var eqsen = db.EquipoSensor.FirstOrDefault(x => x.Activo && x.IdEquipoSensor == ideq);
+                  
                         var data = new DataSensores();
                         data.Activo = true;
                         data.FechaRegistro = DateTime.Now;
                         data.UsuarioRegistro = "System";
                         data.Medida = GetRandomNumber(0.1, 4.9);
-                        data.UnidadMedida = eqsen.Sensores.TipoSensor.UnidadSensor;
+                        data.UnidadMedida = "C";
+                    data.SerieSensor = numserie[rstring.Next(numserie.Length)];
                         //data.IdEquipoSensor = eqsen.IdEquipoSensor;
                         db.DataSensores.Add(data);
-                    db.SaveChanges();
+                        db.SaveChanges();
 
                 }
 
