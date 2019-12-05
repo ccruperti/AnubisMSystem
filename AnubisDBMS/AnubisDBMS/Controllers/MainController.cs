@@ -56,8 +56,7 @@ namespace AnubisDBMS.Controllers
         public SelectList SelectListTipoSensor(long selected = 0)
         {
 
-            List<TipoSensor> TipoSensor = new List<TipoSensor>();
-            TipoSensor.Add(new TipoSensor { IdTipoSensor = 0, NombreTipoSensor = "--- Seleccione Tipo de Sensor ---" });
+            List<TipoSensor> TipoSensor = new List<TipoSensor>(); 
             foreach (var x in db.TipoSensor.Where(x=>x.Activo).ToList())
             {
                 TipoSensor.Add(x);

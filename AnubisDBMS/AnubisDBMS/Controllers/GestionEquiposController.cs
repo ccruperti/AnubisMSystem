@@ -41,7 +41,7 @@ namespace AnubisDBMS.Controllers
                     Sensores = EquipoSensor.Count(),
                     Mantenimeintos= Mant.Count()
                 });
-            } 
+            }
             return View(model);
         }
         [CustomAuthorization]
@@ -189,6 +189,8 @@ namespace AnubisDBMS.Controllers
                
                 
             }
+            model.Desde = DateTime.Now.AddDays(-7);
+            model.Hasta=DateTime.Now; 
             return View(model);
         }
         [HttpPost]
@@ -259,16 +261,18 @@ namespace AnubisDBMS.Controllers
                 Hasta = DateTime.Now;
             }
             var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta).Select(c => c.Sensores.SerieSensor).ToList();
-          
+            
             var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor)).Select(x => new
             {
                 lec = x.Medida,
+                Min= db.Sensores.Where(y => y.SerieSensor ==x.SerieSensor).FirstOrDefault().Min??0,
+                Max= db.Sensores.Where(y => y.SerieSensor == x.SerieSensor).FirstOrDefault().Max ?? 0,
                 sensor = x.SerieSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,
                 Anio = x.FechaRegistro.Year
             }).ToList();
-            return Json(lecturas.Where(x => x.sensor == SerieSensor).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(lecturas.Where(x => x.sensor == SerieSensor).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {

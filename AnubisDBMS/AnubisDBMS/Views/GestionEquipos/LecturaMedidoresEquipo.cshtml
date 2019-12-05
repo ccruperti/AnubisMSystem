@@ -9,7 +9,7 @@
     @Html.HiddenFor(m => m.IdEquipo, new { id = "id-equipo" })
     <div class="ui grid">
 
-        <div class="eight wide column">
+        <div class="twelve wide column">
             <div class="ui raised segments">
                 <div class="ui bottom attached raised menu">
                     <div class="header item">
@@ -64,7 +64,7 @@
                                     Unidad Medida
                                 </th>
                                 <th>
-                                    Lectura
+                                    Última Lectura
                                 </th>
                                 <th></th>
 
@@ -98,26 +98,24 @@
                 </div>
             </div>
         </div>
-        <div class="four wide column">
-            <div class="ui raised segments">
+      
+        <div class="four wide column" >
+            <div class="ui tiny raised segments" >
                 <div class="ui bottom attached raised menu">
                     <div class="header item">
                         <i class="qrcode icon"></i> Codigo QR
                     </div>
                 </div>
                 <div class="ui raised segment">
-                    <div class="ui link cards">
+                    <div class="ui   link cards">
                         <div class="card">
                             <div class="tiny image">
-                                <img src="data:image/gif;base64,@Model.QR" width="500" height="350" />
+                                <img src="data:image/gif;base64,@Model.QR" width="300" height="150" />
                             </div>
                             <div class="content">
-                                <div class="header">@Model.AliasEquipo</div>
-
-
+                                <div class="header">@Model.AliasEquipo</div> 
                             </div>
-                            <div class="extra content">
-
+                            <div class="extra content"> 
                                 <span>
                                     <i class="thermometer icon"></i>
                                     @Model.DatosSensores.Count Sensores
@@ -130,7 +128,10 @@
                 </div>
             </div>
         </div>
-        <div class="sixteen wide column">
+        
+    </div>
+    <div class="ui grid">
+        <div class="twelve wide column" style="margin-top:-100px !important;" >
             <div class="ui raised segments">
                 <div class="ui bottom attached raised menu">
                     <div class="header item">
@@ -184,19 +185,21 @@
         function drawChart(result, serie, minval, maxval) {
             var data = new google.visualization.DataTable();
              data.addColumn('date', 'Fecha');
-            data.addColumn('number', 'Lectura');
+            data.addColumn('number', 'Lectura'); 
+            data.addColumn('number', 'Min');
+            data.addColumn('number', 'Max'); 
 
             var dataArray = [];
 
             $.each(result, function (i, obj) {
-                dataArray.push([new Date(obj.Anio, obj.Mes, obj.Dia), obj.lec]);
+                dataArray.push([new Date(obj.Anio, obj.Mes, obj.Dia), obj.lec, obj.Min, obj.Max]);
             });
             data.addRows(dataArray);
 
         var columnChartOptions = {
                 title: "Lectura Medidores",
-                width: 1600,
-                height: 400,     
+                width: 1000,
+                height: 300,     
             vAxis: { title: serie, minValue: minval, maxValue: maxval },
            hAxis: {
             format: 'M/d/yy',
@@ -204,16 +207,17 @@
             viewWindow: {
             min: new Date(2019, 01, 01),
             max: new Date(2019, 12, 31)
-          }
-
+               } 
           },
+             explorer: {
+            axis: 'horizontal', 
+            keepInBounds: false,
+            maxZoomIn: 4.0
+          }
             };
 
             var columnChart = new google.visualization.LineChart(document
-                .getElementById('linechart_div'));
-
-            
-
+                .getElementById('linechart_div')); 
             columnChart.draw(data, columnChartOptions);
         }
     </script>
