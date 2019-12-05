@@ -181,11 +181,41 @@ namespace AnubisDBMS.Controllers
                         SerieSensor = sensor?.SerieSensor,
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
-                        Lectura = lectura.Medida
+                        Lectura = lectura.Medida,
+                        MinVal = sensor.Min,
+                        MaxVal = sensor.Max
                     });
                 }
                
                 
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult LecturaMedidoresEquipo(MonitoreoSensoresVM model)
+        {
+            var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == model.IdEquipo);
+        
+            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo).ToList();
+            foreach (var es in equiposSensores)
+            {
+                var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
+
+                var lectura = db.DataSensores.OrderByDescending(x => x.FechaRegistro).FirstOrDefault(x => x.SerieSensor == sensor.SerieSensor);
+                if (lectura != null)
+                {
+                    model.DatosSensores.Add(new DataSensoresVM
+                    {
+                        SerieSensor = sensor?.SerieSensor,
+                        TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
+                        UnidadMedida = lectura?.UnidadMedida,
+                        Lectura = lectura.Medida,
+                        MinVal = sensor.Min,
+                        MaxVal = sensor.Max
+                    });
+                }
+
+
             }
             return View(model);
         }
@@ -220,18 +250,25 @@ namespace AnubisDBMS.Controllers
             return RedirectToAction("MonitoreoEquipos");
 
         }
-        public ActionResult GraficosLecturasMedidores(long IdEquipo)
+        public ActionResult GraficosLecturasMedidores(string SerieSensor, DateTime? Desde, DateTime? Hasta)
         {
-            var EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo).Select(c => c.Sensores.SerieSensor).ToList();
-            //AQUI HAY QUE BUSCAR LOS SENSORES DEL EQUIPO QUE VIENE Y LUEGO LSA LECTURSA DE CADA SENSOR PARA EL JSON
-            //CREERIA QUE VAN DIFERENTES JSON POR SENSOR PARA PODER MOSTRAR UN GRAFICO DIFERENTE POR SENSOR EN LA PÁGINA
+            if(Desde == null && Hasta == null)
+            {
+
+                Desde = DateTime.Now;
+                Hasta = DateTime.Now;
+            }
+            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta).Select(c => c.Sensores.SerieSensor).ToList();
+          
             var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor)).Select(x => new
             {
                 lec = x.Medida,
-                sensor = x.SerieSensor,
-                fecha = x.FechaRegistro
+                sensor = x.SerieSensor,                
+                Dia= x.FechaRegistro.Day,
+                Mes = x.FechaRegistro.Month,
+                Anio = x.FechaRegistro.Year
             }).ToList();
-            return Json(lecturas, JsonRequestBehavior.AllowGet);
+            return Json(lecturas.Where(x => x.sensor == SerieSensor).ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {

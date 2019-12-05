@@ -55,13 +55,14 @@ namespace AnubisDBMS
                   
                         var data = new DataSensores();
                         data.Activo = true;
-                        data.FechaRegistro = DateTime.Now;
+                        data.FechaRegistro = RandomDay();
                         data.UsuarioRegistro = "System";
                         data.Medida = GetRandomNumber(0.1, 4.9);
                         data.UnidadMedida = "C";
                     data.SerieSensor = numserie[rstring.Next(numserie.Length)];
                         //data.IdEquipoSensor = eqsen.IdEquipoSensor;
                         db.DataSensores.Add(data);
+                
                         db.SaveChanges();
 
                 }

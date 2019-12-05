@@ -8,6 +8,96 @@
         </div>*@
     @Html.HiddenFor(m => m.IdEquipo, new { id = "id-equipo" })
     <div class="ui grid">
+
+        <div class="eight wide column">
+            <div class="ui raised segments">
+                <div class="ui bottom attached raised menu">
+                    <div class="header item">
+                        <i class="list icon"></i> Lectura de Sensores
+                    </div>
+                </div>
+                <div class="ui raised segment">
+                    @using (Html.BeginForm("MonitoreoEquipos", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui form", id = "" }))
+                    {
+
+                      
+                    <div class="fields">
+                        <div class="header" style="color:black !important">
+                            <h4>Desde</h4>
+                        </div>
+                        <div class="four wide field">
+
+                            <div class="ui left icon small input">
+                                <i class="calendar icon"></i>
+                                @Html.TextBoxFor(model => model.Desde, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "desde" })
+                            </div>
+                        </div>
+                        <div class="header" style="color:black !important">
+                            <h4>Hasta</h4>
+                        </div>
+                        <div class="four wide field">
+                            <div class="ui left icon small input">
+                                <i class="calendar icon"></i>
+                                @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "hasta" })
+                            </div>
+                        </div>
+                        @*<div class="item">
+                            <input type="submit" value="Consultar" class="ui mini blue button" />
+
+                        </div>*@
+                    </div>
+                      
+
+                    }
+
+                    <table class="ui  compact celled selectable table">
+                        <thead>
+                            <tr class="centered">
+
+                                <th>
+                                    Serie Sensor
+                                </th>
+                                <th>
+                                    Tipo Sensor
+                                </th>
+                                <th>
+                                    Unidad Medida
+                                </th>
+                                <th>
+                                    Lectura
+                                </th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in Model.DatosSensores)
+                            {
+                                <tr class="center">
+                                    <td>
+                                        @x.SerieSensor
+                                    </td>
+                                    <td>
+                                        @x.TipoSensor
+                                    </td>
+                                    <td>
+                                        @x.UnidadMedida
+                                    </td>
+                                    <td>
+                                        @x.Lectura
+                                    </td>
+                                    <td>
+                                        <div class="ui small buttons">
+                                            <button data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="four wide column">
             <div class="ui raised segments">
                 <div class="ui bottom attached raised menu">
@@ -18,8 +108,8 @@
                 <div class="ui raised segment">
                     <div class="ui link cards">
                         <div class="card">
-                            <div class="small image">
-                                <img src="data:image/gif;base64,@Model.QR" width="500" height="500" />
+                            <div class="tiny image">
+                                <img src="data:image/gif;base64,@Model.QR" width="500" height="350" />
                             </div>
                             <div class="content">
                                 <div class="header">@Model.AliasEquipo</div>
@@ -40,65 +130,15 @@
                 </div>
             </div>
         </div>
-        <div class="six wide column">
-            <div class="ui raised segments">
-                <div class="ui bottom attached raised menu">
-                    <div class="header item">
-                        <i class="list icon"></i> Lectura de Sensores
-                    </div>
-                </div>
-                <div class="ui raised segment">
-                    <table class="ui  compact celled selectable table">
-                        <thead>
-                            <tr class="centered">
-
-                                <th>
-                                    Serie Sensor
-                                </th>
-                                <th>
-                                    Tipo Sensor
-                                </th>
-                                <th>
-                                    Unidad Medida
-                                </th>
-                                <th>
-                                    Lectura
-                                </th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var x in Model.DatosSensores)
-                            {
-                                <tr class="center">
-                                    <td>
-                                        @x.SerieSensor
-                                    </td>
-                                    <td>
-                                        @x.TipoSensor
-                                    </td>
-                                    <td>
-                                        @x.UnidadMedida
-                                    </td>
-                                    <td>
-                                        @x.Lectura
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="six wide column">
+        <div class="sixteen wide column">
             <div class="ui raised segments">
                 <div class="ui bottom attached raised menu">
                     <div class="header item">
                         <i class="graph line icon"></i> Graficos
                     </div>
                 </div>
-                <div class="ui raised segment" id="linechart_div" style="overflow-x:auto;">
-                 
+                <div class="ui raised segment" id="mostrar-graficos" style="overflow-x:auto;">
+                    <div id="linechart_div"></div>
 
                 </div>
             </div>
@@ -113,43 +153,66 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         $(document).ready(function () {
-            $.ajax({
+
+      
+  
+        });
+        $(".cargar-grafico").on('click', function () {
+            var serie = $(this).data("seriesensor");
+            var minval = $(this).data("minval");
+            var maxval = $(this).data("maxval")
+            var desde = $("#desde").val();
+           var hasta = $("#hasta").val();
+
+                          $.ajax({
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
-                url: '@Url.Action("GraficosLecturasMedidores", "GestionEquipos", new { IdEquipo =Model.IdEquipo})',
-                success: function (result) {
+                url: 'GraficosLecturasMedidores?SerieSensor=' + serie +"&Desde="+ desde +"&Hasta="+hasta,
+                              success: function (result) {
+                                  $("#linechart_div").html("");
+
                     google.charts.load('current', {
                         'packages': ['corechart']
                     });
-                    google.charts.setOnLoadCallback(function () {
-                        drawChart(result);
+                                  google.charts.setOnLoadCallback(function () {
+                                      $("#mostrar-graficos").html(drawChart(result, serie, minval, maxval));
                     });
                 }
             });
-        });
+            });
+        function drawChart(result, serie, minval, maxval) {
+            var data = new google.visualization.DataTable();
+             data.addColumn('date', 'Fecha');
+            data.addColumn('number', 'Lectura');
 
-        function drawChart(result) {
-            var data = new google.visualization.arrayToDataTable();
-            //data.addColumn('string', 'Sensor');
-            //data.addColumn('number', 'Lectura');
             var dataArray = [];
 
             $.each(result, function (i, obj) {
-                dataArray.push([obj.fecha, obj.lec]);
+                dataArray.push([new Date(obj.Anio, obj.Mes, obj.Dia), obj.lec]);
             });
             data.addRows(dataArray);
 
-            var columnChartOptions = {
+        var columnChartOptions = {
                 title: "Lectura Medidores",
-                width: 1000,
-                height: 400,
-               hAxis: {title: 'Lectura', minValue: 0, maxValue: 5},
-          vAxis: {title: 'Fecha', minValue: 0, maxValue: 15},
+                width: 1600,
+                height: 400,     
+            vAxis: { title: serie, minValue: minval, maxValue: maxval },
+           hAxis: {
+            format: 'M/d/yy',
+               gridlines: { count: 15 },
+            viewWindow: {
+            min: new Date(2019, 01, 01),
+            max: new Date(2019, 12, 31)
+          }
+
+          },
             };
 
-            var columnChart = new google.visualization.ScatterChart(document
+            var columnChart = new google.visualization.LineChart(document
                 .getElementById('linechart_div'));
+
+            
 
             columnChart.draw(data, columnChartOptions);
         }
