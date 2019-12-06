@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AnubisDBMS.Infraestructure.Extensions;
 
 namespace AnubisDBMS.Controllers
 {
@@ -257,16 +258,16 @@ namespace AnubisDBMS.Controllers
             if(Desde == null && Hasta == null)
             {
 
-                Desde = DateTime.Now;
-                Hasta = DateTime.Now;
+                Desde = DateTime.Now.GetWeekStartDate();
+                Hasta = DateTime.Now.GetWeekEndDate();
             }
             var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta).Select(c => c.Sensores.SerieSensor).ToList();
             
             var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor)).Select(x => new
             {
                 lec = x.Medida,
-                Min= db.Sensores.Where(y => y.SerieSensor ==x.SerieSensor).FirstOrDefault().Min??0,
-                Max= db.Sensores.Where(y => y.SerieSensor == x.SerieSensor).FirstOrDefault().Max ?? 0,
+                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Min??0,
+                Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Max ?? 0,
                 sensor = x.SerieSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,
