@@ -14,7 +14,8 @@
             <tr>
               
                 <th>Nombre Tipo</th>
-                @*<th>Unidad de medición</th>*@
+                <th>Escala Mínima</th>
+                <th>Escala Máxima</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
 
@@ -28,7 +29,9 @@
 
                 
                 <td>@item.NombreTipoSensor</td>
-                @*<td>@item.UnidadSensor</td>*@
+                <td>@item.Min_TipoSensor</td>
+                <td>@item.Max_TipoSensor</td>
+                
                
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.IdTipoSensor }, new { @class = "ui orange   button" })

@@ -57,6 +57,11 @@ namespace AnubisDBMS.Data.ViewModels
             public long IdTipoSensor { get; set; }
             public string NombreTipoSensor { get; set; }
             public string UnidadSensor { get; set; }
+            [Display(Name ="Escala Máxima")]
+            public double Max_TipoSensor { get; set; }
+            [Display(Name = "Escala Mínima")]
+
+            public double Min_TipoSensor { get; set; }
             public List<TipoSensor> Lista { get; set; }
         }
 

@@ -50,6 +50,8 @@ namespace AnubisDBMS.Data.Entities
     {
         public long IdTipoSensor { get; set; }
         public string NombreTipoSensor { get; set; }
+        public double Min_TipoSensor { get; set; }
+        public double Max_TipoSensor { get; set; }
         public string UnidadSensor { get; set; }
     }
 
