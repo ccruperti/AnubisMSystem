@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AnubisDBMS.Infraestructure.Extensions;
+using AnubisDBMS.Reportes;
 
 namespace AnubisDBMS.Controllers
 {
@@ -280,5 +281,12 @@ namespace AnubisDBMS.Controllers
             return View();
         }
 
+        public ActionResult GenerarExcel(long IdEquipo, DateTime Desde, DateTime Hasta)
+        {
+            GenerarExcelConsultas Gen = new GenerarExcelConsultas();
+            byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(IdEquipo, Desde, Hasta);
+            string fileName = string.Format("Lecturas.xlsx");
+            return File(fileStream.ToArray(), "application/octet-stream", fileName);
+        }
     }
 }
