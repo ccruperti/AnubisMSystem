@@ -45,19 +45,34 @@ namespace AnubisDBMS.Reportes
             ws.Cells[Row, Col++].Value = "Medición";
             ws.Cells[Row, Col].Value = "Unidad de Medida";
             Col = 0;
-            
+            Row++;
+            int numws = 1;
             foreach(var lectura in lecturas)
             {
-                for (int i = Row;  i <= 150; i++)
+                for (int i = Row;  i <= lecturas.Count; i++)
                 {
+                    if(i <= 150)
+                    {
+                        ws.Cells[Row, Col++].Value = lectura.SerieSensor ?? "---";
+                        ws.Cells[Row, Col++].Value = lectura.TipoSensor ?? "---";
+                        ws.Cells[Row, Col++].Value = lectura?.FechaRegistro.ToString() ?? "---";
+                        ws.Cells[Row, Col++].Value = lectura.Medida;
+                        ws.Cells[Row, Col].Value = lectura.UnidadMedida ?? "---";
+                        Col = 0;
+                        Row = i;
+                    }
+                    else
+                    {
+                        if(i % 150 <= i)
+                        {
+                            ws = ef.Worksheets.AddCopy("Lecturas " + numws, ws);
+                            numws
 
-                    ws.Cells[Row, Col++].Value = lectura.SerieSensor ?? "---";
-                    ws.Cells[Row, Col++].Value = lectura.TipoSensor ?? "---";
-                    ws.Cells[Row, Col++].Value = lectura?.FechaRegistro.ToString() ?? "---";
-                    ws.Cells[Row, Col++].Value = lectura.Medida;
-                    ws.Cells[Row, Col].Value = lectura.UnidadMedida ?? "---";
-                    Col = 0;
-                    Row = i;
+                        }
+                        
+                    }
+                
+                    
                 }
            
                 
