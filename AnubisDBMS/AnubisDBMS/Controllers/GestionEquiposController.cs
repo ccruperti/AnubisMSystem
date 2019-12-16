@@ -281,10 +281,10 @@ namespace AnubisDBMS.Controllers
             return View();
         }
 
-        public ActionResult GenerarExcel(long IdEquipo, DateTime Desde, DateTime Hasta)
+        public ActionResult GenerarExcel(string SerieSensor, DateTime Desde, DateTime Hasta)
         {
             GenerarExcelConsultas Gen = new GenerarExcelConsultas();
-            byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(IdEquipo, Desde, Hasta);
+            byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(SerieSensor, Desde, Hasta);
             string fileName = string.Format("Lecturas.xlsx");
             return File(fileStream.ToArray(), "application/octet-stream", fileName);
         }

@@ -89,6 +89,8 @@
                                     <td>
                                         <div class="ui small buttons">
                                             <button data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</button>
+                                            <a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=DateTime.Now.AddMonths(-2), Hasta=DateTime.Now })"><i class="Excel icon"></i>Generar Excel</a>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -101,15 +103,14 @@
       
         <div class="four wide column" >
             <div class="ui tiny raised segments" >
-                <div class="ui bottom attached raised menu">
+                @*<div class="ui bottom attached raised menu">
                     <div class="header item">
                         <i class="qrcode icon"></i> Codigo QR
                     </div>
                     <div class="header item">
-                        <a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { IdEquipo = Model.IdEquipo, Desde=DateTime.Now.AddMonths(-2), Hasta=DateTime.Now })"><i class="Excel icon"></i>Generar Excel</a>
                     </div>
 
-                </div>
+                </div>*@
                 <div class="ui raised segment">
                     <div class="ui   link cards">
                         <div class="card">

@@ -19,99 +19,142 @@ namespace AnubisDBMS.Reportes
 
         }
 
-        public byte[] GenerarDocumentoLecturasEquipos(long IdEquipo, DateTime Desde, DateTime Hasta, int Row = 0, int Col = 0)
+        public byte[] GenerarDocumentoLecturasEquipos(string SerieSensor, DateTime Desde, DateTime Hasta, int Row = 0, int Col = 0)
         {
             ExcelFile ef = new ExcelFile();
             ExcelWorksheet ws = ef.Worksheets.Add("DataSensores");
-            ExcelWorksheet ws2 = ef.Worksheets.Add("DataSensores 2");
-            ExcelWorksheet ws3 = ef.Worksheets.Add("DataSensores 3");
-            ExcelWorksheet ws4 = ef.Worksheets.Add("DataSensores 4");
-            ExcelWorksheet ws5 = ef.Worksheets.Add("DataSensores 5");
+            //ExcelWorksheet ws2 = ef.Worksheets.Add("DataSensores 2");
+            //ExcelWorksheet ws3 = ef.Worksheets.Add("DataSensores 3");
+            //ExcelWorksheet ws4 = ef.Worksheets.Add("DataSensores 4");
+            //ExcelWorksheet ws5 = ef.Worksheets.Add("DataSensores 5");
             ef.Styles[BuiltInCellStyleName.Normal].Font.Name = "Calibri";
             ef.Styles[BuiltInCellStyleName.Normal].Font.Size = 8 * 22;
-            SetOptions(ws);
-            SetOptions(ws2);
-            SetOptions(ws3);
-            SetOptions(ws4);
-            SetOptions(ws5);
+            //SetOptions(ws);
+            //SetOptions(ws2);
+            //SetOptions(ws3);
+            //SetOptions(ws4);
+            //SetOptions(ws5);
 
-            var equiposensor = db.EquipoSensor.Where(c => c.IdEquipo == IdEquipo && c.Activo).ToList();
-            List<DataSensores> lecturas = new List<DataSensores>();
-            foreach (var eqs in equiposensor)
+            //var equiposensor = db.EquipoSensor.Where(c => c.IdEquipo == IdEquipo && c.Activo).ToList();
+
+            var lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
+            && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde) 
+            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta))).ToList();
+            //foreach (var eqs in equiposensor)
+            //{
+            //    lecturas.AddRange(db.DataSensores.Where(x => x.SerieSensor == eqs.Sensores.SerieSensor
+            //&& DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)).ToList());
+            //}
+
+
+            //SetCells(ws, Row, Col);
+            //SetCells(ws2, Row, Col);
+            //SetCells(ws3, Row, Col);
+            //SetCells(ws4, Row, Col);
+            //SetCells(ws5, Row, Col);
+
+            //var cont = 1;
+            int contador = 0;
+            var listafechas = lecturas.OrderBy(c => c.FechaRegistro).Select(x => new {fech = x.FechaRegistro, med = x.Medida }).ToList();
+            foreach (var lectura in lecturas)
             {
-                lecturas.AddRange(db.DataSensores.Where(x => x.SerieSensor == eqs.Sensores.SerieSensor
-            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)).ToList());
-            }
-
-
-            SetCells(ws, Row, Col);
-            SetCells(ws2, Row, Col);
-            SetCells(ws3, Row, Col);
-            SetCells(ws4, Row, Col);
-            SetCells(ws5, Row, Col);
-
-            var cont = 1;
-            foreach (var lectura in lecturas.Take(600))
-            {
-                cont++;
-                if (cont >= 1 && cont <= 140)
+                if (contador == 0)
                 {
-                    for (int i = Row; i <= 149; i++)
-                    {
-                        Row = 1;
-                        Col = 1;
-                        setContent(ws, Row, Col, cont, lectura);
-                        Row = i;
-                    }
+                    ws.Cells[Row, Col++].Value = lectura.SerieSensor;
+                    contador++;
                 }
-
-                if (cont >= 149 && cont <= 299)
+                foreach (var fecha in listafechas.Where(c => c.fech == lectura.FechaRegistro))
                 {
+                    var fechassensores = listafechas.Where(c => c.fech == fecha.fech).ToList();
+                    ws.Cells[Row, Col].Value = fecha;
+                    for (int i =0; i <= listafechas.Count; i++)
+                    {
+                        ws.Cells[Row++, Col].Value = fecha.med;
+
+                    }
+                    Col++;
                     Row = 1;
-                    Col = 0;
-                    for (int i = Row; i <= 149; i++)
-                    {
-                        setContent(ws2, Row, Col, cont, lectura);
-                        Row = i;
-                    }
+                    //if (contador < listafechas.Count)
+                    //{
+                    //    contador++;
+
+                    //}
+                    //if (contador == listafechas.Count)
+                    //{
+                    //    Col = 1;
+                    //    contador++;
+                    //    Row++;
+                    //}
                 }
+                contador++;
+            
+                //if(contador > listafechas.Count)
+                //{
+                //    //ws.Cells[Row, Col++].Value = lectura.Medida;
+                //    //contador++;
+                //}
+               
+               
 
-                if (cont >= 299 && cont <= 449)
-                {
+                //cont++;
+                //if (cont >= 1 && cont <= 140)
+                //{
+                //    for (int i = Row; i <= 149; i++)
+                //    {
+                //        Row = 1;
+                //        Col = 1;
+                //        setContent(ws, Row, Col, cont, lectura);
+                //        Row = i;
+                //    }
+                //}
 
-                    Row = 1;
-                    Col = 0;
-                    for (int i = Row; i <= 149; i++)
-                    {
-                        setContent(ws3, Row, Col, cont, lectura);
-                        Row = i;
-                    }
-                }
+                //if (cont >= 149 && cont <= 299)
+                //{
+                //    Row = 1;
+                //    Col = 0;
+                //    for (int i = Row; i <= 149; i++)
+                //    {
+                //        setContent(ws2, Row, Col, cont, lectura);
+                //        Row = i;
+                //    }
+                //}
+
+                //if (cont >= 299 && cont <= 449)
+                //{
+
+                //    Row = 1;
+                //    Col = 0;
+                //    for (int i = Row; i <= 149; i++)
+                //    {
+                //        setContent(ws3, Row, Col, cont, lectura);
+                //        Row = i;
+                //    }
+                //}
 
 
-                if (cont >= 449 && cont <= 549)
-                {
+                //if (cont >= 449 && cont <= 549)
+                //{
 
-                    Row = 1;
-                    Col = 0;
-                    for (int i = Row; i <= 149; i++)
-                    {
-                        setContent(ws4, Row, Col, cont, lectura);
-                        Row = i;
-                    }
-                }
+                //    Row = 1;
+                //    Col = 0;
+                //    for (int i = Row; i <= 149; i++)
+                //    {
+                //        setContent(ws4, Row, Col, cont, lectura);
+                //        Row = i;
+                //    }
+                //}
 
-                if (cont >= 549 && cont <= 500)
-                {
+                //if (cont >= 549 && cont <= 500)
+                //{
 
-                    Row = 1;
-                    Col = 0;
-                    for (int i = Row; i <= 149; i++)
-                    {
-                        setContent(ws5, Row, Col, cont, lectura);
-                        Row = i;
-                    }
-                }
+                //    Row = 1;
+                //    Col = 0;
+                //    for (int i = Row; i <= 149; i++)
+                //    {
+                //        setContent(ws5, Row, Col, cont, lectura);
+                //        Row = i;
+                //    }
+                //}
 
 
             }
@@ -151,7 +194,7 @@ namespace AnubisDBMS.Reportes
         public ExcelWorksheet SetCells(ExcelWorksheet ws, int Row, int Col)
         {
             ws.Cells[Row, Col++].Value = "#Serie";
-            ws.Cells[Row, Col++].Value = "Tipo Sensor";
+            //ws.Cells[Row, Col++].Value = "Tipo Sensor";
             ws.Cells[Row, Col++].Value = "Fecha Ingreso";
             ws.Cells[Row, Col++].Value = "Medición";
             ws.Cells[Row, Col].Value = "Unidad de Medida";
