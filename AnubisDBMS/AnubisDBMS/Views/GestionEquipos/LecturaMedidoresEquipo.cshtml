@@ -17,86 +17,92 @@
                     </div>
                 </div>
                 <div class="ui raised segment">
-                    @using (Html.BeginForm("MonitoreoEquipos", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui form", id = "" }))
+                    @using (Html.BeginForm("GenerarExcel", "GestionEquipos", new { }, FormMethod.Post, new { @class = "ui form", id = "" }))
                     {
 
-                      
-                    <div class="fields">
-                        <div class="header" style="color:black !important">
-                            <h4>Desde</h4>
-                        </div>
-                        <div class="four wide field">
 
-                            <div class="ui left icon small input">
-                                <i class="calendar icon"></i>
-                                @Html.TextBoxFor(model => model.Desde, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "desde" })
+                        <div class="fields">
+                            <div class="header" style="color:black !important">
+                                <h4>Desde</h4>
                             </div>
-                        </div>
-                        <div class="header" style="color:black !important">
-                            <h4>Hasta</h4>
-                        </div>
-                        <div class="four wide field">
-                            <div class="ui left icon small input">
-                                <i class="calendar icon"></i>
-                                @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "hasta" })
-                            </div>
-                        </div>
-                        @*<div class="item">
-                            <input type="submit" value="Consultar" class="ui mini blue button" />
+                            <div class="four wide field">
 
-                        </div>*@
-                    </div>
-                      
+                                <div class="ui left icon small input">
+                                    <i class="calendar icon"></i>
+                                    @Html.TextBoxFor(model => model.Desde, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "desde" })
+                                </div>
+                            </div>
+                            <div class="header" style="color:black !important">
+                                <h4>Hasta</h4>
+                            </div>
+                            <div class="four wide field">
+                                <div class="ui left icon small input">
+                                    <i class="calendar icon"></i>
+                                    @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "hasta" })
+                                </div>
+                            </div>
+                            @*<div class="item">
+                    <input type="submit" value="Consultar" class="ui mini blue button" />
+
+                </div>*@
+                        </div>
+
+
+
+
+                        <table class="ui  compact celled selectable table">
+                            <thead>
+                                <tr class="centered">
+
+                                    <th>
+                                        Serie Sensor
+                                    </th>
+                                    <th>
+                                        Tipo Sensor
+                                    </th>
+                                    <th>
+                                        Unidad Medida
+                                    </th>
+                                    <th>
+                                        Última Lectura
+                                    </th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var x in Model.DatosSensores)
+                                {
+                                    <tr class="center">
+                                        <td>
+                                            @x.SerieSensor
+                                        </td>
+                                        <td>
+                                            @x.TipoSensor
+                                        </td>
+                                        <td>
+                                            @x.UnidadMedida
+                                        </td>
+                                        <td>
+                                            @x.Lectura
+                                        </td>
+                                        <td>
+                                            <div class="ui small buttons">
+                                                @Html.HiddenFor(m => m.SerieSensor, new { @id = "id-sensor" });
+                                                <button data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</button>
+                                                @*<a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=Model.Desde, Hasta=Model.Hasta })"><i class="Excel icon"></i>Generar Excel</a>*@
+                                                <button data-sensor="@x.SerieSensor" class="ui attached green button boton-excel" type="submit"><i class="excel file icon"></i>Generar Excel</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
 
                     }
 
-                    <table class="ui  compact celled selectable table">
-                        <thead>
-                            <tr class="centered">
-
-                                <th>
-                                    Serie Sensor
-                                </th>
-                                <th>
-                                    Tipo Sensor
-                                </th>
-                                <th>
-                                    Unidad Medida
-                                </th>
-                                <th>
-                                    Última Lectura
-                                </th>
-                                <th></th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var x in Model.DatosSensores)
-                            {
-                                <tr class="center">
-                                    <td>
-                                        @x.SerieSensor
-                                    </td>
-                                    <td>
-                                        @x.TipoSensor
-                                    </td>
-                                    <td>
-                                        @x.UnidadMedida
-                                    </td>
-                                    <td>
-                                        @x.Lectura
-                                    </td>
-                                    <td>
-                                        <div class="ui small buttons">
-                                            <button data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</button>
-                                            <a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=DateTime.Now.AddMonths(-2), Hasta=DateTime.Now })"><i class="Excel icon"></i>Generar Excel</a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -163,6 +169,10 @@
       
   
         });
+        $(".boton-excel").on("click", function () {
+            var serie = $(this).data("sensor");
+            $("#id-sensor").val(serie);
+        })
         $(".cargar-grafico").on('click', function () {
             var serie = $(this).data("seriesensor");
             var minval = $(this).data("minval");

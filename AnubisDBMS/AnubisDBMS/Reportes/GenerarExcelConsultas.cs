@@ -19,7 +19,7 @@ namespace AnubisDBMS.Reportes
 
         }
 
-        public byte[] GenerarDocumentoLecturasEquipos(string SerieSensor, DateTime Desde, DateTime Hasta, int Row = 0, int Col = 0)
+        public byte[] GenerarDocumentoLecturasEquipos(string SerieSensor, DateTime? Desde, DateTime? Hasta, int Row = 0, int Col = 0)
         {
             ExcelFile ef = new ExcelFile();
             ExcelWorksheet ws = ef.Worksheets.Add("DataSensores");
@@ -55,25 +55,28 @@ namespace AnubisDBMS.Reportes
 
             //var cont = 1;
             int contador = 0;
-            var listafechas = lecturas.OrderBy(c => c.FechaRegistro).Select(x => new {fech = x.FechaRegistro, med = x.Medida }).ToList();
-            foreach (var lectura in lecturas)
-            {
-                if (contador == 0)
+            var listafechas = lecturas.OrderBy(c => c.FechaRegistro).Select(x => new {fech = x.FechaRegistro, med = x.Medida, sensor=x.SerieSensor }).ToList();
+            
+             
+                foreach (var fecha in listafechas.GroupBy(c => c.fech))
                 {
-                    ws.Cells[Row, Col++].Value = lectura.SerieSensor;
-                    contador++;
-                }
-                foreach (var fecha in listafechas.Where(c => c.fech == lectura.FechaRegistro))
-                {
-                    var fechassensores = listafechas.Where(c => c.fech == fecha.fech).ToList();
-                    ws.Cells[Row, Col].Value = fecha;
-                    for (int i =0; i <= listafechas.Count; i++)
+                    if (contador == 0)
                     {
-                        ws.Cells[Row++, Col].Value = fecha.med;
+                        ws.Cells[Row, Col++].Value = SerieSensor;
+                        contador++;
+                    }
+                    var fechassensores = listafechas.Where(c => c.fech == fecha.Key).Select(x => x.med).ToList();
+                    ws.Cells[0, Col].Value = fecha.Key;
+                    
+                    foreach (var f in fechassensores.Take(149))
+                    {
+                    Row++;
+                        ws.Cells[Row, Col].Value = f;
 
                     }
+            
                     Col++;
-                    Row = 1;
+                    Row = 0;
                     //if (contador < listafechas.Count)
                     //{
                     //    contador++;
@@ -157,7 +160,7 @@ namespace AnubisDBMS.Reportes
                 //}
 
 
-            }
+            
 
 
             byte[] fileContents = null;

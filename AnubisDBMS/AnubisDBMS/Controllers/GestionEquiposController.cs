@@ -267,8 +267,8 @@ namespace AnubisDBMS.Controllers
             var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor)).Select(x => new
             {
                 lec = x.Medida,
-                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Min??0,
-                Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Max ?? 0,
+                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).TipoSensor.Min_TipoSensor,
+                Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).TipoSensor.Max_TipoSensor,
                 sensor = x.SerieSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,
@@ -280,9 +280,15 @@ namespace AnubisDBMS.Controllers
         {
             return View();
         }
-
-        public ActionResult GenerarExcel(string SerieSensor, DateTime Desde, DateTime Hasta)
+        
+        public ActionResult GenerarExcel(string SerieSensor, DateTime? Desde, DateTime? Hasta)
         {
+            var fecha = ViewBag.Desde;
+            if(Desde == null && Hasta == null)
+            {
+                Desde = DateTime.Now.GetWeekStartDate();
+                Hasta = DateTime.Now.GetWeekEndDate();
+            }
             GenerarExcelConsultas Gen = new GenerarExcelConsultas();
             byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(SerieSensor, Desde, Hasta);
             string fileName = string.Format("Lecturas.xlsx");
