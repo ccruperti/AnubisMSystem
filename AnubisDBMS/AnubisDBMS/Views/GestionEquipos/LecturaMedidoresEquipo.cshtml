@@ -89,7 +89,7 @@
                                         <td>
                                             <div class="ui small buttons">
                                                 @Html.HiddenFor(m => m.SerieSensor, new { @id = "id-sensor" });
-                                                <button data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</button>
+                                                <a data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
                                                 @*<a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=Model.Desde, Hasta=Model.Hasta })"><i class="Excel icon"></i>Generar Excel</a>*@
                                                 <button data-sensor="@x.SerieSensor" class="ui attached green button boton-excel" type="submit"><i class="excel file icon"></i>Generar Excel</button>
                                             </div>
@@ -181,7 +181,7 @@
            var hasta = $("#hasta").val();
 
                           $.ajax({
-                type: "POST",
+                type: "get",
                 dataType: "json",
                 contentType: "application/json",
                 url: 'GraficosLecturasMedidores?SerieSensor=' + serie +"&Desde="+ desde +"&Hasta="+hasta,
