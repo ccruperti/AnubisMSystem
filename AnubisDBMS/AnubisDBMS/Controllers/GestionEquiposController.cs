@@ -185,8 +185,10 @@ namespace AnubisDBMS.Controllers
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
                         Lectura = lectura.Medida,
-                        MinVal = sensor.Min,
-                        MaxVal = sensor.Max
+                        MinVal = sensor.TipoSensor.Min_TipoSensor,
+                        MaxVal = sensor.TipoSensor.Max_TipoSensor,
+                        LecMax = sensor.Max,
+                        LecMin = sensor.Min
                     });
                 }
                
@@ -215,8 +217,10 @@ namespace AnubisDBMS.Controllers
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
                         Lectura = lectura.Medida,
-                        MinVal = sensor.Min,
-                        MaxVal = sensor.Max
+                        MinVal = sensor.TipoSensor.Min_TipoSensor,
+                        MaxVal = sensor.TipoSensor.Max_TipoSensor,
+                        LecMin = sensor.Min,
+                        LecMax = sensor.Max
                     });
                 }
 
@@ -270,6 +274,8 @@ namespace AnubisDBMS.Controllers
                 lec = x.Medida,
                 Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).TipoSensor.Min_TipoSensor,
                 Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).TipoSensor.Max_TipoSensor,
+                lecmin = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Min,
+                lecmax = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Max,
                 sensor = x.SerieSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,

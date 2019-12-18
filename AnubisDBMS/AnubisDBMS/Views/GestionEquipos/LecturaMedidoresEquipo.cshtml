@@ -214,7 +214,7 @@
             var dataArray = [];
 
             $.each(result, function (i, obj) {
-                dataArray.push([new Date(obj.Anio, obj.Mes, obj.Dia), obj.lec, obj.Min, obj.Max]);
+                dataArray.push([new Date(obj.Anio, obj.Mes, obj.Dia), obj.lec, obj.Min, obj.Max, obj.lecmin, obj.lecmax]);
             });
             data.addRows(dataArray);
 

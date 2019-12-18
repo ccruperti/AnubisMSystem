@@ -67,6 +67,8 @@ namespace AnubisDBMS.Data.ViewModels
         public string UnidadMedida { get; set; }
         public double? MinVal { get; set; }
         public double? MaxVal { get; set; }
+        public double? LecMin { get; set; }
+        public double? LecMax { get; set; }
 
     }
 
