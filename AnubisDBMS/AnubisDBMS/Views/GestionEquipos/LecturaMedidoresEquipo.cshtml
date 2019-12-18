@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="ui raised segment">
-                    @using (Html.BeginForm("GenerarExcel", "GestionEquipos", new { }, FormMethod.Post, new { @class = "ui form", id = "" }))
+                    @using (Html.BeginForm("MedicionesSensor", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui form", id = "" }))
                     {
 
 
@@ -29,6 +29,7 @@
 
                                 <div class="ui left icon small input">
                                     <i class="calendar icon"></i>
+                                    @Html.HiddenFor(m => m.Desde, new { @id = "fecha-desde" })
                                     @Html.TextBoxFor(model => model.Desde, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "desde" })
                                 </div>
                             </div>
@@ -38,6 +39,7 @@
                             <div class="four wide field">
                                 <div class="ui left icon small input">
                                     <i class="calendar icon"></i>
+                                    @Html.HiddenFor(m => m.Hasta, new { @id="fecha-hasta"})
                                     @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "hasta" })
                                 </div>
                             </div>
@@ -91,7 +93,7 @@
                                                 @Html.HiddenFor(m => m.SerieSensor, new { @id = "id-sensor" });
                                                 <a data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
                                                 @*<a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=Model.Desde, Hasta=Model.Hasta })"><i class="Excel icon"></i>Generar Excel</a>*@
-                                                <button data-sensor="@x.SerieSensor" class="ui attached green button boton-excel" type="submit"><i class="excel file icon"></i>Generar Excel</button>
+                                                <button data-sensor="@x.SerieSensor"  data-desde="" data-hasta="" class="ui attached green button boton-excel" type="submit")"><i class="excel file icon"></i>Generar Excel</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -172,6 +174,11 @@
         $(".boton-excel").on("click", function () {
             var serie = $(this).data("sensor");
             $("#id-sensor").val(serie);
+            var desde = $("#desde").val();
+            var hasta = $("#hasta").val();
+            $("#fecha-desde").val(desde);
+                        $("#fecha-hasta").val(hasta);
+
         })
         $(".cargar-grafico").on('click', function () {
             var serie = $(this).data("seriesensor");

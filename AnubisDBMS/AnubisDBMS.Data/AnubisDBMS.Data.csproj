@@ -179,6 +179,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Catalogos_viewModels.cs" />
+    <Compile Include="ViewModels\ConsultasMedicionesViewModel.cs" />
     <Compile Include="ViewModels\GestionEquiposViewModels.cs" />
     <Compile Include="ViewModels\HomeVm.cs" />
     <Compile Include="ViewModels\MantenimientoViewModels.cs" />

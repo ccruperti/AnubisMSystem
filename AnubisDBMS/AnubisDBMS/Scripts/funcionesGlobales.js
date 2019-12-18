@@ -582,7 +582,8 @@ function RenderDataTable($table) {
         ordering: false,
         paging: true,
         searching: true,
-        dom: 'tip',
+        dom: 'Brtip',
+        buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5'],
         pageLength: 20,
         
     };
@@ -593,7 +594,7 @@ function RenderDataTable($table) {
         icon: 'th list icon',
         dropdownIcon: 'dropdown icon',
         texto: 'Paginar ({page-count}) filas',
-        buttons: ['copy', 'excel', 'pdf'],
+      
         pageOptions: [
             { value: 20 },
             { value: 40 },

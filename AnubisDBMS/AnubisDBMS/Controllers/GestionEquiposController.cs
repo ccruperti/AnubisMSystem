@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.Mvc;
 using AnubisDBMS.Infraestructure.Extensions;
 using AnubisDBMS.Reportes;
+using System.Data.Entity;
 
 namespace AnubisDBMS.Controllers
 {
@@ -293,6 +294,16 @@ namespace AnubisDBMS.Controllers
             byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(SerieSensor, Desde, Hasta);
             string fileName = string.Format("Lecturas.xlsx");
             return File(fileStream.ToArray(), "application/octet-stream", fileName);
+        }
+
+        public ActionResult MedicionesSensor(string SerieSensor, DateTime? Desde, DateTime? Hasta)
+        {
+            var model = new ConsultasMedicionesViewModel();
+            var desde = ViewBag.Desde;
+            model.Lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
+            && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
+            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta))).ToList();
+            return View(model);
         }
     }
 }

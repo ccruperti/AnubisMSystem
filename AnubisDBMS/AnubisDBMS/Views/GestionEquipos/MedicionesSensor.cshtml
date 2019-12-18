@@ -1,0 +1,169 @@
+﻿@model AnubisDBMS.Data.ViewModels.ConsultasMedicionesViewModel
+@{
+    ViewBag.Title = "MedicionesSensor";
+}
+    <div class="row">
+        <div class="ui sixteen wide column">
+            <h1 class="ui header">@ViewBag.Title</h1>
+            @using (Html.BeginForm("MonitoreoEquipos", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui menu", id = "" }))
+            {
+                @*<div class="item">
+                    <div class="item header" style="color:black !important">
+                        <h4>Desde</h4>
+                    </div>
+                    <div class="four wide field item">
+
+                        <div class="ui left icon small input">
+                            <i class="calendar icon"></i>
+                            @Html.TextBoxFor(model => model.Desde, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "Desde" })
+                        </div>
+                    </div>
+                    <div class="item header" style="color:black !important">
+                        <h4>Hasta</h4>
+                    </div>
+                    <div class="four wide field item">
+                        <div class="ui left icon small input">
+                            <i class="calendar icon"></i>
+                            @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "Desde" })
+                        </div>
+                    </div>
+                    <div class="item">
+                        <input type="submit" value="Consultar" class="ui mini blue button" />
+
+                    </div>
+
+                </div>*@
+                <div class="item">
+
+
+                    <div class="ui left action right icon input">
+                        <div class="ui basic floating dropdown button mobile hidden">
+                            <div class="text">Filtrar búsqueda</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu" id="main-table-search-filter">
+                                <div id="main-table-search-filter-all" class="active item" data-column-search="-1">TODAS LAS COLUMNAS</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="item">
+                        <div class="ui right action left icon input" id="main-table-search">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right menu">
+                    <div class="ui dropdown item">
+                        <i class="list layout icon"></i>
+                        Paginar (<span id="main-table-pager-length"></span>) filas
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="active item datapager" data-pager="10">
+                                10
+                            </div>
+                            <div class="item datapager" data-pager="20">
+                                20
+                            </div>
+                            <div class="item datapager" data-pager="40">
+                                40
+                            </div>
+                            <div class="item datapager" data-pager="60">
+                                60
+                            </div>
+                            <div class="item datapager" data-pager="80">
+                                80
+                            </div>
+                            <div class="item datapager" data-pager="-1">
+                                Todas las filas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="sixteen wide column">
+            <div class="ui raised segments">
+
+
+
+                <div class="ui bottom attached raised segment">
+                    <table class="ui very compact small selectable celled table datatable" datatable-search="main-table-search">
+                        <thead>
+                            <tr>
+                                <th>#Serie</th>
+                                <th>Fecha Ingreso</th>
+                                <th>Medida</th>
+                                <th>Unidad Medida</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in Model.Lecturas)
+                            {
+
+                                <tr class="row text-center">
+
+
+                                    <td>@x.SerieSensor</td>
+                                    <td>@x.FechaRegistro</td>
+                                    <td>@x.Medida</td>
+                                    <td>@x.UnidadMedida</td>
+
+                                    @*<td>
+                                        <div class="ui mini buttons">
+
+                                            
+                                            @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
+                                            {
+
+                                                <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+                                                <a href="@Url.Action("LecturaMedidoresEquipo", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini blue button" data-tooltip="Ver Lectura de Sensores"><i class="thermometer icon"></i>Sensores</a>
+                                                <a href="@Url.Action("RegistrarEquipoSensor", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini green button" data-tooltip="Editar Sensores Equipo"><i class="pencil icon"></i>Editar</a>
+
+                                                if (x.EquipoDb.AplicaMonitoreo)
+                                                {
+                                                    <a href="@Url.Action("HabilitarMonitoreo", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo, IsHab = false}  )" class="ui red red button" data-tooltip="Deshabilitar Opciones de Monitoreo"><i class="x icon"></i>Deshabilitar Monitoreo</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("HabilitarMonitoreo", "GestionEquipos",new { IdEquipo = x.EquipoDb.IdEquipo , IsHab = true} )" class="ui mini inverted green button" data-tooltip="Habilitar Opciones de Monitoreo"><i class="check icon"></i>Habilitar Monitoreo</a>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("Mantenimientos", "Mantenimiento",new { IdEquipo = x.EquipoDb.IdEquipo} )" class="ui mini black button" data-tooltip="Configuración de Mantenimientos"><i class="cog icon"></i>Mantenimientos</a>
+
+                                                if (x.EquipoDb.AplicaMonitoreo)
+                                                {
+                                                    <a href="@Url.Action("LecturaMedidoresEquipo", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini blue button" data-tooltip="Ver Lectura de Sensores"><i class="thermometer icon"></i>Sensores</a>
+                                                    <a href="@Url.Action("RegistrarEquipoSensor", new { IdEquipo = x.EquipoDb.IdEquipo})" class="ui mini green button" data-tooltip="Editar Sensores Equipo"><i class="pencil icon"></i>Editar</a>
+
+
+                                                }
+                                            }
+
+
+
+                                        </div>
+                                    </td>*@
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
