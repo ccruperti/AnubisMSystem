@@ -133,7 +133,7 @@ namespace AnubisDBMS.Data.Configurations
     {
         public EstadosConfiguration()
         {
-            ToTable("Estados", AnubisDBMSSchemas.Catalogo);
+            ToTable("Estado", AnubisDBMSSchemas.Catalogo);
             HasKey(c => c.IdEstado);
 
             //Property(c => c.NombreEstado)

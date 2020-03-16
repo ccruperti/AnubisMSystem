@@ -26,8 +26,8 @@ namespace AnubisDBMS
             {
                 Authorization = new[] { new HangfireAuthorizatonFilter() }
             });
-            RecurringJob.AddOrUpdate(() => Check(), Cron.Hourly);
-            RecurringJob.AddOrUpdate(() => GenDataSensore(), Cron.MinuteInterval(5));
+           // RecurringJob.AddOrUpdate(() => Check(), Cron.Hourly);
+           // RecurringJob.AddOrUpdate(() => GenDataSensore(), Cron.MinuteInterval(5));
             app.UseHangfireServer();
 
         }
