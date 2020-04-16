@@ -17,21 +17,40 @@ namespace AnubisDBMS.Resources
         {
             public SmtpClient mailClient = new SmtpClient
             {
-                Credentials = new NetworkCredential("anubisolutions@gmail.com", "ANUBISmonitoreo2020"),
-EnableSsl = true,
-Host = "smtp.gmail.com",
-DeliveryMethod = SmtpDeliveryMethod.Network,
-Port = 465,
-                UseDefaultCredentials = true
+
+                Host = "smtp.gmail.com",
+                Port = 465,
+                EnableSsl = true,
+                Credentials = new NetworkCredential("anubisolutions@gmail.com", "ANUBISmonitoreo2030"),
+
+
 
         };
-
+ 
             public async Task<MailingRepositoryResponse> SendEmailAsync(MailMessage emailMessage)
             {
                 emailMessage.Sender = new MailAddress("anubisolutions@gmail.com", "Anubis Mail Service");
                 try
                 {
-                    await mailClient.SendMailAsync(emailMessage);
+
+                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+
+                    smtpClient.Credentials = new System.Net.NetworkCredential()
+                    {
+                        UserName = "anubisolutions@gmail.com",
+                        Password = "ANUBISmonitoreo2030"
+
+                    };
+
+                    smtpClient.EnableSsl = true;
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate (object s,
+                            System.Security.Cryptography.X509Certificates.X509Certificate certificate,
+                            System.Security.Cryptography.X509Certificates.X509Chain chain,
+                            System.Net.Security.SslPolicyErrors sslPolicyErrors)
+                    {
+                        return true;
+                    };
+                    await smtpClient.SendMailAsync(emailMessage);
                     return new MailingRepositoryResponse { Succesful = true, Message = "Correo enviado correctamente" };
                 }
                 catch (Exception e)
