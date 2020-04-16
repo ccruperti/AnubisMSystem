@@ -5,15 +5,20 @@ using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using static AnubisDBMS.Controllers.HomeController;
+using static AnubisDBMS.Resources.AnubisEmailService;
 
 namespace AnubisDBMS.Controllers
 {
     [CustomAuthorization]
     public class MantenimientoController : MainController
-    { 
+    {
+        public MailingRepository emailSvc = new MailingRepository();
+
         public ActionResult AgregarMantenimiento(long IdEquipo, bool Registro=false)
         {
             ViewBag.IdFrecuencia = SelectListFrecuencias();
@@ -33,7 +38,7 @@ namespace AnubisDBMS.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult AgregarMantenimiento(MantenimientoVM model, string submitButton)
+        public async Task<ActionResult> AgregarMantenimiento(MantenimientoVM model, string submitButton)
         {
             switch (submitButton)
             {
@@ -41,7 +46,22 @@ namespace AnubisDBMS.Controllers
                     var modelo = GuardarMantenimiento(model);
                     if (modelo!=null)
                     {
-                        
+                        var eq = db.EquipoSensor.FirstOrDefault(x => x.IdEquipo == model.IdEquipo);
+                        var bodyAprobadoProveedor = emailSvc.RenderViewToString(new MailerController(), "PlantillaAnubis",
+              "~/Views/Mailer/PlantillaAnubis.cshtml",
+              new NotificacionCorreo
+              {
+                  Usuario = User.Identity.Name,
+                  CodigoSensor = eq.Sensores.SerieSensor,
+                  Alerta = "ALERTA DE EQUIPO POR ALTO NIVEL",
+                  
+
+              });
+                        var email = new MailMessage("coolcast21@gmail.com", "chcastillor@uees.edu.ec");
+                        email.Subject = "Nueva Solicitud Generada";
+                        email.Body = bodyAprobadoProveedor;
+                        email.IsBodyHtml = true;
+                        await emailSvc.SendEmailAsync(email);
                         return RedirectToAction("AgregarMantenimiento", new { modelo.IdEquipo, Registro = true });
                     }
                     else
@@ -80,6 +100,7 @@ namespace AnubisDBMS.Controllers
             return View();
 
         }
+
         public MantenimientoVM GuardarMantenimiento (MantenimientoVM model)
         {
             var transaction = db.Database.BeginTransaction();
@@ -101,6 +122,7 @@ namespace AnubisDBMS.Controllers
                     };
                     db.Mantenimiento.Add(mantenimiento);
                     db.SaveChanges();
+          
                     transaction.Commit();
                     ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
                     ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);

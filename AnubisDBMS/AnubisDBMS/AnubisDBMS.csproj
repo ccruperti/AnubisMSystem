@@ -251,6 +251,7 @@
     <Compile Include="Controllers\GestionEquiposController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Cat_TipoSensorController.cs" />
+    <Compile Include="Controllers\MailerController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\MantenimientoController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Models\EquiposViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reportes\GenerarExcelConsultas.cs" />
+    <Compile Include="Resources\MailingRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -389,6 +391,15 @@
     <Content Include="Content\Fonts\outline-icons.ttf" />
     <Content Include="Content\Fonts\outline-icons.woff" />
     <Content Include="Content\Fonts\outline-icons.woff2" />
+    <Content Include="Resources\Media\android-chrome-192x192.png" />
+    <Content Include="Resources\Media\apple-touch-icon.png" />
+    <Content Include="Resources\Media\browserconfig.xml" />
+    <Content Include="Resources\Media\favicon-16x16.png" />
+    <Content Include="Resources\Media\favicon-32x32.png" />
+    <Content Include="Resources\Media\favicon.ico" />
+    <Content Include="Resources\Media\flags.png" />
+    <Content Include="Resources\Media\mstile-150x150.png" />
+    <Content Include="Resources\Media\mstile-310x310.png" />
     <Content Include="Scripts\buttons.flash.min.js" />
     <Content Include="Scripts\buttons.html5.min.js" />
     <Content Include="Scripts\buttons.print.min.js" />
@@ -427,6 +438,7 @@
     <Content Include="Areas\Seguridad\Views\_ViewStart.cshtml" />
     <Content Include="Views\GestionEquipos\AccesoBloqueado.cshtml" />
     <Content Include="Areas\Seguridad\Views\Servicio\AccessoBloqueado.cshtml" />
+    <Content Include="Resources\Media\manifest.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -483,6 +495,13 @@
     <Content Include="Scripts\vfs_fonts.js" />
     <Content Include="Scripts\wickedpicker.min.js" />
     <Content Include="Views\AccesoNegado.html" />
+    <Content Include="Views\Mailer\images\AnubisLogo.jpeg" />
+    <Content Include="Views\Mailer\images\divider.png" />
+    <Content Include="Views\Mailer\images\facebook2x.png" />
+    <Content Include="Views\Mailer\images\googleplus2x.png" />
+    <Content Include="Views\Mailer\images\rounder-dwn.png" />
+    <Content Include="Views\Mailer\images\rounder-up.png" />
+    <Content Include="Views\Mailer\images\twitter2x.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -522,6 +541,7 @@
     <Content Include="Views\Mantenimiento\Mantenimientos.cshtml" />
     <Content Include="Views\Home\AccessDenied.cshtml" />
     <Content Include="Views\GestionEquipos\MedicionesSensor.cshtml" />
+    <Content Include="Views\Mailer\PlantillaAnubis.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

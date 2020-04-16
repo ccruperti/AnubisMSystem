@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
-using System.Data.Entity; 
+using System.Data.Entity;
 
 namespace AnubisDBMS.Controllers
 {

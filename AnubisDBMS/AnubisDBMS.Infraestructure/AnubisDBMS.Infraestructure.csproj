@@ -212,7 +212,7 @@
     <Compile Include="WebmailManagement\Managers\ImapWebmailServer.cs" />
     <Compile Include="WebmailManagement\Managers\RazorEmailTemplateManager.cs" />
     <Compile Include="WebmailManagement\Managers\SmtpClientManager.cs" />
-    <Compile Include="WebmailManagement\Services\URPlataformEmailService.cs" />
+    <Compile Include="WebmailManagement\Services\AnubisEmailService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
