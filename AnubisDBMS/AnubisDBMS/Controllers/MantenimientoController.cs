@@ -4,10 +4,12 @@ using AnubisDBMS.Data.ViewModels;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using static AnubisDBMS.Controllers.HomeController;
 using static AnubisDBMS.Resources.AnubisEmailService;
@@ -43,6 +45,7 @@ namespace AnubisDBMS.Controllers
             switch (submitButton)
             {
                 case "SaveAndCont":
+                    string path = HostingEnvironment.MapPath("~\\");
                     var modelo = GuardarMantenimiento(model);
                     if (modelo!=null)
                     {
@@ -52,12 +55,15 @@ namespace AnubisDBMS.Controllers
               new NotificacionCorreo
               {
                   Usuario = User.Identity.Name,
-                  CodigoSensor = eq.Sensores.SerieSensor,
-                  Alerta = "ALERTA DE EQUIPO POR ALTO NIVEL",
-                  
+                  SerieSensor = eq.Sensores.SerieSensor,
+                  EncimaDebajo="Encima",
+                  Medicion="temperatura",
+                  MedidaSensor="58 C", 
+                  Img1= Path.Combine(path, "Content\\Images\\AnubisLogoEmail.jpeg")
+
 
               });
-                        var email = new MailMessage("coolcast21@gmail.com", "chcastillor@uees.edu.ec");
+                        var email = new MailMessage("aguilar996@hotmail.com", "aguilar996@hotmail.com");
                         email.Subject = "Nueva Solicitud Generada";
                         email.Body = bodyAprobadoProveedor;
                         email.IsBodyHtml = true;

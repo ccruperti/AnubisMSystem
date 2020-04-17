@@ -81,8 +81,6 @@ namespace AnubisDBMS.Resources
                 {
                     using (var sw = new StringWriter())
                     {
-
-
                         var context = new HttpContextWrapper(HttpContext.Current);
                         var routeData = new RouteData();
                         var controllerContext = new ControllerContext(new RequestContext(context, routeData), controller);

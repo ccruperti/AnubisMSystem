@@ -283,9 +283,7 @@
     <Content Include="Content\fullcalendar.min.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\fullcalendar.print.min.css" />
-    <Content Include="Content\Images\5a2df44f128a5.png" />
     <Content Include="Content\Images\AnubisLogo.jpeg" />
-    <Content Include="Content\Images\CRlogo.jpg" />
     <Content Include="Content\Images\flags.png" />
     <Content Include="Content\Images\URLogo.JPG" />
     <Content Include="Content\jquery-ui.css" />
@@ -495,13 +493,13 @@
     <Content Include="Scripts\vfs_fonts.js" />
     <Content Include="Scripts\wickedpicker.min.js" />
     <Content Include="Views\AccesoNegado.html" />
-    <Content Include="Views\Mailer\images\AnubisLogo.jpeg" />
-    <Content Include="Views\Mailer\images\divider.png" />
-    <Content Include="Views\Mailer\images\facebook2x.png" />
-    <Content Include="Views\Mailer\images\googleplus2x.png" />
-    <Content Include="Views\Mailer\images\rounder-dwn.png" />
-    <Content Include="Views\Mailer\images\rounder-up.png" />
-    <Content Include="Views\Mailer\images\twitter2x.png" />
+    <Content Include="Content\Images\AnubisLogoEmail.jpeg" />
+    <Content Include="Content\Images\divider.png" />
+    <Content Include="Content\Images\facebook2x.png" />
+    <Content Include="Content\Images\googleplus2x.png" />
+    <Content Include="Content\Images\rounder-dwn.png" />
+    <Content Include="Content\Images\rounder-up.png" />
+    <Content Include="Content\Images\twitter2x.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
