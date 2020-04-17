@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
@@ -46,9 +47,24 @@ namespace AnubisDBMS.Controllers
             {
                 case "SaveAndCont":
                     string path = HostingEnvironment.MapPath("~\\");
+                    string pathcomp = Path.Combine(path, "Content\\Images\\AnubisLogoEmail.jpeg");
+
                     var modelo = GuardarMantenimiento(model);
                     if (modelo!=null)
                     {
+                        var email = new MailMessage("anubisolutions@gmail.com", "chcastillor@uees.edu.ec");
+                        string logoImage = HttpContext.Server.MapPath(@"~\\Content\\Images\\AnubisLogoEmail.jpeg");
+
+                        Attachment logoImageAtt = new Attachment(logoImage);
+
+                        email.Attachments.Add(logoImageAtt);
+
+                        logoImageAtt.ContentDisposition.Inline = true;
+                        logoImageAtt.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
+                        string logoImgId = "headerimg1";
+                        logoImageAtt.ContentId = logoImgId;
+                        email.Subject = "Nueva Solicitud Generada";
+                        email.IsBodyHtml = true;
                         var eq = db.EquipoSensor.FirstOrDefault(x => x.IdEquipo == model.IdEquipo);
                         var bodyAprobadoProveedor = emailSvc.RenderViewToString(new MailerController(), "PlantillaAnubis",
               "~/Views/Mailer/PlantillaAnubis.cshtml",
@@ -59,14 +75,12 @@ namespace AnubisDBMS.Controllers
                   EncimaDebajo="Encima",
                   Medicion="temperatura",
                   MedidaSensor="58 C", 
-                  Img1= Path.Combine(path, "Content\\Images\\AnubisLogoEmail.jpeg")
+                  Img1= logoImgId
 
 
               });
-                        var email = new MailMessage("aguilar996@hotmail.com", "aguilar996@hotmail.com");
-                        email.Subject = "Nueva Solicitud Generada";
                         email.Body = bodyAprobadoProveedor;
-                        email.IsBodyHtml = true;
+
                         await emailSvc.SendEmailAsync(email);
                         return RedirectToAction("AgregarMantenimiento", new { modelo.IdEquipo, Registro = true });
                     }
