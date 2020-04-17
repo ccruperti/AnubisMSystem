@@ -21,7 +21,10 @@ namespace AnubisDBMS.Controllers
         public string Medicion { get; set; }
         public string EncimaDebajo { get; set; }
         public string MedidaSensor { get; set; } 
-        public string Img1 { get; set; }
+        public string Logo { get; set; }
+        public string rounderup { get; set; }
+        public string divider { get; set; }
+        public string rounderdwn { get; set; } 
 
     }
 }

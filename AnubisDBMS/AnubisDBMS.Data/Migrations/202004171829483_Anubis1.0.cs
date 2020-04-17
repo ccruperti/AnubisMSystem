@@ -3,7 +3,7 @@ namespace AnubisDBMS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Anubis_10 : DbMigration
+    public partial class Anubis10 : DbMigration
     {
         public override void Up()
         {
@@ -18,6 +18,8 @@ namespace AnubisDBMS.Data.Migrations
                         UnidadMedida = c.String(),
                         Chequeado = c.Boolean(nullable: false),
                         Error = c.Boolean(nullable: false),
+                        EncimaNormal = c.Boolean(nullable: false),
+                        DebajoNormal = c.Boolean(nullable: false),
                         Notificado = c.Boolean(nullable: false),
                         Activo = c.Boolean(nullable: false),
                         FechaRegistro = c.DateTime(nullable: false),

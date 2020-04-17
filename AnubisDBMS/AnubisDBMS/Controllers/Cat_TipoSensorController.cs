@@ -61,7 +61,7 @@ namespace AnubisDBMS.Controllers
                         FechaRegistro = DateTime.Now,
                         UsuarioRegistro = User.Identity.Name,
                         //Audit end
-                      NombreTipoSensor=model.NombreTipoSensor,
+                      NombreTipoSensor=model.NombreTipoSensor.Trim().ToUpper(),
                       Max_TipoSensor=model.Max_TipoSensor,
                       Min_TipoSensor=model.Min_TipoSensor
                     };

@@ -20,8 +20,7 @@ namespace AnubisDBMS.Controllers
     [CustomAuthorization]
     public class MantenimientoController : MainController
     {
-        public MailingRepository emailSvc = new MailingRepository();
-
+       
         public ActionResult AgregarMantenimiento(long IdEquipo, bool Registro=false)
         {
             ViewBag.IdFrecuencia = SelectListFrecuencias();
@@ -41,47 +40,14 @@ namespace AnubisDBMS.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<ActionResult> AgregarMantenimiento(MantenimientoVM model, string submitButton)
+        public ActionResult AgregarMantenimiento(MantenimientoVM model, string submitButton)
         {
             switch (submitButton)
             {
                 case "SaveAndCont":
-                    string path = HostingEnvironment.MapPath("~\\");
-                    string pathcomp = Path.Combine(path, "Content\\Images\\AnubisLogoEmail.jpeg");
-
                     var modelo = GuardarMantenimiento(model);
-                    if (modelo!=null)
+                    if (modelo != null)
                     {
-                        var email = new MailMessage("anubisolutions@gmail.com", "chcastillor@uees.edu.ec");
-                        string logoImage = HttpContext.Server.MapPath(@"~\\Content\\Images\\AnubisLogoEmail.jpeg");
-
-                        Attachment logoImageAtt = new Attachment(logoImage);
-
-                        email.Attachments.Add(logoImageAtt);
-
-                        logoImageAtt.ContentDisposition.Inline = true;
-                        logoImageAtt.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
-                        string logoImgId = "headerimg1";
-                        logoImageAtt.ContentId = logoImgId;
-                        email.Subject = "Nueva Solicitud Generada";
-                        email.IsBodyHtml = true;
-                        var eq = db.EquipoSensor.FirstOrDefault(x => x.IdEquipo == model.IdEquipo);
-                        var bodyAprobadoProveedor = emailSvc.RenderViewToString(new MailerController(), "PlantillaAnubis",
-              "~/Views/Mailer/PlantillaAnubis.cshtml",
-              new NotificacionCorreo
-              {
-                  Usuario = User.Identity.Name,
-                  SerieSensor = eq.Sensores.SerieSensor,
-                  EncimaDebajo="Encima",
-                  Medicion="temperatura",
-                  MedidaSensor="58 C", 
-                  Img1= logoImgId
-
-
-              });
-                        email.Body = bodyAprobadoProveedor;
-
-                        await emailSvc.SendEmailAsync(email);
                         return RedirectToAction("AgregarMantenimiento", new { modelo.IdEquipo, Registro = true });
                     }
                     else
@@ -99,7 +65,7 @@ namespace AnubisDBMS.Controllers
                     {
                         return View(modelo2);
                     }
-                default: 
+                default:
                     return View(model);
             }
         }

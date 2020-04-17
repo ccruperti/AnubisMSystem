@@ -224,32 +224,35 @@ namespace AnubisDBMS.Controllers
             ).ToList();
             foreach (var lec in data)
             {
-                var TodoBien = 1;
+                bool TodoBienMAX = true;
+                bool TodoBienMIN = false;
                 if (sensor.Min == null)
                 { //SI MIN ES NULO REVISO MAX
                     if (CheckRange(null, sensor.Max, lec.Medida))
-                        TodoBien = 1;
-                    else TodoBien=0;
+                        TodoBienMAX = true; 
+                    else TodoBienMAX= false;
                 }
                 if (sensor.Max == null)
                 {//SI MAX ES NULO REVISO MIN
                     if (CheckRange(sensor.Min, null, lec.Medida))
-                        TodoBien = 1;
-                    else TodoBien = 0;
+                        TodoBienMIN = true;
+                    else TodoBienMIN = false;
                 }
                 if (sensor.Min != null && sensor.Max != null)
                 {//SI NINGUNO ES NULL REVISO AMBOS
-                    if (CheckRange(null, sensor.Max, lec.Medida) &&
-                    CheckRange(sensor.Min, null, lec.Medida))
-                    {
-                        TodoBien = 1;
-                    }
-                    else TodoBien = 0;  
+                    if (CheckRange(null, sensor.Max, lec.Medida))  
+                        TodoBienMAX = true;
+                    else TodoBienMAX = false; 
+                    if (CheckRange(sensor.Min, null, lec.Medida))
+                        TodoBienMIN = true;
+                    else TodoBienMIN = false; 
                 }
-                if(TodoBien==0)
+                if (TodoBienMAX==false||TodoBienMIN==false)
                 {
                     lec.Chequeado = true;
                     lec.Error = true;
+                    lec.EncimaNormal = TodoBienMAX;
+                    lec.DebajoNormal = TodoBienMIN;
                     db.SaveChanges();
                 }
                 lec.Chequeado = true;

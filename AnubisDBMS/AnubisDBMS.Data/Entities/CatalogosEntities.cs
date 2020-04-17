@@ -122,6 +122,9 @@ namespace AnubisDBMS.Data.Entities
         public string UnidadMedida { get; set; } 
         public bool Chequeado { get; set; }
         public bool Error { get; set; }
+        public bool EncimaNormal { get; set; }
+        public bool DebajoNormal { get; set; } 
+
         public bool Notificado { get; set; }
 
     }
