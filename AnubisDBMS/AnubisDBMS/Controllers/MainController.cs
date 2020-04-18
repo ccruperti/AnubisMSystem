@@ -10,15 +10,20 @@ using System.Web.Mvc;
 using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using System.Data.Entity;
+using System.IO;
+using System.Net.Mail;
+using static AnubisDBMS.Resources.AnubisEmailService;
+using System.Web.Hosting;
+using System.Net.Mime;
 
 namespace AnubisDBMS.Controllers
 {
 
     public class MainController : Controller
     { 
-        #region DB&Users
+        #region DB_Users_Mail
         public AnubisDbContext db = new AnubisDbContext();
-
+        public MailingRepository emailSvc = new MailingRepository(); 
         public AnubisDBMSUserManager _userManager;
         public AnubisDBMSRoleManager _roleManager;
 
@@ -215,53 +220,49 @@ namespace AnubisDBMS.Controllers
         #endregion
 
         #region SensorMinMaxCheck
-        public bool CheckMinMax (long IdSensor,string ModeloSensor)
+        public bool CheckMinMax (DataSensores dataSensor)
         {
-            var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == IdSensor);
-            var data = db.DataSensores.Where(x => x.Activo &&
-            x.SerieSensor == ModeloSensor &&
-            x.Chequeado==false
-            ).ToList();
-            foreach (var lec in data)
+            var Max = db.Sensores.FirstOrDefault(x => x.SerieSensor == dataSensor.SerieSensor).Max??0;
+            var Min = db.Sensores.FirstOrDefault(x => x.SerieSensor == dataSensor.SerieSensor).Min??0;
+            bool TodoBienMAX = true;
+            bool TodoBienMIN = true;
+            //SI MIN ES 0 REVISO MAX
+            if (Min == 0)
+            { 
+                if (!CheckRange(null, Max, dataSensor.Medida))
+                { TodoBienMAX = false; } 
+            }
+            //SI MAX ES 0 REVISO MIN
+            if (Max == 0)
             {
-                bool TodoBienMAX = true;
-                bool TodoBienMIN = false;
-                if (sensor.Min == null)
-                { //SI MIN ES NULO REVISO MAX
-                    if (CheckRange(null, sensor.Max, lec.Medida))
-                        TodoBienMAX = true; 
-                    else TodoBienMAX= false;
-                }
-                if (sensor.Max == null)
-                {//SI MAX ES NULO REVISO MIN
-                    if (CheckRange(sensor.Min, null, lec.Medida))
-                        TodoBienMIN = true;
-                    else TodoBienMIN = false;
-                }
-                if (sensor.Min != null && sensor.Max != null)
-                {//SI NINGUNO ES NULL REVISO AMBOS
-                    if (CheckRange(null, sensor.Max, lec.Medida))  
-                        TodoBienMAX = true;
-                    else TodoBienMAX = false; 
-                    if (CheckRange(sensor.Min, null, lec.Medida))
-                        TodoBienMIN = true;
-                    else TodoBienMIN = false; 
-                }
+                if (!CheckRange(Min, null, dataSensor.Medida)) 
+                { TodoBienMIN = false; }
+            }
+            //SI NINGUNO ES 0 REVISO AMBOS
+            if (Min != 0 && Max != 0)
+            {
+                if (!CheckRange(null, Max, dataSensor.Medida)) 
+                { TodoBienMAX = false; }
+                if (!CheckRange(Min, null, dataSensor.Medida)) 
+                { TodoBienMIN = false; }
+            }
                 if (TodoBienMAX==false||TodoBienMIN==false)
                 {
-                    lec.Chequeado = true;
-                    lec.Error = true;
-                    lec.EncimaNormal = TodoBienMAX;
-                    lec.DebajoNormal = TodoBienMIN;
-                    db.SaveChanges();
-                }
-                lec.Chequeado = true;
+                dataSensor.Chequeado = true;
+                dataSensor.Error = true;
+                dataSensor.EncimaNormal = TodoBienMAX;
+                dataSensor.DebajoNormal = TodoBienMIN;
                 db.SaveChanges();
-            }
-            return true;
+                return false;
+                } 
+                dataSensor.Chequeado = true;
+                db.SaveChanges();
+                return true;
         }
+          
+        
 
-        public bool CheckRange( double? Min, double? Max, double? Lectura)
+        public bool CheckRange( double? Min, double? Max, double Lectura)
         {
             if(Min==null)
             {
@@ -285,5 +286,98 @@ namespace AnubisDBMS.Controllers
        
         }
         #endregion
+
+        public bool CheckMedidas()
+        { 
+            var dataSensores = db.DataSensores.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) == DbFunctions.TruncateTime(DateTime.Today) && x.Activo && x.Chequeado == false).ToList();
+            foreach (var medidas in dataSensores)
+            {
+                CheckMinMax(medidas);
+            }
+            return true; 
+        }
+
+
+        public async System.Threading.Tasks.Task<bool> NotificarAsync(string correoDestino)
+        {
+            foreach (var error in db.DataSensores.Where(x => x.Error && x.Notificado == false).ToList())
+            {
+                string path = HostingEnvironment.MapPath("~\\");
+                string logoImage = Path.Combine(path, "Content\\Images\\AnubisLogoEmail.jpeg");
+                string rounderup = Path.Combine(path, "Content\\Images\\rounder-up.png");
+                string divider = Path.Combine(path, "Content\\Images\\divider.png");
+                string rounderdwn = Path.Combine(path, "Content\\Images\\rounder-dwn.png");
+                Attachment logoImageAtt = new Attachment(logoImage);
+                Attachment rounderupAtt = new Attachment(rounderup);
+                Attachment dividerAtt = new Attachment(divider);
+                Attachment rounderdwnAtt = new Attachment(rounderdwn);
+
+                logoImageAtt.ContentDisposition.Inline = true;
+                logoImageAtt.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
+                string logoImgId = "headerimg1";
+                logoImageAtt.ContentId = logoImgId;
+
+                rounderupAtt.ContentDisposition.Inline = true;
+                rounderupAtt.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
+                string rounderupId = "headerimg2";
+                rounderupAtt.ContentId = rounderupId;
+
+                dividerAtt.ContentDisposition.Inline = true;
+                dividerAtt.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
+                string dividerId = "headerimg3";
+                dividerAtt.ContentId = dividerId;
+
+                rounderdwnAtt.ContentDisposition.Inline = true;
+                rounderdwnAtt.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
+                string rounderdwnId = "headerimg4";
+                rounderdwnAtt.ContentId = rounderdwnId;
+
+
+                var email = new MailMessage("anubisolutions@gmail.com", correoDestino);
+                email.Attachments.Add(logoImageAtt);
+                email.Attachments.Add(rounderupAtt);
+                email.Attachments.Add(dividerAtt);
+                email.Attachments.Add(rounderdwnAtt);
+
+                email.Subject = "Nueva Alerta - Sensor" + " " + error.SerieSensor;
+                email.IsBodyHtml = true;
+                var not = new NotificacionCorreo
+                {
+                    Usuario = "FALTA EL USUARIO",
+                    SerieSensor = error.SerieSensor,
+                    Medicion = error.UnidadMedida,
+                    MedidaSensor = error.Medida.ToString(),
+
+                    Logo = logoImgId,
+                    divider = dividerId,
+                    rounderdwn = rounderdwnId,
+                    rounderup = rounderupId
+                };
+                if (error.DebajoNormal == true)
+                {
+                    not.EncimaDebajo = "debajo";
+                }
+                if (error.EncimaNormal == true)
+                {
+                    not.EncimaDebajo = "encima";
+                }
+                try
+                { 
+                var bodyAprobadoProveedor = emailSvc.RenderViewToString(new MailerController(), "PlantillaAnubis", "~/Views/Mailer/PlantillaAnubis.cshtml", not);
+                email.Body = bodyAprobadoProveedor;
+                await emailSvc.SendEmailAsync(email);
+                error.Notificado = true;
+                db.SaveChanges();
+                }
+                catch(Exception e)
+                {
+                    return false;
+                }
+                
+            }
+            return true;
+        }
+
+        
     }
 }

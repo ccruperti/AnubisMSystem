@@ -13,8 +13,10 @@ namespace AnubisDBMS.Resources
 {
     public class AnubisEmailService
     {
+        HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
         public class MailingRepository
         {
+            
             public SmtpClient mailClient = new SmtpClient
             {
 
