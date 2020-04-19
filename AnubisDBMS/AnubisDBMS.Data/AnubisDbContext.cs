@@ -6,11 +6,11 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using AnubisDBMS.Data.Configurations;
-
+using AnubisDBMS.Infraestructura.Data;
 
 namespace AnubisDBMS.Data
 {
-   public class AnubisDbContext: DbContext
+   public class AnubisDbContext: AnubisDBMSDbContext
     {
 
         public DbSet<Equipo> Equipos { get; set; }

@@ -4,7 +4,9 @@ using AnubisDBMS.Infraestructura.Data;
 using AnubisDBMS.Infraestructure.Data.Security.Entities;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using AnubisDBMS.Infraestructure.Security;
+using AnubisDBMS.Infraestructure.Security.Managers;
 using AnubisDBMS.Infraestructure.Security.Stores;
+using AnubisDBMS.Web.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +23,15 @@ namespace AnubisDBMS
         protected void Application_Start()
         {
 
+
+            // AreaRegistration.RegisterAllAreas();
+   
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            //AreaRegistration.RegisterAllAreas();
-
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            var context = new AnubisDBMSDbContext();
-            var db = new AnubisDbContext();
+            HangfireService.Instance.Start();
+
+            var context = new AnubisDbContext();
             var applicationRoles = new List<AnubisDBMSUserRole>
             {
                 new AnubisDBMSUserRole("Developers", "Developers", "Usuarios Developers", true),
@@ -36,7 +39,9 @@ namespace AnubisDBMS
 
             Infraestructure.Security.StartupData.DefaultRoles(new Infraestructure.Security.Managers.AnubisDBMSRoleManager(new AnubisDBMSRoleStore(context)), applicationRoles);
             StartupData.DefaultUsers(new Infraestructure.Security.Managers.AnubisDBMSUserManager(new Infraestructure.Security.Stores.AnubisDBMSUserStore(context)));
-
+            StartupData.DefaultRoles(new AnubisDBMSRoleManager(new AnubisDBMSRoleStore(context)), applicationRoles);
+            StartupData.DefaultUsers(new AnubisDBMSUserManager(new AnubisDBMSUserStore(context)));
+            context.Dispose();
 
         }
     }

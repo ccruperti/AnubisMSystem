@@ -1,7 +1,7 @@
 {
-  "name": "VitaproCompras - Sistema de Tracking",
-  "short_name": "VitaproCompras",
-  "description": "Sistema de Tracking y Gestion de Vitapro. Desarrollado por Apptelink S.A",
+  "name": "Anubis Monitoreo",
+  "short_name": "Anubis",
+  "description": "Sistema de Monitoreo",
   "icons": [
     {
       "src": "/Resources/Media/android-chrome-192x192.png",
@@ -15,5 +15,5 @@
   "lang": "es-EC",
   "orientation": "landscape-primary",
   "categories": [ "intranet", "tracking" ],
-  "start_url": "/Dashboard/Index"
+  "start_url": "/Home/Index"
 }

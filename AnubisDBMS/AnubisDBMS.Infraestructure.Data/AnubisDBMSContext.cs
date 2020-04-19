@@ -48,6 +48,7 @@ namespace AnubisDBMS.Infraestructura.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<AnubisDBMSUserRole>().ToTable("Roles", Schemas.Seguridad).Property(p => p.Id).HasColumnName("IdRol");
             modelBuilder.Entity<AnubisDBMSUser>().ToTable("Usuarios", Schemas.Seguridad).Property(p => p.Id).HasColumnName("IdUsuario");
@@ -56,7 +57,6 @@ namespace AnubisDBMS.Infraestructura.Data
             modelBuilder.Entity<AnubisDBMSLogin>().ToTable("LoginsUsuarios", Schemas.Seguridad).Property(p => p.UserId).HasColumnName("IdUsuario");
             modelBuilder.Entity<AnubisDBMSClaim>().ToTable("ClaimsUsuarios", Schemas.Seguridad).Property(p => p.Id).HasColumnName("IdClaim");
             modelBuilder.Entity<AnubisDBMSClaim>().Property(p => p.UserId).HasColumnName("IdUsuario");
-            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new PermissionConfiguration());
             modelBuilder.Configurations.Add(new SecurityAreaConfiguration());
