@@ -297,11 +297,32 @@ namespace AnubisDBMS.Controllers
             return true; 
         }
 
-
-        public async System.Threading.Tasks.Task<bool> NotificarAsync(string correoDestino)
+        public async System.Threading.Tasks.Task<bool> CalcularNotificacionesAsync(string correoDestino)
         {
-            foreach (var error in db.DataSensores.Where(x => x.Error && x.Notificado == false).ToList())
-            {
+                int PrimeraNotif = UserManager.FindByEmailAsync(correoDestino).Result.PrimeraNotificacion;
+                int SegundaNotif = UserManager.FindByEmailAsync(correoDestino).Result.SegundaNotificacion;
+                int TerceraNotif = UserManager.FindByEmailAsync(correoDestino).Result.TerceraNotificacion;
+                var Errores = db.DataSensores.Where(x => x.Error && x.Notificado == false);
+                int Conteo = Errores.Count();
+                DataSensores ErrorANotificar = Errores.FirstOrDefault();
+                   if (Conteo == PrimeraNotif || Conteo == SegundaNotif || Conteo  == TerceraNotif)
+                    {
+                        try
+                        {
+                            await NotificarAsync(ErrorANotificar, correoDestino);
+                        }
+                        catch (Exception e)
+                        {
+                            return false; 
+                        }
+                    }
+            return true;
+
+        }
+
+        public async System.Threading.Tasks.Task<bool> NotificarAsync(DataSensores error, string correoDestino)
+        {
+            
                 string path = HostingEnvironment.MapPath("~\\");
                 string logoImage = Path.Combine(path, "Content\\Images\\AnubisLogoEmail.jpeg");
                 string rounderup = Path.Combine(path, "Content\\Images\\rounder-up.png");
@@ -343,7 +364,7 @@ namespace AnubisDBMS.Controllers
                 email.IsBodyHtml = true;
                 var not = new NotificacionCorreo
                 {
-                    Usuario = "FALTA EL USUARIO",
+                    Usuario = "Adminsitrador", 
                     SerieSensor = error.SerieSensor,
                     Medicion = error.UnidadMedida,
                     MedidaSensor = error.Medida.ToString(),
@@ -352,15 +373,7 @@ namespace AnubisDBMS.Controllers
                     divider = dividerId,
                     rounderdwn = rounderdwnId,
                     rounderup = rounderupId
-                };
-                if (error.DebajoNormal == true)
-                {
-                    not.EncimaDebajo = "debajo";
-                }
-                if (error.EncimaNormal == true)
-                {
-                    not.EncimaDebajo = "encima";
-                }
+                }; 
                 try
                 { 
                 var bodyAprobadoProveedor = emailSvc.RenderViewToString(new MailerController(), "PlantillaAnubis", "~/Views/Mailer/PlantillaAnubis.cshtml", not);
@@ -373,8 +386,7 @@ namespace AnubisDBMS.Controllers
                 {
                     return false;
                 }
-                
-            }
+                 
             return true;
         }
 

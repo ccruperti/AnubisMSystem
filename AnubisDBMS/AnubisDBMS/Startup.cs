@@ -14,7 +14,7 @@ using GlobalConfiguration = Hangfire.GlobalConfiguration;
 
 namespace AnubisDBMS
 {
-    public partial class Startup
+    public partial class Startup : MainController
     {
       
         Random rnd = new Random();
@@ -26,8 +26,6 @@ namespace AnubisDBMS
             ConfigureAuth(app);
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
 
-            //RecurringJob.AddOrUpdate(() => CheckAsync(), Cron.Hourly);
-           // RecurringJob.AddOrUpdate(() => GenDataSensore(), Cron.MinuteInterval(1));
             app.UseHangfireServer();
             app.UseHangfireDashboard("/Hangfire", new DashboardOptions()
             {
@@ -36,28 +34,28 @@ namespace AnubisDBMS
 
         }
 
-        //public async System.Threading.Tasks.Task<bool> CheckAsync()
-        // {
-           
-        //    if(CheckMedidas())
-        //    {
+        public async System.Threading.Tasks.Task<bool> CheckAsync()
+        {
 
-        //        if (await NotificarAsync("chcastillor@uees.edu.ec"))
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        { return false; }
-        //    }
-        //    return false;
+            if (CheckMedidas())
+            {
 
-        //}
+                if (await CalcularNotificacionesAsync("aguilar996@hotmail.com"))
+                {
+                    return true;
+                }
+                else
+                { return false; }
+            }
+            return false;
+
+        }
 
 
         //#region RandomGenData
         //public void GenDataSensore()
         //{
-           
+
         //    var countdatos = db.EquipoSensor.Count(c => c.Activo);
 
         //    string[] numserie = new string[4];

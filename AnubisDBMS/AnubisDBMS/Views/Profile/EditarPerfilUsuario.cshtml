@@ -27,23 +27,47 @@
                 @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
             </div>
-            <button class="ui button  green button" onclick="submit()">Guardar</button>
-            }
-            <br />
 
-            
+            <div class="three fields"> 
+                <h3>Notificación de Alertas</h3>
+                <div class="field">
+                    Correo
 
+                    @Html.EditorFor(model => model.PrimeraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PrimeraNotificacion, "", new { @class = "text-danger" })
+                </div>
 
-            <div class="ui sub dividing header"></div>
+                <div class="field">
+                    Correo
 
-            <div class="extra content">
-                <a>
-                    <i class="tablet icon"></i>
-                    22 Equipos
-                </a>
+                    @Html.EditorFor(model => model.SegundaNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SegundaNotificacion, "", new { @class = "text-danger" })
+                </div>
 
+                <div class="field">
+                    Correo
+
+                    @Html.EditorFor(model => model.TerceraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TerceraNotificacion, "", new { @class = "text-danger" })
+                </div>
             </div>
+            <button class="ui button  green button" onclick="submit()">Guardar</button>
+        }
+        <br />
+
+
+
+
+        <div class="ui sub dividing header"></div>
+
+        <div class="extra content">
+            <a>
+                <i class="tablet icon"></i>
+                22 Equipos
+            </a>
+
         </div>
+    </div>
 
 
 

@@ -80,9 +80,20 @@ namespace AnubisDBMS.Data.ViewModels
         }
 
         public class PerfilVM {
+            public PerfilVM()
+                {
+                PrimeraNotificacion = 0;
+                SegundaNotificacion = 0;
+                TerceraNotificacion = 0;
+
+        }
 
             public string correo { get; set; }
             public string telefono { get; set; }
+            public int PrimeraNotificacion { get; set; }
+            public int SegundaNotificacion { get; set; }
+            public int TerceraNotificacion { get; set; }
+
             }
     }
 }

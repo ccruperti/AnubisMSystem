@@ -19,8 +19,9 @@ namespace AnubisDBMS.Controllers
         public string Usuario { get; set; }
         public string SerieSensor { get; set; }
         public string Medicion { get; set; }
-        public string EncimaDebajo { get; set; }
-        public string MedidaSensor { get; set; } 
+        public string UnidadMedida { get; set; }
+        public string MedidaSensor { get; set; }
+        
         public string Logo { get; set; }
         public string rounderup { get; set; }
         public string divider { get; set; }

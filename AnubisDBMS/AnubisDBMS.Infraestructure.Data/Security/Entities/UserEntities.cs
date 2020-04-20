@@ -23,6 +23,9 @@ namespace AnubisDBMS.Infraestructure.Data.Security.Entities
         public string TipoUsuario { get; set; }
         public string Cedula { get; set; }
         public string Celular { get; set; }
+        public int PrimeraNotificacion { get; set; }
+        public int SegundaNotificacion { get; set; }
+        public int TerceraNotificacion { get; set; }
         public bool Activo { get; set; }
         public DateTime FechaRegistro { get; set; }
         public DateTime? FechaActivacion { get; set; }

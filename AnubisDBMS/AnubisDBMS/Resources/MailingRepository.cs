@@ -84,9 +84,9 @@ namespace AnubisDBMS.Resources
                     using (var sw = new StringWriter())
                     {
                         HttpContext.Current = new HttpContext(
-    new HttpRequest("", "http://localhost:54802", ""),
-    new HttpResponse(new StringWriter())
-    );
+                        new HttpRequest("", "http://localhost:54802", ""),
+                        new HttpResponse(new StringWriter())
+                        );
                         var context = new HttpContextWrapper(HttpContext.Current);
                         var routeData = new RouteData();
                         var controllerContext = new ControllerContext(new RequestContext(context, routeData), controller);
