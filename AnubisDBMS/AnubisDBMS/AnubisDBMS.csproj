@@ -264,6 +264,7 @@
     <Compile Include="Reportes\GenerarExcelConsultas.cs" />
     <Compile Include="Resources\MailingRepository.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Views\Helpers\Identity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\buttons.dataTables.min.css" />
@@ -541,6 +542,7 @@
     <Content Include="Views\Home\AccessDenied.cshtml" />
     <Content Include="Views\GestionEquipos\MedicionesSensor.cshtml" />
     <Content Include="Views\Mailer\PlantillaAnubis.cshtml" />
+    <Content Include="Views\Mantenimiento\ListaErrosDataSensores.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

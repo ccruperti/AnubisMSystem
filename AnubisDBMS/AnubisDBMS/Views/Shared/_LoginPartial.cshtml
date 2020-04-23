@@ -1,7 +1,23 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using AnubisDBMS.Views.Helpers
+
 <div class="right menu">
     @if (Request.IsAuthenticated)
     {
+    <div class="ui dropdown item">
+
+      
+        <a href="@Url.Action("ListaErrosDataSensores", "Mantenimiento" , new { area= ""})" class="item">
+            &nbsp;
+            Alertas <div class="ui red left pointing label">@User.Identity.GetNumeroPendientesOrdenComprasPresidencia()</div>
+        </a>
+        @*<div class="menu">
+
+            <a href="@Url.Action("ListaErrosDataSensores", "Mantenimiento" , new { area= ""})" class="item">
+                &nbsp;
+                <div class="ui red left pointing label"> @User.Identity.GetNumeroPendientesOrdenComprasPresidencia()</div>
+            </a>
+        </div>*@
+    </div>
         <div class="ui dropdown item">
             Hola @User.Identity.GetUserName()
             <i class="dropdown icon"></i>

@@ -114,6 +114,7 @@ namespace AnubisDBMS.Data.Entities
             Chequeado = false;
             Error = false;
             Notificado = false;
+            AlertaRecibida = false;
             }
         public long IdDataSensor { get; set; }
         public string SerieSensor { get; set; }
@@ -124,7 +125,7 @@ namespace AnubisDBMS.Data.Entities
         public bool Error { get; set; }
         public bool EncimaNormal { get; set; }
         public bool DebajoNormal { get; set; } 
-
+        public bool AlertaRecibida { get; set; }
         public bool Notificado { get; set; }
 
     }

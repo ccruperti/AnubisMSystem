@@ -199,14 +199,14 @@ namespace AnubisDBMS.Web.App_Start
                     rounderdwn = rounderdwnId,
                     rounderup = rounderupId
                 };
-                if (error.DebajoNormal == true)
-                {
-                    not.EncimaDebajo = "debajo";
-                }
-                if (error.EncimaNormal == true)
-                {
-                    not.EncimaDebajo = "encima";
-                }
+                //if (error.DebajoNormal == true)
+                //{
+                //    not.EncimaDebajo = "debajo";
+                //}
+                //if (error.EncimaNormal == true)
+                //{
+                //    not.EncimaDebajo = "encima";
+                //}
                 try
                 {
                     var bodyAprobadoProveedor = emailSvc.RenderViewToString(new MailerController(), "PlantillaAnubis", "~/Views/Mailer/PlantillaAnubis.cshtml", not);

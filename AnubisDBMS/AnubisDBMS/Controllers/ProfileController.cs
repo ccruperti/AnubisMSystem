@@ -50,5 +50,8 @@ namespace AnubisDBMS.Controllers
             await UserManager.UpdateAsync(user.Result);
             return RedirectToAction("PerfilUsuario");
         }
+
+ 
+
     }
 }

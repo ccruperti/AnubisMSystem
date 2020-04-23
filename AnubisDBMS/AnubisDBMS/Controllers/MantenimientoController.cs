@@ -1,41 +1,32 @@
-﻿using AnubisDBMS.Data;
-using AnubisDBMS.Data.Entities;
+﻿using AnubisDBMS.Data.Entities;
 using AnubisDBMS.Data.ViewModels;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
 using System.Web.Mvc;
 using static AnubisDBMS.Controllers.HomeController;
-using static AnubisDBMS.Resources.AnubisEmailService;
 
 namespace AnubisDBMS.Controllers
 {
     [CustomAuthorization]
     public class MantenimientoController : MainController
     {
-       
-        public ActionResult AgregarMantenimiento(long IdEquipo, bool Registro=false)
+
+        public ActionResult AgregarMantenimiento(long IdEquipo, bool Registro = false)
         {
             ViewBag.IdFrecuencia = SelectListFrecuencias();
             ViewBag.IdTecnico = SelectListTecnico();
             var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo);
-            var model = new MantenimientoVM{
+            var model = new MantenimientoVM {
                 FechaMant = DateTime.Now,
                 IdEquipo = equipo.IdEquipo,
-                AliasEquipo=equipo.Alias,
-                QR=equipo.CodigoQR,
-                Descripcion="" 
+                AliasEquipo = equipo.Alias,
+                QR = equipo.CodigoQR,
+                Descripcion = ""
             };
-            if(Registro)
-            { 
-            TempData["Mensaje"] = new MensajeViewModel(true, "Registro Exitoso!", "Se ingreso un mantenimiento para el equipo: " + equipo.Alias);
+            if (Registro)
+            {
+                TempData["Mensaje"] = new MensajeViewModel(true, "Registro Exitoso!", "Se ingreso un mantenimiento para el equipo: " + equipo.Alias);
             }
             return View(model);
         }
@@ -72,7 +63,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult CambiarEstadoMantenimiento(long? IdMant, string Desc)
         {
-            if(IdMant != null)
+            if (IdMant != null)
             {
                 var mant = db.Mantenimiento.Find(IdMant);
                 mant.FechaModificacion = DateTime.Now;
@@ -87,7 +78,7 @@ namespace AnubisDBMS.Controllers
 
         }
 
-        public MantenimientoVM GuardarMantenimiento (MantenimientoVM model)
+        public MantenimientoVM GuardarMantenimiento(MantenimientoVM model)
         {
             var transaction = db.Database.BeginTransaction();
             if (ModelState.IsValid)
@@ -108,7 +99,7 @@ namespace AnubisDBMS.Controllers
                     };
                     db.Mantenimiento.Add(mantenimiento);
                     db.SaveChanges();
-          
+
                     transaction.Commit();
                     ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
                     ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
@@ -126,22 +117,30 @@ namespace AnubisDBMS.Controllers
             TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al registrar el mantenimiento, revise que todos los campos esten ingresados correctamente.");
             return null;
         }
-            public ActionResult Mantenimientos(long IdEquipo, bool Registro=false)
+        public ActionResult Mantenimientos(long IdEquipo, bool Registro = false)
         {
             var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo);
             var model = new MantenimientoVM
             {
                 Lista = db.Mantenimiento.Where(c => c.Activo && c.IdEquipo == IdEquipo).ToList(),
-                IdEquipo=Eq.IdEquipo,
+                IdEquipo = Eq.IdEquipo,
                 AliasEquipo = Eq.Alias
-                
-            }; 
+
+            };
             if (Registro)
             {
                 TempData["Mensaje"] = new MensajeViewModel(true, "Registro Exitoso!", "Se ingreso un mantenimiento para el equipo: " + Eq.Alias);
             }
             return View(model);
         }
-      
+        public ActionResult ListaErrosDataSensores()
+        {
+            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error).ToList();
+            return View(listaErrores);
+        }
+        //public ActionResult ListarErroresSensores()
+        //{
+
+        //}
     }
 }
