@@ -135,12 +135,9 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult ListaErrosDataSensores()
         {
-            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error).ToList();
+            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error).ToList(); 
             return View(listaErrores);
         }
-        //public ActionResult ListarErroresSensores()
-        //{
-
-        //}
+        
     }
 }

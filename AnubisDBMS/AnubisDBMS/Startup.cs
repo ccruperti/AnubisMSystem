@@ -7,6 +7,7 @@ using Microsoft.Owin;
 using Owin;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using GlobalConfiguration = Hangfire.GlobalConfiguration;
 
@@ -34,22 +35,22 @@ namespace AnubisDBMS
 
         }
 
-        public async System.Threading.Tasks.Task<bool> CheckAsync()
-        {
+        //public async Task<bool> CheckAsync()
+        //{
 
-            if (CheckMedidas())
-            {
+        //    if (CheckMedidas())
+        //    {
 
-                if (await CalcularNotificacionesAsync("aguilar996@hotmail.com"))
-                {
-                    return true;
-                }
-                else
-                { return false; }
-            }
-            return false;
+        //        if (await CalcularNotificacionesAsync("aguilar996@hotmail.com"))
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        { return false; }
+        //    }
+        //    return false;
 
-        }
+        //}
 
 
         //#region RandomGenData
