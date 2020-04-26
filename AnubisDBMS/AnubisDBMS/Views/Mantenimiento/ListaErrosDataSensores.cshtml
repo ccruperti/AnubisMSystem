@@ -1,6 +1,6 @@
 ﻿
 
-@model IEnumerable<AnubisDBMS.Data.Entities.DataSensores>
+@model List<AnubisDBMS.Data.ViewModels.Alerta>
 
 
 @*@using (Html.BeginForm("Mantenimientos", "Mantenimiento", new { }, FormMethod.Get, new { @class = "ui row", id = "" }))
@@ -27,15 +27,26 @@
                         <tr class="centered">
 
                             <th>
-                                SERIE SENSOR
+                                Equipo
                             </th>
                             <th>
-                                MEDIDA
+                                Sensor
                             </th>
                             <th>
-                                UNIDAD
+                                Unidad Medida
                             </th>
-                       
+                            <th>
+                                Medición
+                            </th>
+                            <th>
+                                Rango Mínimo
+                            </th>
+
+                            <th>
+                                Rango Máximo
+                            </th>
+
+
                         </tr>
                     </thead>
                     <tbody>
@@ -45,9 +56,12 @@
 
                             <tr class="centered">
 
-                                <td>@mant.SerieSensor</td>
-                                <td>@mant.Medida.ToString("N2")</td>
+                                <td>@mant.Equipo</td>
+                                <td>@mant.Sensor</td>
                                 <td>@mant.UnidadMedida</td>
+                                <td>@mant.medida</td>
+                                <td>@mant.Min</td>
+                                <td>@mant.Max</td>
                
 
                             </tr>

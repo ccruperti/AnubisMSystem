@@ -348,7 +348,7 @@ namespace AnubisDBMS.Web.App_Start
                 Usuario = "Adminsitrador",
                 SerieSensor = error.SerieSensor,
                 Medicion = error.UnidadMedida,
-                MedidaSensor = error.Medida.ToString(),
+                MedidaSensor = error.Medida.ToString().Substring(0,5),
 
                 Logo = logoImgId,
                 divider = dividerId,
