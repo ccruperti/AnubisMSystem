@@ -2,6 +2,7 @@
 using AnubisDBMS.Data.ViewModels;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using static AnubisDBMS.Controllers.HomeController;
@@ -136,8 +137,25 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult ListaErrosDataSensores()
         {
-            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == IdEmpresa).ToList(); 
-            return View(listaErrores);
+
+            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error).ToList();
+
+            List<Alerta> model = new List<Alerta>();
+            foreach(var error in listaErrores)
+            {
+               var equipoSensor = db.EquipoSensor.FirstOrDefault(x => x.Sensores.SerieSensor == error.SerieSensor);
+                model.Add(new Alerta
+                {
+                    Min = equipoSensor.Sensores.Min??0,
+                    Max = equipoSensor.Sensores.Max??0,
+                    Equipo=equipoSensor.Equipos.SerieEquipo,
+                    medida=error.Medida,
+                    Sensor= equipoSensor.Sensores.SerieSensor,
+                    UnidadMedida=error.UnidadMedida 
+                });
+            }
+           
+            return View(model);
         }
         
     }
