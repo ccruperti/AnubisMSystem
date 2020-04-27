@@ -95,7 +95,8 @@ namespace AnubisDBMS.Controllers
                         IdEstado = db.Estados.FirstOrDefault(c => c.Activo && c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Pendiente").IdEstado,
                         IdFrecuencia = model.IdFrecuencia,
                         Descripcion = model.Descripcion,
-                        FechaMantenimiento = model.FechaMant
+                        FechaMantenimiento = model.FechaMant,
+                        IdEmpresa = IdEmpresa
                     };
                     db.Mantenimiento.Add(mantenimiento);
                     db.SaveChanges();
@@ -119,7 +120,7 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult Mantenimientos(long IdEquipo, bool Registro = false)
         {
-            var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo);
+            var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo && x.IdEmpresa == IdEmpresa);
             var model = new MantenimientoVM
             {
                 Lista = db.Mantenimiento.Where(c => c.Activo && c.IdEquipo == IdEquipo).ToList(),
@@ -135,7 +136,7 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult ListaErrosDataSensores()
         {
-            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error).ToList(); 
+            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == IdEmpresa).ToList(); 
             return View(listaErrores);
         }
         

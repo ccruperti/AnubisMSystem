@@ -8,7 +8,7 @@
       
         <a href="@Url.Action("ListaErrosDataSensores", "Mantenimiento" , new { area= ""})" class="item">
             &nbsp;
-            Alertas <div class="ui red left pointing label">@User.Identity.GetNumeroPendientesOrdenComprasPresidencia()</div>
+            Alertas <div class="ui red left pointing label">@User.Identity.ObtenerNumeroAlertasSensores()</div>
         </a>
         @*<div class="menu">
 

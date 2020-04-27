@@ -292,6 +292,7 @@ namespace AnubisDBMS.Web.App_Start
 
         public bool CheckMedidas()
         {
+
             var dataSensores = db.DataSensores.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) == DbFunctions.TruncateTime(DateTime.Today) && x.Activo && x.Chequeado == false).ToList();
             foreach (var medidas in dataSensores)
             {
@@ -373,11 +374,12 @@ namespace AnubisDBMS.Web.App_Start
         #endregion
         public async Task<bool> CalcularNotificacionesAsync(string correoDestino)
         {
-            int PrimeraNotif = db.Users.FirstOrDefault(c => c.Email == correoDestino).PrimeraNotificacion;
-            int SegundaNotif = db.Users.FirstOrDefault(c => c.Email == correoDestino).SegundaNotificacion;
-            int TerceraNotif = db.Users.FirstOrDefault(c => c.Email == correoDestino).TerceraNotificacion;
-             
-            var Errores = db.DataSensores.Where(x => x.Error && x.Notificado == false).ToList();
+            var usuario = db.Users.FirstOrDefault(c => c.Email == correoDestino);
+
+            int PrimeraNotif = usuario.PrimeraNotificacion;
+            int SegundaNotif = usuario.SegundaNotificacion;
+            int TerceraNotif = usuario.TerceraNotificacion;
+            var Errores = db.DataSensores.Where(x => x.Error && x.Notificado == false && x.IdEmpresa == usuario.IdEmpresa).ToList();
             int Conteo = Errores.Count();
             DataSensores ErrorANotificar = Errores.FirstOrDefault();
             
@@ -427,7 +429,7 @@ namespace AnubisDBMS.Web.App_Start
             if (CheckMedidas())
             {
 
-                if (await CalcularNotificacionesAsync("aguilar996@hotmail.com"))
+                if (await CalcularNotificacionesAsync("chcastillor@uees.edu.ec"))
                 {
                     return true;
                 }

@@ -21,7 +21,7 @@ namespace AnubisDBMS.Controllers
         // GET: INDEX
         public ActionResult Index()
         {
-            var lista = db.TipoSensor.Where(x => x.Activo).OrderBy(x => x.IdTipoSensor).ToList();
+            var lista = db.TipoSensor.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).OrderBy(x => x.IdTipoSensor).ToList();
             var model = new Catalogos_viewModels.TipoSensorVM
             {
                 Lista = lista
@@ -63,7 +63,8 @@ namespace AnubisDBMS.Controllers
                         //Audit end
                       NombreTipoSensor=model.NombreTipoSensor.Trim().ToUpper(),
                       Max_TipoSensor=model.Max_TipoSensor,
-                      Min_TipoSensor=model.Min_TipoSensor
+                      Min_TipoSensor=model.Min_TipoSensor,
+                      IdEmpresa = IdEmpresa
                     };
 
                     db.TipoSensor.Add(nuevo);

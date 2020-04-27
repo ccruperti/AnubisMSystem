@@ -21,7 +21,7 @@ namespace AnubisDBMS.Controllers
         // GET: INDEX
         public ActionResult Index()
         {
-            var lista = db.Tecnicos.Where(x => x.Activo).OrderBy(x => x.IdTecnico).ToList();
+            var lista = db.Tecnicos.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).OrderBy(x => x.IdTecnico).ToList();
             var model = new Catalogos_viewModels.TecnicoVM
             {
                 Lista = lista
@@ -42,7 +42,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult Create(Catalogos_viewModels.TecnicoVM model)
         {
-            var bdd = db.Tecnicos.FirstOrDefault(x => x.NombreTecnico == model.NombreTecnico.Trim().ToUpper());
+            var bdd = db.Tecnicos.FirstOrDefault(x => x.NombreTecnico == model.NombreTecnico.Trim().ToUpper() && x.IdEmpresa == IdEmpresa);
             if (bdd != null)
             {
                 bdd.Activo = true;
@@ -62,6 +62,7 @@ namespace AnubisDBMS.Controllers
                         Cedula = model.Cedula.Trim(),
                         CelularTecnico = model.CelularTecnico,
                         CorreoTecnico = model.CorreoTecnico,
+                        IdEmpresa = IdEmpresa
                         };
 
                     db.Tecnicos.Add(nuevo);

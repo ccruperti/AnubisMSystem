@@ -19,7 +19,7 @@ namespace AnubisDBMS.Reportes
 
         }
 
-        public byte[] GenerarDocumentoLecturasEquipos(string SerieSensor, DateTime? Desde, DateTime? Hasta, int Row = 0, int Col = 0)
+        public byte[] GenerarDocumentoLecturasEquipos(string SerieSensor, DateTime? Desde, DateTime? Hasta, long? IdEmpresa,int Row = 0, int Col = 0)
         {
             ExcelFile ef = new ExcelFile();
             ExcelWorksheet ws = ef.Worksheets.Add("DataSensores");
@@ -39,7 +39,7 @@ namespace AnubisDBMS.Reportes
 
             var lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
             && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde) 
-            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta))).ToList();
+            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && x.IdEmpresa == IdEmpresa).ToList();
             //foreach (var eqs in equiposensor)
             //{
             //    lecturas.AddRange(db.DataSensores.Where(x => x.SerieSensor == eqs.Sensores.SerieSensor

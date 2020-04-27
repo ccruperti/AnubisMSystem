@@ -27,6 +27,8 @@ namespace AnubisDBMS.Infraestructure.Data.Security.Entities
         public int SegundaNotificacion { get; set; }
         public int TerceraNotificacion { get; set; }
         public bool Activo { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
         public DateTime FechaRegistro { get; set; }
         public DateTime? FechaActivacion { get; set; }
         public DateTime? FechaDesactivacion { get; set; }

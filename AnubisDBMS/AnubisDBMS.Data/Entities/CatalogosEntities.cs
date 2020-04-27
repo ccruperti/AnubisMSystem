@@ -1,4 +1,5 @@
-﻿using AnubisDBMS.Infraestructure.Data.Helpers;
+﻿using AnubisDBMS.Data.Localization.Entities;
+using AnubisDBMS.Infraestructure.Data.Helpers;
 using AnubisDBMS.Infraestructure.Data.Security.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace AnubisDBMS.Data.Entities
         public string CodigoQR { get; set; }
         public string IdUsuario { get; set; }
         public bool AplicaMonitoreo { get; set; }
-
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
         //public virtual AnubisDBMSUser Usuarios { get; set; }
        //public IEnumerable<User> Usuarios { get; set; }
         //public virtual ICollection<EquipoSensor> EquiposSensor { get; set; }
@@ -32,7 +34,9 @@ namespace AnubisDBMS.Data.Entities
         public string SerieSensor { get; set; } 
         public double? Max { get; set; }
         public double? Min { get; set; }
-       // public virtual ICollection<EquipoSensor> EquiposSensor { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
+        // public virtual ICollection<EquipoSensor> EquiposSensor { get; set; }
         public virtual TipoSensor TipoSensor { get; set; }
     }
 
@@ -44,6 +48,8 @@ namespace AnubisDBMS.Data.Entities
         public int NumeroPuerto { get; set; }
         public virtual Equipo Equipos { get; set; }
         public virtual Sensor Sensores { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
     }
 
     public class TipoSensor : CrudEntities
@@ -53,6 +59,8 @@ namespace AnubisDBMS.Data.Entities
         public double Min_TipoSensor { get; set; }
         public double Max_TipoSensor { get; set; }
         public string UnidadSensor { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
     }
 
     public class Frecuencia : CrudEntities
@@ -60,6 +68,8 @@ namespace AnubisDBMS.Data.Entities
         public long IdFrecuencia { get; set; }
         public string NombreFrecuencia { get; set; }
         public int DiasFrecuencia { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
     }
 
     public class Estados : CrudEntities
@@ -68,6 +78,8 @@ namespace AnubisDBMS.Data.Entities
         public string NombreEstado { get; set; }
         public string EstiloCss { get; set; }
         public string TipoEstado { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
     }
 
     public class Tecnicos : CrudEntities
@@ -77,6 +89,8 @@ namespace AnubisDBMS.Data.Entities
         public string CelularTecnico { get; set; }
         public string CorreoTecnico { get; set; }
         public string Cedula { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
     }
 
 
@@ -94,6 +108,8 @@ namespace AnubisDBMS.Data.Entities
         public string Descripcion { get; set; }
         public DateTime FechaMantenimiento { get; set; }
         public DateTime? FechaFinMantenimiento { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
         public virtual Equipo Equipo { get; set; }
         public virtual Estados Estados { get; set; }
         public virtual Tecnicos Tecnicos { get; set; }
@@ -105,6 +121,8 @@ namespace AnubisDBMS.Data.Entities
     {
         public long IdServicio { get; set; }
         public bool EstadoServicio { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
 
     }
     public class DataSensores : CrudEntities
@@ -127,6 +145,10 @@ namespace AnubisDBMS.Data.Entities
         public bool DebajoNormal { get; set; } 
         public bool AlertaRecibida { get; set; }
         public bool Notificado { get; set; }
+        public long? IdEmpresa { get; set; }
+        public virtual Empresa Empresa { get; set; }
 
     }
+
+
 }

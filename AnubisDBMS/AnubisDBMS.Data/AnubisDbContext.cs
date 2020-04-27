@@ -44,6 +44,8 @@ namespace AnubisDBMS.Data
             modelBuilder.Configurations.Add(new SensorConfiguration());
             modelBuilder.Configurations.Add(new DataSensoresConfiguration());
 
+            //modelBuilder.Configurations.Add(new DataSensoresConfiguration());
+
             //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }

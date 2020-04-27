@@ -16,19 +16,32 @@ using static AnubisDBMS.Resources.AnubisEmailService;
 using System.Web.Hosting;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using AnubisDBMS.Views.Helpers;
 
 namespace AnubisDBMS.Controllers
 {
 
     public class MainController : Controller
-    { 
+    {
+        public long IdEmpresa = new long();
+
+
+    
         #region DB_Users_Mail
         public AnubisDbContext db = new AnubisDbContext();
         public MailingRepository emailSvc = new MailingRepository(); 
         public AnubisDBMSUserManager _userManager;
         public AnubisDBMSRoleManager _roleManager;
 
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            if (User.Identity.Name != null)
+            {
+                IdEmpresa = User.Identity.GetEmpresaId();
+            }
 
+        }
 
         public MainController()
         {
@@ -63,7 +76,7 @@ namespace AnubisDBMS.Controllers
         {
 
             List<TipoSensor> TipoSensor = new List<TipoSensor>(); 
-            foreach (var x in db.TipoSensor.Where(x=>x.Activo).ToList())
+            foreach (var x in db.TipoSensor.Where(x=>x.Activo && x.IdEmpresa == IdEmpresa).ToList())
             {
                 TipoSensor.Add(x);
             }
@@ -74,7 +87,7 @@ namespace AnubisDBMS.Controllers
             {
 
                 List<Equipo> Equipo = new List<Equipo>();
-                foreach (var x in db.Equipos.Where(x => x.Activo).ToList())
+                foreach (var x in db.Equipos.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).ToList())
                 {
                 Equipo.Add(x); 
                 }
@@ -85,7 +98,7 @@ namespace AnubisDBMS.Controllers
         public SelectList SelectListEquipoSensor(long? id = null)
         {
 
-            List<SelectListItem> data = db.EquipoSensor.Where(x => x.Activo).Select(x => new SelectListItem{ 
+            List<SelectListItem> data = db.EquipoSensor.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).Select(x => new SelectListItem{ 
              Text = x.Equipos.Alias + " - "+ x.Equipos.SerieEquipo,
              Value = x.IdEquipoSensor.ToString()
             }).ToList(); 
@@ -95,16 +108,16 @@ namespace AnubisDBMS.Controllers
         public SelectList SelectListFrecuencias(long? id = null)
         {
 
-            List<Frecuencia> data = db.Frecuencia.Where(c => c.Activo).ToList();
+            List<Frecuencia> data = db.Frecuencia.Where(c => c.Activo && c.IdEmpresa == IdEmpresa).ToList();
             data.Add(new Frecuencia { IdFrecuencia = 0 , NombreFrecuencia = "Seleccione frecuencia" });
             return new SelectList(data.OrderBy(c => c.IdFrecuencia), "IdFrecuencia", "NombreFrecuencia", id);
 
         }
         public SelectList SelectListSensores(long selected = 0)
         {
-            List<long> sensoresIDs = db.EquipoSensor.Where(x => x.Activo).Select(i =>i.IdSensor??0).ToList();
+            List<long> sensoresIDs = db.EquipoSensor.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).Select(i =>i.IdSensor??0).ToList();
             List<SelectListItem> sensores = db.Sensores.AsNoTracking()
-                   .OrderBy(n => n.SerieSensor).Where(x=>x.Activo)
+                   .OrderBy(n => n.SerieSensor).Where(x=>x.Activo && x.IdEmpresa == IdEmpresa)
                        .Select(n =>
                        new SelectListItem
                        {
@@ -128,7 +141,7 @@ namespace AnubisDBMS.Controllers
         {
             List<int> puertosOcupados = new List<int>();
             List<int> puertosDisponibles = new List<int>();
-            var Equipos = db.EquipoSensor.Where(x => x.IdEquipo == idEquipo && x.Activo && x.NumeroPuerto!=0).ToList();
+            var Equipos = db.EquipoSensor.Where(x => x.IdEquipo == idEquipo && x.Activo && x.NumeroPuerto!=0 && x.IdEmpresa == IdEmpresa).ToList();
             for(var x=1;x<=8;x++)
             {
                 puertosDisponibles.Add(x);
@@ -144,7 +157,7 @@ namespace AnubisDBMS.Controllers
         {
 
             List<Tecnicos> Tecnicos = new List<Tecnicos>();
-            foreach (var x in db.Tecnicos.Where(x => x.Activo).ToList())
+            foreach (var x in db.Tecnicos.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).ToList())
             {
                 Tecnicos.Add(x);
             }
@@ -171,7 +184,7 @@ namespace AnubisDBMS.Controllers
             }
             else
             {
-                var Actual = db.Servicio.FirstOrDefault(x => x.Activo);
+                var Actual = db.Servicio.FirstOrDefault(x => x.Activo && x.IdEmpresa == IdEmpresa);
                 Actual.FechaModificacion = DateTime.Now;
                 Actual.UsuarioModificacion = User.Identity.Name;
                 Actual.Activo = false;
@@ -188,7 +201,7 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult Desactivar_Servicio ()
         {
-            if (!db.Servicio.Any(x => x.Activo))
+            if (!db.Servicio.Any(x => x.Activo && x.IdEmpresa == IdEmpresa))
             {
 
                 db.Servicio.Add(new Servicio
@@ -202,7 +215,7 @@ namespace AnubisDBMS.Controllers
             }
             else
             {
-                var Actual = db.Servicio.FirstOrDefault(x => x.Activo);
+                var Actual = db.Servicio.FirstOrDefault(x => x.Activo && x.IdEmpresa == IdEmpresa);
                 Actual.FechaModificacion = DateTime.Now;
                 Actual.UsuarioModificacion = User.Identity.Name;
                 Actual.EstadoServicio = false;

@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using AnubisDBMS.Infraestructure.Data.Security.Entities;
 using AnubisDBMS.Infraestructure.Security.Managers;
 using AnubisDBMS.Infraestructure.Data.Security.ViewModels;
+using AnubisDBMS.Data.Localization.Entities;
+using AnubisDBMS.Data;
 
 namespace AnubisDBMS.Areas.Seguridad.Controllers
 {
@@ -18,12 +20,20 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
     {
         protected AnubisDBMSUserManager _userManager;
         protected AnubisDBMSRoleManager _roleManager;
+        public AnubisDbContext db = new AnubisDbContext();
 
         public AdministracionController()
         {
 
         }
+        public SelectList SelectListEmpresas(long? id = null)
+        {
 
+            List<Empresa> data = db.Empresas.Where(c => c.Activo).ToList();
+            data.Add(new Empresa { IdEmpresa = 0, Nombre = "Seleccione Empresa" });
+            return new SelectList(data.OrderBy(c => c.IdEmpresa), "IdEmpresa", "Nombre", id);
+
+        }
         public AdministracionController(AnubisDBMSUserManager userManager, AnubisDBMSRoleManager roleManager)
         {
             UserManager = userManager;
@@ -88,6 +98,7 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
         public async Task<ActionResult> RegistrarUsuario(int? idRol)
         {
             var model = new RegisterNewUserViewModel();
+         
             if (idRol != null)
             {
                 var role = await RoleManager.FindByIdAsync(idRol ?? 0);
@@ -101,6 +112,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
             var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
             var currentRole = RoleManager.FindById(currentRoleId.RoleId);
             ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", idRol);
+            ViewBag.IdEmpresa = SelectListEmpresas();
+
             return View(model);
         }
 
@@ -118,7 +131,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                     Nombres = model.Nombres,
                     Celular = model.Celular,
                     Apellidos = model.Apellidos,
-                    TipoUsuario = role.Name
+                    TipoUsuario = role.Name,
+                    IdEmpresa = model.IdEmpresa
                 };
                 var creacion = await UserManager.CreateAsync(nuevoUsuario, model.Contrasena);
                 if (creacion.Succeeded)
@@ -135,6 +149,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
             var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
             var currentRole = RoleManager.FindById(currentRoleId.RoleId);
             ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", model.IdRol);
+            ViewBag.IdEmpresa = SelectListEmpresas(model.IdEmpresa);
+
             return View(model);
         }
 
@@ -192,11 +208,15 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 Usuario = usuario.UserName,
                 Celular = usuario.Celular,
                 Nombres = usuario.Nombres,
-                Apellidos = usuario.Apellidos
+                Apellidos = usuario.Apellidos,
+                IdEmpresa = usuario.IdEmpresa ?? 0,
+                Email = usuario.Email
             };
             var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
             var currentRole = RoleManager.FindById(currentRoleId.RoleId);
             ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", viewModel.IdRol);
+            ViewBag.IdEmpresa = SelectListEmpresas(usuario.IdEmpresa);
+
             return View(viewModel);
         }
 
@@ -234,7 +254,10 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 usuario.Apellidos = viewModel.Apellidos;
                 usuario.FechaModificacion = DateTime.Now;
                 usuario.Celular = viewModel.Celular;
+                usuario.IdEmpresa = viewModel.IdEmpresa;
+                usuario.Email = viewModel.Email;
                 var userUpdate = await UserManager.UpdateAsync(usuario);
+                db.SaveChangesAsync();
                 if (userUpdate.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -242,6 +265,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 ModelState.AddModelError("", userUpdate.Errors.First());
             }
             ViewBag.IdRol = new SelectList(RoleManager.Roles, "Id", "Name", viewModel.IdRol);
+            ViewBag.IdEmpresa = SelectListEmpresas(viewModel.IdEmpresa);
+
             return View(viewModel);
         }
     }

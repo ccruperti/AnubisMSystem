@@ -60,6 +60,7 @@ namespace AnubisDBMS.Infraestructure.Data.Security.ViewModels
 
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
+        public long IdEmpresa { get; set; }
     }
 
     public class EditUserViewModel
@@ -79,7 +80,9 @@ namespace AnubisDBMS.Infraestructure.Data.Security.ViewModels
         public string Email { get; set; }
 
         public string Nombres { get; set; }
+        public string NombreEmpresa { get; set; }
         public string Apellidos { get; set; }
+        public long IdEmpresa { get; set; }
     }
 
     public class ManualPasswordResetViewModel

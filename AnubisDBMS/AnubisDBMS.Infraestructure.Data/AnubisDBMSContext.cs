@@ -26,6 +26,8 @@ namespace AnubisDBMS.Infraestructura.Data
         public virtual DbSet<Permission> Permisos { get; set; }
         public virtual DbSet<SecurityArea> AreasSeguridad { get; set; }
         public virtual DbSet<SecurityLevel> NivelesSeguridad { get; set; }
+        public virtual DbSet<Empresa> Empresas { get; set; }
+
 
         //// MODULE: Localization
         //// Geography
@@ -61,6 +63,7 @@ namespace AnubisDBMS.Infraestructura.Data
             modelBuilder.Configurations.Add(new PermissionConfiguration());
             modelBuilder.Configurations.Add(new SecurityAreaConfiguration());
             modelBuilder.Configurations.Add(new SecurityLevelConfiguration());
+            modelBuilder.Configurations.Add(new EmpresasConfiguration());
 
             ////Geography
             //modelBuilder.Configurations.Add(new ContinenteConfiguration());

@@ -16,23 +16,28 @@
     @using (Html.BeginForm("EditarUsuario", "Administracion", FormMethod.Post, new {@class = "ui form"}))
     {
         @Html.AntiForgeryToken()
-        <div class="three fields">
-            <div class="field">
-                @Html.LabelFor(model => model.Usuario)
-                @Html.EditorFor(model => model.Usuario)
-                @Html.ValidationMessageFor(model => model.Usuario)
-            </div>
-            <div class="field">
-                @Html.LabelFor(model => model.IdRol)
-                @Html.DropDownList("IdRol", null, new { @class = "ui dropdown" } )
-                @Html.ValidationMessageFor(model => model.IdRol)
-            </div>
-        </div>
+<div class="three fields">
+    <div class="field">
+        @Html.LabelFor(model => model.Usuario)
+        @Html.EditorFor(model => model.Usuario)
+        @Html.ValidationMessageFor(model => model.Usuario)
+    </div>
+    <div class="field">
+        @Html.LabelFor(model => model.IdRol)
+        @Html.DropDownList("IdRol", null, new { @class = "ui dropdown" })
+        @Html.ValidationMessageFor(model => model.IdRol)
+    </div>
+    <div class="field">
+        @Html.LabelFor(model => model.Email)
+        @Html.EditorFor(model => model.Email)
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+</div>
         <h2 class="ui dividing sub header">Datos Adicionales</h2>
         <div class="ui small message">
            
         </div>
-        <div class="three fields">                
+        <div class="four fields">
             <div class="field">
                 @Html.LabelFor(model => model.Celular)
                 @Html.EditorFor(model => model.Celular)
@@ -47,6 +52,11 @@
                 @Html.LabelFor(model => model.Apellidos)
                 @Html.EditorFor(model => model.Apellidos)
                 @Html.ValidationMessageFor(model => model.Apellidos)
+            </div>
+            <div class="field">
+                @Html.LabelFor(model => model.IdEmpresa)
+                @Html.DropDownList("IdEmpresa", null, new { @class = "ui search dropdown" })
+                @Html.ValidationMessageFor(model => model.IdEmpresa)
             </div>
         </div>
         @Html.ActionLink("Regresar", "Index", null, new { @class = "ui button" })

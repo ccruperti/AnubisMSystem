@@ -168,4 +168,13 @@ namespace AnubisDBMS.Infraestructure.Data.Localization.Configurations
                 .HasForeignKey(c => c.IdEstado);
         }
     }
+    public class EmpresasConfiguration : EntityTypeConfiguration<Empresa>
+    {
+        public EmpresasConfiguration()
+        {
+            ToTable("Empresas", Schemas.General);
+            HasKey(c => c.IdEmpresa);
+
+        }
+    }
 }

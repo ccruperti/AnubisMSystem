@@ -23,7 +23,7 @@ namespace AnubisDBMS.Controllers
        
         public ActionResult Index()
         {
-            var lista = db.Equipos.Where(x => x.Activo).OrderBy(x => x.IdEquipo).ToList();
+            var lista = db.Equipos.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).OrderBy(x => x.IdEquipo).ToList();
             var model = new Catalogos_viewModels.EquipoVM
             {
                 Lista = lista
@@ -44,7 +44,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult Create(Catalogos_viewModels.EquipoVM model)
         {
-            var bdd = db.Equipos.FirstOrDefault(x => x.SerieEquipo == model.SerieEquipo.Trim().ToUpper());
+            var bdd = db.Equipos.FirstOrDefault(x => x.SerieEquipo == model.SerieEquipo.Trim().ToUpper() && x.IdEmpresa == IdEmpresa);
             if (bdd != null)
             {
                 bdd.Activo = true;
@@ -66,7 +66,8 @@ namespace AnubisDBMS.Controllers
                         SerieEquipo = model.SerieEquipo.Trim().ToUpper(),
                         Alias = model.Alias.Trim().ToUpper(),
                         IdUsuario = userId,
-                        CodigoQR = QR.GenerarQR(model.SerieEquipo)
+                        CodigoQR = QR.GenerarQR(model.SerieEquipo),
+                        IdEmpresa = IdEmpresa
                     };
 
                     db.Equipos.Add(nuevo);

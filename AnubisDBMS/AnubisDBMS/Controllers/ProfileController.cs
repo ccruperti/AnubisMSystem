@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace AnubisDBMS.Controllers
 {
@@ -10,7 +11,7 @@ namespace AnubisDBMS.Controllers
         public ActionResult PerfilUsuario()
         {
 
-            var user = UserManager.FindByName(User.Identity.Name);
+            var user =db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name && c.IdEmpresa == IdEmpresa);
 
             var model = new Catalogos_viewModels.PerfilVM
             {
@@ -39,15 +40,15 @@ namespace AnubisDBMS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> GuardarPerfilUsuario(Catalogos_viewModels.PerfilVM model)
+        public ActionResult GuardarPerfilUsuario(Catalogos_viewModels.PerfilVM model)
         {
-            var user = UserManager.FindByNameAsync(User.Identity.Name);
-            user.Result.Celular = model.telefono;
-            user.Result.Email = model.correo;
-            user.Result.PrimeraNotificacion = model.PrimeraNotificacion;
-            user.Result.SegundaNotificacion = model.SegundaNotificacion;
-            user.Result.TerceraNotificacion = model.TerceraNotificacion;
-            await UserManager.UpdateAsync(user.Result);
+            var user = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name && c.IdEmpresa == IdEmpresa);
+            user.Celular = model.telefono;
+            user.Email = model.correo;
+            user.PrimeraNotificacion = model.PrimeraNotificacion;
+            user.SegundaNotificacion = model.SegundaNotificacion;
+            user.TerceraNotificacion = model.TerceraNotificacion;
+            db.SaveChanges();
             return RedirectToAction("PerfilUsuario");
         }
 

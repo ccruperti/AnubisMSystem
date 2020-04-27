@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AnubisDBMS.Infraestructure.Data.Helpers;
+using System.Collections.Generic;
 
 namespace AnubisDBMS.Data.Localization.Entities
 {
@@ -33,7 +34,14 @@ namespace AnubisDBMS.Data.Localization.Entities
         public virtual ICollection<Estado> Estados { get; set; }
         public virtual Idioma Idioma { get; set; }
     }
-
+    public class Empresa : CrudEntities
+    {
+        public long IdEmpresa { get; set; }
+        public string Nombre { get; set; }
+        public string RUC { get; set; }
+        public string RazonSocial { get; set; }
+        public bool ServicioActivo { get; set; }
+    }
     public class Continente
     {
         public int IdContinente { get; set; }

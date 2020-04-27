@@ -27,15 +27,15 @@ namespace AnubisDBMS.Controllers
         {
 
             var model = new ListaEquipos();
-            List<Equipo> equipos = db.Equipos.Where(x => x.Activo).ToList();
+            List<Equipo> equipos = db.Equipos.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).ToList();
             List<EquipoSensor> EquipoSensor = new List<EquipoSensor>();
             List<Mantenimiento> Mant = new List<Mantenimiento>();
             foreach (var eq in equipos) 
             {
-                EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == eq.IdEquipo && x.Activo).ToList();
+                EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == eq.IdEquipo && x.Activo && x.IdEmpresa == IdEmpresa).ToList();
                 foreach (var es in EquipoSensor)
                 {
-                    Mant = db.Mantenimiento.Where(x => x.Activo && x.IdEquipo == es.IdEquipo && x.Estados.NombreEstado== "Pendiente").ToList();
+                    Mant = db.Mantenimiento.Where(x => x.Activo && x.IdEquipo == es.IdEquipo && x.Estados.NombreEstado== "Pendiente" && x.IdEmpresa == IdEmpresa).ToList();
                 
                 }
                 model.EquiposSensor.Add(new EquipoSensorVM
@@ -78,7 +78,7 @@ namespace AnubisDBMS.Controllers
             //    IdEquipo = IdEquipo
             //};
             #endregion
-            var EquiposSensores = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo && x.Activo).OrderBy(x=>x.NumeroPuerto).ToList();
+            var EquiposSensores = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo && x.Activo && x.IdEmpresa == IdEmpresa).OrderBy(x=>x.NumeroPuerto).ToList();
             var model = new GestionEquiposViewModels
             {
                 EquiposSensores = EquiposSensores,
@@ -94,13 +94,13 @@ namespace AnubisDBMS.Controllers
             {
                 try
                 {
-                    var val = db.EquipoSensor.Any(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.NumeroPuerto == model.NumPuerto && x.Activo == false);
+                    var val = db.EquipoSensor.Any(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.NumeroPuerto == model.NumPuerto && x.Activo == false && x.IdEmpresa == IdEmpresa);
                     if (val)
                     {
                         var activar = db.EquipoSensor.FirstOrDefault(x => x.IdSensor == model.IdSensor 
                         && x.IdEquipo == model.IdEquipo
                         && x.NumeroPuerto == model.NumPuerto 
-                        && x.Activo == false);
+                        && x.Activo == false && x.IdEmpresa == IdEmpresa);
                         activar.Activo = true;
                         activar.FechaModificacion = DateTime.Now;
                         activar.UsuarioModificacion = User.Identity.Name;
@@ -120,6 +120,7 @@ namespace AnubisDBMS.Controllers
                             NumeroPuerto = model.NumPuerto,
                             UsuarioRegistro = User.Identity.Name,
                             FechaRegistro = DateTime.Now,
+                            IdEmpresa = IdEmpresa,
                             Activo = true
 
                         };
@@ -150,7 +151,7 @@ namespace AnubisDBMS.Controllers
 
         public ActionResult EliminarRelacionEquipoSensor(long IdEquipoSensor)
         {
-            var es = db.EquipoSensor.FirstOrDefault(x => x.IdEquipoSensor == IdEquipoSensor);
+            var es = db.EquipoSensor.FirstOrDefault(x => x.IdEquipoSensor == IdEquipoSensor && x.IdEmpresa == IdEmpresa);
             es.Activo = false;
             es.FechaModificacion = DateTime.Now;
             es.UsuarioModificacion = User.Identity.Name;
@@ -171,12 +172,12 @@ namespace AnubisDBMS.Controllers
                 AliasEquipo=equipo.Alias
 
             }; 
-            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo).ToList();
+            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo && x.IdEmpresa == IdEmpresa).ToList();
             foreach(var es in equiposSensores)
             {
                 var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
 
-                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.SerieSensor==sensor.SerieSensor);
+                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.SerieSensor==sensor.SerieSensor && x.IdEmpresa == IdEmpresa);
                 if(lectura != null)
                 {
                     model.DatosSensores.Add(new DataSensoresVM
@@ -201,14 +202,14 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult LecturaMedidoresEquipo(MonitoreoSensoresVM model)
         {
-            var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == model.IdEquipo);
+            var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == model.IdEquipo && x.IdEmpresa == IdEmpresa);
         
-            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo).ToList();
+            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo && x.IdEmpresa == IdEmpresa).ToList();
             foreach (var es in equiposSensores)
             {
-                var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
+                var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor && x.IdEmpresa == IdEmpresa);
 
-                var lectura = db.DataSensores.OrderByDescending(x => x.FechaRegistro).FirstOrDefault(x => x.SerieSensor == sensor.SerieSensor);
+                var lectura = db.DataSensores.OrderByDescending(x => x.FechaRegistro).FirstOrDefault(x => x.SerieSensor == sensor.SerieSensor && x.IdEmpresa == IdEmpresa);
                 if (lectura != null)
                 {
                     model.DatosSensores.Add(new DataSensoresVM
@@ -220,7 +221,8 @@ namespace AnubisDBMS.Controllers
                         MinVal = sensor.TipoSensor.Min_TipoSensor,
                         MaxVal = sensor.TipoSensor.Max_TipoSensor,
                         LecMin = sensor.Min,
-                        LecMax = sensor.Max
+                        LecMax = sensor.Max,
+                        
                     });
                 }
 
@@ -267,21 +269,21 @@ namespace AnubisDBMS.Controllers
                 Desde = DateTime.Now.GetWeekStartDate();
                 Hasta = DateTime.Now.GetWeekEndDate();
             }
-            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta).Select(c => c.Sensores.SerieSensor).ToList();
+            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta && x.IdEmpresa == IdEmpresa).Select(c => c.Sensores.SerieSensor).ToList();
             
-            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor)).Select(x => new
+            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor) && c.IdEmpresa == IdEmpresa).Select(x => new
             {
                 lec = x.Medida,
-                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).TipoSensor.Min_TipoSensor,
-                Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).TipoSensor.Max_TipoSensor,
-                lecmin = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Min,
-                lecmax = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor).Max,
+                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && x.IdEmpresa == IdEmpresa).TipoSensor.Min_TipoSensor,
+                Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Max_TipoSensor,
+                lecmin = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).Min,
+                lecmax = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).Max,
                 sensor = x.SerieSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,
                 Anio = x.FechaRegistro.Year
             }).ToList();
-            return Json(lecturas.Where(x => x.sensor == SerieSensor).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(lecturas.Where(x => x.sensor == SerieSensor ).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {
@@ -297,7 +299,7 @@ namespace AnubisDBMS.Controllers
                 Hasta = DateTime.Now.GetWeekEndDate();
             }
             GenerarExcelConsultas Gen = new GenerarExcelConsultas();
-            byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(SerieSensor, Desde, Hasta);
+            byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(SerieSensor, Desde, Hasta, IdEmpresa);
             string fileName = string.Format("Lecturas.xlsx");
             return File(fileStream.ToArray(), "application/octet-stream", fileName);
         }
@@ -308,7 +310,7 @@ namespace AnubisDBMS.Controllers
             var desde = ViewBag.Desde;
             model.Lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
             && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
-            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta))).ToList();
+            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && x.IdEmpresa == IdEmpresa).ToList();
             return View(model);
         }
     }

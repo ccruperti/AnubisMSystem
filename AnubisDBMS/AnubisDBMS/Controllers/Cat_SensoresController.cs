@@ -21,7 +21,7 @@ namespace AnubisDBMS.Controllers
         // GET: INDEX
         public ActionResult Index()
         {
-            var lista = db.Sensores.Where(x => x.Activo).OrderBy(x => x.IdSensor).ToList() ;
+            var lista = db.Sensores.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).OrderBy(x => x.IdSensor).ToList() ;
             var VM = new Catalogos_viewModels.SensorVM();
             foreach (var x in lista)
             {
@@ -61,7 +61,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult Create(Catalogos_viewModels.SensorVM model)
         {
-            var bdd = db.Sensores.FirstOrDefault(x => x.SerieSensor == model.SerieSensor.Trim().ToUpper());
+            var bdd = db.Sensores.FirstOrDefault(x => x.SerieSensor == model.SerieSensor.Trim().ToUpper() && x.IdEmpresa == IdEmpresa);
             if (bdd != null)
             {
                 bdd.Activo = true;
@@ -82,6 +82,7 @@ namespace AnubisDBMS.Controllers
                         //Audit end
                         SerieSensor = model.SerieSensor.Trim().ToUpper(), 
                         IdTipoSensor=model.IdTipoSensor??0,
+                        IdEmpresa = IdEmpresa
                     };
                     if (model.Max != null)
                     {
