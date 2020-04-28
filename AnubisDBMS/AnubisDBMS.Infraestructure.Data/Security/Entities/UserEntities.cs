@@ -22,10 +22,7 @@ namespace AnubisDBMS.Infraestructure.Data.Security.Entities
         public string Apellidos { get; set; }
         public string TipoUsuario { get; set; }
         public string Cedula { get; set; }
-        public string Celular { get; set; }
-        public int PrimeraNotificacion { get; set; }
-        public int SegundaNotificacion { get; set; }
-        public int TerceraNotificacion { get; set; }
+        public string Celular { get; set; } 
         public bool Activo { get; set; }
         public long? IdEmpresa { get; set; }
         public virtual Empresa Empresa { get; set; }

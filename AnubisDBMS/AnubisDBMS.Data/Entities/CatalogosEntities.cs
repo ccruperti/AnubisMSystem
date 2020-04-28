@@ -127,13 +127,7 @@ namespace AnubisDBMS.Data.Entities
     }
     public class DataSensores : CrudEntities
     {
-        public DataSensores()
-        {
-            Chequeado = false;
-            Error = false;
-            Notificado = false;
-            AlertaRecibida = false;
-            }
+        
         public long IdDataSensor { get; set; }
         public string SerieSensor { get; set; }
         public string TipoSensor { get; set; }

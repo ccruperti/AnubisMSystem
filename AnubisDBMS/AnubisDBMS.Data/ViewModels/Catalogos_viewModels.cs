@@ -84,12 +84,12 @@ namespace AnubisDBMS.Data.ViewModels
                 {
                 PrimeraNotificacion = 0;
                 SegundaNotificacion = 0;
-                TerceraNotificacion = 0;
-
+                TerceraNotificacion = 0; 
         }
 
             public string correo { get; set; }
-            public string telefono { get; set; }
+            public string Ruc { get; set; }
+            public string RazonSocial { get; set; }
             public int PrimeraNotificacion { get; set; }
             public int SegundaNotificacion { get; set; }
             public int TerceraNotificacion { get; set; }

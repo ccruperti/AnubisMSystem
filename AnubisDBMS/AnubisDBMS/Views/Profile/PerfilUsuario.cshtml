@@ -8,16 +8,34 @@
             <img src="~/Content/Images/perfil.png">
         </div>
         <div class="content">
-            <a class="header center" style="text-align:center;">Eagle&Cast</a>
+            <a class="header center" style="text-align:center;">@Model.RazonSocial</a>
             <div class="ui sub dividing header"></div>
-            <span class="right floated">
-                <div id="lbltelefono" class="ui label" style="font-size:0.7em;"><i class="phone icon"></i>@Model.telefono</div>
-            </span>
 
-            <div class="ui label" style="font-size:0.7em;">
-                <i id="lblcorreo" class="mail icon"></i>@Model.correo<div />
+
+            <div class="ui label">
+                <i id="lblcorreo" class="mail icon"></i>@Model.correo 
 
             </div>
+            <div class="ui field"  >
+                <i id="lblcorreo" class="">Primera Notificación:  </i>@Model.PrimeraNotificacion 
+
+            </div>
+            <div class="ui field"  >
+                <i id="lblcorreo" class="">Segunda Notificación:  </i>@Model.SegundaNotificacion 
+
+            </div>
+            <div class="ui field"  >
+                <i id="lblcorreo" class="">Tercera Notificación:  </i>@Model.TerceraNotificacion 
+
+            </div>
+
+          
+
+            <div class="ui field"  >
+                <i id="lblcorreo" class="">RUC:  </i>@Model.Ruc 
+
+            </div>
+
         </div>
 
         <br />

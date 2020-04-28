@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Linq;
+using System;
 
 namespace AnubisDBMS.Controllers
 {
@@ -10,30 +11,32 @@ namespace AnubisDBMS.Controllers
     { 
         public ActionResult PerfilUsuario()
         {
-
-            var user =db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name && c.IdEmpresa == IdEmpresa);
-
+            
+            var empresa =db.Empresas.FirstOrDefault(c => c.IdEmpresa == IdEmpresa);
+           
             var model = new Catalogos_viewModels.PerfilVM
             {
-                telefono = user.Celular,
-                correo = user.Email,
-                PrimeraNotificacion = user.PrimeraNotificacion,
-                SegundaNotificacion = user.SegundaNotificacion,
-                TerceraNotificacion = user.TerceraNotificacion
+                Ruc=empresa.RUC,
+                RazonSocial=empresa.RazonSocial,                
+                correo = empresa.EmailNotificacion,
+                PrimeraNotificacion = empresa.PrimeraNotificacion,
+                SegundaNotificacion = empresa.SegundaNotificacion,
+                TerceraNotificacion = empresa.TerceraNotificacion
             };
             return View(model);
         }
         public ActionResult EditarPerfilUsuario()
         {
-            var user = UserManager.FindByName(User.Identity.Name);
+            var empresa = db.Empresas.FirstOrDefault(c => c.IdEmpresa == IdEmpresa);
 
             var model = new Catalogos_viewModels.PerfilVM
             {
-                telefono = user.Celular,
-                correo = user.Email,
-                PrimeraNotificacion=user.PrimeraNotificacion,
-                SegundaNotificacion=user.SegundaNotificacion,
-                TerceraNotificacion=user.TerceraNotificacion
+                Ruc = empresa.RUC,
+                RazonSocial = empresa.RazonSocial,
+                correo = empresa.EmailNotificacion,
+                PrimeraNotificacion= empresa.PrimeraNotificacion,
+                SegundaNotificacion= empresa.SegundaNotificacion,
+                TerceraNotificacion= empresa.TerceraNotificacion
                 
             };
             return View(model);
@@ -42,12 +45,15 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult GuardarPerfilUsuario(Catalogos_viewModels.PerfilVM model)
         {
-            var user = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name && c.IdEmpresa == IdEmpresa);
-            user.Celular = model.telefono;
-            user.Email = model.correo;
-            user.PrimeraNotificacion = model.PrimeraNotificacion;
-            user.SegundaNotificacion = model.SegundaNotificacion;
-            user.TerceraNotificacion = model.TerceraNotificacion;
+            var empresa = db.Empresas.FirstOrDefault(c => c.IdEmpresa == IdEmpresa);
+          
+            empresa.RUC = model.Ruc;
+            empresa.EmailNotificacion = model.correo;
+            empresa.RazonSocial = model.RazonSocial; 
+            empresa.PrimeraNotificacion = model.PrimeraNotificacion;
+            empresa.SegundaNotificacion = model.SegundaNotificacion;
+            empresa.TerceraNotificacion = model.TerceraNotificacion;
+            empresa.FechaModificacion = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("PerfilUsuario");
         }

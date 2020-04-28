@@ -168,21 +168,9 @@
     <Compile Include="AnubisDBMSSchemas.cs" />
     <Compile Include="Configurations\CatalogosConfigurations.cs" />
     <Compile Include="Entities\CatalogosEntities.cs" />
-    <Compile Include="Migrations\202004171829483_Anubis1.0.cs" />
-    <Compile Include="Migrations\202004171829483_Anubis1.0.Designer.cs">
-      <DependentUpon>202004171829483_Anubis1.0.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004191831311_Anubis1.1.cs" />
-    <Compile Include="Migrations\202004191831311_Anubis1.1.Designer.cs">
-      <DependentUpon>202004191831311_Anubis1.1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004230037392_Anubis1.2.cs" />
-    <Compile Include="Migrations\202004230037392_Anubis1.2.Designer.cs">
-      <DependentUpon>202004230037392_Anubis1.2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004262307498_Anubis1.3.cs" />
-    <Compile Include="Migrations\202004262307498_Anubis1.3.Designer.cs">
-      <DependentUpon>202004262307498_Anubis1.3.cs</DependentUpon>
+    <Compile Include="Migrations\202004280338259_Anubis1.0.cs" />
+    <Compile Include="Migrations\202004280338259_Anubis1.0.Designer.cs">
+      <DependentUpon>202004280338259_Anubis1.0.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,17 +191,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004171829483_Anubis1.0.resx">
-      <DependentUpon>202004171829483_Anubis1.0.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004191831311_Anubis1.1.resx">
-      <DependentUpon>202004191831311_Anubis1.1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004230037392_Anubis1.2.resx">
-      <DependentUpon>202004230037392_Anubis1.2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004262307498_Anubis1.3.resx">
-      <DependentUpon>202004262307498_Anubis1.3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004280338259_Anubis1.0.resx">
+      <DependentUpon>202004280338259_Anubis1.0.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

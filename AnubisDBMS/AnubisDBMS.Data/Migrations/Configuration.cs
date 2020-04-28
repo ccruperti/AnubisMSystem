@@ -27,16 +27,16 @@
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
 
-            if (!db.Servicio.Any())
-            {
-                db.Servicio.Add(new Servicio
-                {
-                    Activo = true,
-                    FechaRegistro = DateTime.Now,
-                    EstadoServicio = true,
-                    UsuarioRegistro = "System"
-                });
-            }
+            //if (!db.Servicio.Any())
+            //{
+            //    db.Servicio.Add(new Servicio
+            //    {
+            //        Activo = true,
+            //        FechaRegistro = DateTime.Now,
+            //        EstadoServicio = true,
+            //        UsuarioRegistro = "System"
+            //    });
+            //}
             db.SaveChanges();
             if (!db.Estados.Any(c => c.Activo))
             {

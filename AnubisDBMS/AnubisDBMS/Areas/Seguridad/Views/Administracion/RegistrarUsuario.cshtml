@@ -24,11 +24,14 @@
             @Html.DropDownList("IdRol", null, new { @class = "ui dropdown", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.IdRol)
         </div>
+        @if(User.IsInRole("Developers"))
+        { 
         <div class="field">
             @Html.LabelFor(model => model.IdEmpresa)
             @Html.DropDownList("IdEmpresa", null, new { @class = "ui search dropdown" })
             @Html.ValidationMessageFor(model => model.IdEmpresa)
         </div>
+        }
     </div>
             <h2 class="ui dividing sub header">Datos Adicionales</h2>
             <div class="ui small message">

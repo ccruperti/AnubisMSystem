@@ -22,7 +22,7 @@ namespace AnubisDBMS.Data
         public DbSet<TipoSensor> TipoSensor { get; set; }
         public DbSet<Frecuencia> Frecuencia { get; set; }
         public DbSet<Estados> Estados { get; set; }
-        public DbSet<Sensor> Sensores { get; set; }
+        public DbSet<Sensor> Sensores { get; set; } 
 
         public AnubisDbContext() : base("DefaultConnection")
         {

@@ -21,6 +21,7 @@ using static AnubisDBMS.Resources.AnubisEmailService;
 using System.Net.Mail;
 using System.IO;
 using System.Net.Mime;
+using AnubisDBMS.Data.Localization.Entities;
 
 namespace AnubisDBMS.Web.App_Start
 {
@@ -290,10 +291,13 @@ namespace AnubisDBMS.Web.App_Start
 
         }
 
-        public bool CheckMedidas()
-        {
-
-            var dataSensores = db.DataSensores.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) == DbFunctions.TruncateTime(DateTime.Today) && x.Activo && x.Chequeado == false).ToList();
+        public bool CheckMedidas(Empresa emp)
+        { 
+            var dataSensores = db.DataSensores.Where(x =>
+            DbFunctions.TruncateTime(x.FechaRegistro) == DbFunctions.TruncateTime(DateTime.Today)
+            && x.Activo 
+            && x.Chequeado == false
+            && x.IdEmpresa ==emp.IdEmpresa).ToList(); 
             foreach (var medidas in dataSensores)
             {
                 CheckMinMax(medidas);
@@ -372,22 +376,22 @@ namespace AnubisDBMS.Web.App_Start
             return true;
         }
         #endregion
-        public async Task<bool> CalcularNotificacionesAsync(string correoDestino)
+        public async Task<bool> CalcularNotificacionesAsync(Empresa empresa)
         {
-            var usuario = db.Users.FirstOrDefault(c => c.Email == correoDestino);
-
-            int PrimeraNotif = usuario.PrimeraNotificacion;
-            int SegundaNotif = usuario.SegundaNotificacion;
-            int TerceraNotif = usuario.TerceraNotificacion;
-            var Errores = db.DataSensores.Where(x => x.Error && x.Notificado == false && x.IdEmpresa == usuario.IdEmpresa).ToList();
+            int PrimeraNotif = empresa.PrimeraNotificacion;
+            int SegundaNotif = empresa.SegundaNotificacion;
+            int TerceraNotif = empresa.TerceraNotificacion;
+            var Errores = db.DataSensores.Where(x => x.Error && x.Notificado == false
+            && x.IdEmpresa == empresa.IdEmpresa).ToList();
             int Conteo = Errores.Count();
             DataSensores ErrorANotificar = Errores.FirstOrDefault();
-            
+            if(PrimeraNotif != 0 && SegundaNotif != 0 && TerceraNotif != 0)
+            {  
             if (Conteo >= PrimeraNotif && Conteo < SegundaNotif)
             {
                 try
                 {
-                    await NotificarAsync(ErrorANotificar, correoDestino);
+                    await NotificarAsync(ErrorANotificar, empresa.EmailNotificacion);
                 }
                 catch (Exception e)
                 {
@@ -399,7 +403,7 @@ namespace AnubisDBMS.Web.App_Start
             {
                 try
                 {
-                    await NotificarAsync(ErrorANotificar, correoDestino);
+                    await NotificarAsync(ErrorANotificar, empresa.EmailNotificacion);
                 }
                 catch (Exception e)
                 {
@@ -411,12 +415,14 @@ namespace AnubisDBMS.Web.App_Start
             {
                 try
                 {
-                    await NotificarAsync(ErrorANotificar, correoDestino);
+                    await NotificarAsync(ErrorANotificar, empresa.EmailNotificacion);
                 }
                 catch (Exception e)
                 {
                     return false;
                 }
+            }
+
             }
             return true;
 
@@ -425,16 +431,18 @@ namespace AnubisDBMS.Web.App_Start
 
         public async Task<bool> CheckAsync()
         {
-
-            if (CheckMedidas())
-            {
-
-                if (await CalcularNotificacionesAsync("chcastillor@uees.edu.ec"))
+                var empresa = db.Empresas.Where(c => c.Activo && c.ServicioActivo).ToList();
+                foreach(var emp in empresa)
                 {
-                    return true;
-                }
-                else
-                        { return false; }
+                    if (CheckMedidas(emp))
+                    {
+                            if (await CalcularNotificacionesAsync(emp))
+                            {
+                                return true;
+                            }
+                            else
+                            { return false; }
+                        } 
             }
             return false;
 

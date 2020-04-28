@@ -40,7 +40,11 @@ namespace AnubisDBMS.Data.Localization.Entities
         public string Nombre { get; set; }
         public string RUC { get; set; }
         public string RazonSocial { get; set; }
-        public bool ServicioActivo { get; set; }
+        public bool ServicioActivo { get; set; } 
+        public string EmailNotificacion { get; set; }
+        public int PrimeraNotificacion { get; set; }
+        public int SegundaNotificacion { get; set; }
+        public int TerceraNotificacion { get; set; }
     }
     public class Continente
     {

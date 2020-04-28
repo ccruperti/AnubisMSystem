@@ -170,66 +170,27 @@ namespace AnubisDBMS.Controllers
         #region ACT_DESACT Servicios
         public ActionResult Activar_Servicio ()
         {
-            if (!db.Servicio.Any(x => x.Activo))
-            {
 
-                db.Servicio.Add(new Servicio
-                {
-                    Activo = true,
-                    FechaModificacion = DateTime.Now,
-                    UsuarioModificacion = User.Identity.Name,
-                    EstadoServicio = true
-                });
-                db.SaveChanges();
-            }
-            else
+            var empresa = db.Empresas.FirstOrDefault(x => x.IdEmpresa == IdEmpresa);
+            if (!empresa.ServicioActivo)
             {
-                var Actual = db.Servicio.FirstOrDefault(x => x.Activo && x.IdEmpresa == IdEmpresa);
-                Actual.FechaModificacion = DateTime.Now;
-                Actual.UsuarioModificacion = User.Identity.Name;
-                Actual.Activo = false;
-                db.Servicio.Add(new Servicio
-                {
-                    Activo = true,
-                    FechaRegistro = DateTime.Now,
-                    UsuarioRegistro = User.Identity.Name,
-                    EstadoServicio = true
-                });
+                empresa.ServicioActivo=true;
+                empresa.FechaModificacion = DateTime.Now;
                 db.SaveChanges();
-            }
+            } 
             return Redirect("Index");
         }
         public ActionResult Desactivar_Servicio ()
         {
-            if (!db.Servicio.Any(x => x.Activo && x.IdEmpresa == IdEmpresa))
+            var empresa = db.Empresas.FirstOrDefault(x => x.IdEmpresa == IdEmpresa);
+            if (empresa.ServicioActivo)
             {
+                empresa.ServicioActivo = false;
+                empresa.FechaModificacion = DateTime.Now;
+                db.SaveChanges();
+            }
 
-                db.Servicio.Add(new Servicio
-                {
-                    Activo = true,
-                    FechaModificacion = DateTime.Now,
-                    UsuarioModificacion = User.Identity.Name,
-                    EstadoServicio = false
-                });
-                db.SaveChanges();
-            }
-            else
-            {
-                var Actual = db.Servicio.FirstOrDefault(x => x.Activo && x.IdEmpresa == IdEmpresa);
-                Actual.FechaModificacion = DateTime.Now;
-                Actual.UsuarioModificacion = User.Identity.Name;
-                Actual.EstadoServicio = false;
-                Actual.Activo = false;
-                db.Servicio.Add(new Servicio
-                {
-                    Activo = true,
-                    FechaRegistro = DateTime.Now,
-                    UsuarioRegistro = User.Identity.Name,
-                    EstadoServicio = false
-                });
-                db.SaveChanges();
-            }
-           return Redirect("Index");
+            return Redirect("Index");
         }
         #endregion
 
