@@ -23,7 +23,8 @@ namespace AnubisDBMS.Controllers
        
         public ActionResult Index()
         {
-            var lista = db.Equipos.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).OrderBy(x => x.IdEquipo).ToList();
+
+            var lista = db.Equipos.Where(x => x.Activo && idsEmpresas.Contains(x.IdEmpresa.Value)).OrderBy(x => x.IdEquipo).ToList();
             var model = new Catalogos_viewModels.EquipoVM
             {
                 Lista = lista
@@ -44,7 +45,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult Create(Catalogos_viewModels.EquipoVM model)
         {
-            var bdd = db.Equipos.FirstOrDefault(x => x.SerieEquipo == model.SerieEquipo.Trim().ToUpper() && x.IdEmpresa == IdEmpresa);
+            var bdd = db.Equipos.FirstOrDefault(x => x.SerieEquipo == model.SerieEquipo.Trim().ToUpper() && idsEmpresas.Contains(x.IdEmpresa.Value));
             if (bdd != null)
             {
                 bdd.Activo = true;

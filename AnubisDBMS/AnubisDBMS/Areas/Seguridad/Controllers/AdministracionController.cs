@@ -138,6 +138,15 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 if (creacion.Succeeded)
                 {
                     //var role = await RoleManager.FindByIdAsync(model.IdRol);
+                    db.Empresas.Add(new Empresa
+                    {
+                        Activo = true,
+                        FechaRegistro = DateTime.Now,
+                        UsuarioRegistro = User.Identity.Name,
+                        IdEmpresa = nuevoUsuario.IdEmpresa??0,
+                        ServicioActivo = true, 
+                    });
+                    db.SaveChanges();
                     await UserManager.AddToRoleAsync(nuevoUsuario.Id, role.Name);
                     return RedirectToAction("Index", new {recentId = nuevoUsuario.Id});
                 }

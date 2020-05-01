@@ -23,8 +23,8 @@
         @Html.ValidationMessageFor(model => model.Usuario)
     </div>
     <div class="field">
-        @Html.LabelFor(model => model.IdRol)
-        @Html.DropDownList("IdRol", null, new { @class = "ui dropdown" })
+        @Html.LabelFor(model => model.IdRol) 
+        @Html.DropDownList("IdRol",  (SelectList)ViewBag.IdRol, "Please select", new { @class = "ui dropdown" })
         @Html.ValidationMessageFor(model => model.IdRol)
     </div>
     <div class="field">

@@ -13,12 +13,13 @@ namespace AnubisDBMS.Reportes
     public class GenerarExcelConsultas
     {
         private readonly AnubisDbContext db = new AnubisDbContext();
+        public string user = HttpContext.Current.User.Identity.Name;
         public GenerarExcelConsultas()
         {
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
         }
-
+        
         public byte[] GenerarDocumentoLecturasEquipos(string SerieSensor, DateTime? Desde, DateTime? Hasta, long? IdEmpresa,int Row = 0, int Col = 0)
         {
             ExcelFile ef = new ExcelFile();
@@ -34,12 +35,23 @@ namespace AnubisDBMS.Reportes
             //SetOptions(ws3);
             //SetOptions(ws4);
             //SetOptions(ws5);
-
+            var lecturas = new List<DataSensores>();
             //var equiposensor = db.EquipoSensor.Where(c => c.IdEquipo == IdEquipo && c.Activo).ToList();
-
-            var lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
-            && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde) 
-            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && x.IdEmpresa == IdEmpresa).ToList();
+            var Usuario = db.Users.FirstOrDefault(x => x.UserName == user);
+            if (HttpContext.Current.User.IsInRole("Developers"))
+            {
+                 lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
+                && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
+                && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta))).ToList();
+            }
+            else
+            {
+                 lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
+                && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
+                && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && x.IdEmpresa == Usuario.IdEmpresa).ToList();
+            }
+        
+           
             //foreach (var eqs in equiposensor)
             //{
             //    lecturas.AddRange(db.DataSensores.Where(x => x.SerieSensor == eqs.Sensores.SerieSensor

@@ -16,6 +16,7 @@ namespace AnubisDBMS.Data.ViewModels
     {
         public bool Visible { get; set; }
         public HomeVm HomeVM { get; set; }
+        public bool Developer { get; set; }
     
     }
 }

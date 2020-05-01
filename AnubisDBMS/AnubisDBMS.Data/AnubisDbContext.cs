@@ -17,7 +17,7 @@ namespace AnubisDBMS.Data
         public DbSet<EquipoSensor> EquipoSensor { get; set; }
         public DbSet<Tecnicos> Tecnicos { get; set; }
         public DbSet<Mantenimiento> Mantenimiento { get; set; }
-        public DbSet<Servicio> Servicio { get; set; }
+        
         public DbSet<DataSensores> DataSensores { get; set; }
         public DbSet<TipoSensor> TipoSensor { get; set; }
         public DbSet<Frecuencia> Frecuencia { get; set; }
@@ -36,7 +36,7 @@ namespace AnubisDBMS.Data
             modelBuilder.Configurations.Add(new EquiposConfiguration());
             modelBuilder.Configurations.Add(new EquipoSensorConfiguration());
             modelBuilder.Configurations.Add(new TecnicosConfiguration());
-            modelBuilder.Configurations.Add(new ServicioConfiguration());
+            //modelBuilder.Configurations.Add(new ServicioConfiguration());
             modelBuilder.Configurations.Add(new FrecuenciaConfiguration());
             modelBuilder.Configurations.Add(new EstadosConfiguration());
             modelBuilder.Configurations.Add(new MantenimientoConfiguration());

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AnubisDBMS.Data.ViewModels;
 using AnubisDBMS.Infraestructure.Filters.WebFilters;
 using AnubisDBMS.Infraestructure.Helpers;
+using AnubisDBMS.Views.Helpers;
 
 namespace AnubisDBMS.Controllers
 {
@@ -14,16 +15,39 @@ namespace AnubisDBMS.Controllers
     { 
         public ActionResult Index()
         {
-            var Actual = db.Servicio.FirstOrDefault(x => x.Activo);
-            var model = new SharedVM
+
+
+            var model = new SharedVM();
+           if (User.IsInRole("Developers")|| User.IsInRole("Administrador"))
             {
-                Visible=Actual.EstadoServicio,
+
+                //var Actual = db.Empresas.FirstOrDefault(x => idsEmpresas.Contains(x.IdEmpresa));
+                model = new SharedVM
+                {
+                    Visible = true,
+                    Developer=true,
+                    HomeVM = new HomeVm
+                    {
+                        Estado = "",
+                        EstiloCSS = ""
+                    }
+                };
+
+            }
+            else
+            {
+                long id = User.Identity.GetEmpresaId();
+            var Actual = db.Empresas.FirstOrDefault(x => x.IdEmpresa == id);
+             model = new SharedVM
+             {
+                Visible=Actual.ServicioActivo,
                 HomeVM=new HomeVm 
             {
-                Estado = Actual.EstadoServicio ? "Activo" : "Desactivado",
-                EstiloCSS = (db.Servicio.FirstOrDefault(x => x.Activo).EstadoServicio ? "green" : "red")
+                Estado = Actual.ServicioActivo ? "Activo" : "Desactivado",
+                EstiloCSS = (db.Empresas.FirstOrDefault(x => x.Activo && x.IdEmpresa==IdEmpresa).ServicioActivo ? "green" : "red")
             }
                     };
+            }
             
             return View(model);
         }

@@ -12,7 +12,7 @@ using System.Web.Routing;
 
 namespace AnubisDBMS.Infraestructure.Filters.WebFilters
 {
-    public class CustomAuthorizationAttribute : AuthorizeAttribute
+    public class CustomAuthorizationAttribute : AuthorizeAttribute 
     {
 
         
@@ -49,16 +49,20 @@ namespace AnubisDBMS.Infraestructure.Filters.WebFilters
 
         private bool IsAuthorized(AuthorizationContext filterContext)
         {
-
+            
             var descriptor = filterContext.ActionDescriptor;
             var authorizeAttr = descriptor.GetCustomAttributes(typeof(AuthorizeAttribute), false).FirstOrDefault() as AuthorizeAttribute;
-
+            var valido = false;
             using (var db = new AnubisDbContext()) {
-
-                var servicio = db.Servicio.FirstOrDefault(c => c.Activo);
-                if (servicio.EstadoServicio)
+                var usuario = HttpContext.Current.User.Identity.Name;
+                var empresa = db.Users.FirstOrDefault(x => x.UserName == usuario).IdEmpresa;
+                var servicio = db.Empresas.FirstOrDefault(c => c.IdEmpresa== empresa); 
+                if (servicio != null )
                 {
-                    return true;
+                    if(servicio.ServicioActivo)
+                    return valido = true;
+                    else
+                    return valido = false; 
                 }
                 else
                 {
@@ -66,9 +70,9 @@ namespace AnubisDBMS.Infraestructure.Filters.WebFilters
                     if(user)
                     {
 
-                        return true;
+                        return valido = true;
                     }
-                    return false;
+                    return valido=false;
                 }
                 
             }
