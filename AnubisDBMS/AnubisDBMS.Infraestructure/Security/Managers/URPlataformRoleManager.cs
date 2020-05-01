@@ -38,7 +38,7 @@ namespace AnubisDBMS.Infraestructure.Security.Managers
 
         public IQueryable<AnubisDBMSUserRole> AvailableEditRoles(int prioridad)
         {
-            return base.Roles.Where(c => c.Activo && c.Prioridad > prioridad).OrderBy(c => c.Prioridad).ThenBy(c => c.Orden);
+            return base.Roles.Where(c => c.Activo && c.Prioridad >= prioridad).OrderBy(c => c.Prioridad).ThenBy(c => c.Orden);
         }
 
         public static AnubisDBMSRoleManager Create(IdentityFactoryOptions<AnubisDBMSRoleManager> options,

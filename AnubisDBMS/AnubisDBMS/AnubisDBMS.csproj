@@ -246,6 +246,7 @@
     <Compile Include="Areas\Seguridad\Controllers\CuentaController.cs" />
     <Compile Include="Areas\Seguridad\Controllers\ServicioController.cs" />
     <Compile Include="Areas\Seguridad\SeguridadAreaRegistration.cs" />
+    <Compile Include="Controllers\Cat_EmpresasController.cs" />
     <Compile Include="Controllers\Cat_EquiposController.cs" />
     <Compile Include="Controllers\Cat_SensoresController.cs" />
     <Compile Include="Controllers\Cat_TecnicosController.cs" />
@@ -543,6 +544,9 @@
     <Content Include="Views\GestionEquipos\MedicionesSensor.cshtml" />
     <Content Include="Views\Mailer\PlantillaAnubis.cshtml" />
     <Content Include="Views\Mantenimiento\ListaErrosDataSensores.cshtml" />
+    <Content Include="Views\Cat_Empresas\Create.cshtml" />
+    <Content Include="Views\Cat_Empresas\Edit.cshtml" />
+    <Content Include="Views\Cat_Empresas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

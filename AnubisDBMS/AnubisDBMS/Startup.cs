@@ -57,7 +57,7 @@ namespace AnubisDBMS
         //public void GenDataSensore()
         //{
 
-        //    var countdatos = db.EquipoSensor.Count(c => c.Activo);
+        //    var countdatos = db.EmpresaSensor.Count(c => c.Activo);
 
         //    string[] numserie = new string[4];
         //    numserie[0] = "HAU3R7J3IDF72K3";
@@ -76,7 +76,7 @@ namespace AnubisDBMS
         //        data.Medida = GetRandomNumber(0.1, 30.9);
         //        data.UnidadMedida = "C";
         //        data.SerieSensor = numserie[rstring.Next(numserie.Length)];
-        //        //data.IdEquipoSensor = eqsen.IdEquipoSensor;
+        //        //data.IdEmpresaSensor = eqsen.IdEmpresaSensor;
         //        db.DataSensores.Add(data);
 
         //        db.SaveChanges();

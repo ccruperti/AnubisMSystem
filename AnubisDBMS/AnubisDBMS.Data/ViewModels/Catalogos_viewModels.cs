@@ -1,4 +1,5 @@
 ﻿using AnubisDBMS.Data.Entities;
+using AnubisDBMS.Data.Localization.Entities;
 using AnubisDBMS.Infraestructure.Data.Helpers;
 using System;
 using System.Collections.Generic;
@@ -95,5 +96,23 @@ namespace AnubisDBMS.Data.ViewModels
             public int TerceraNotificacion { get; set; }
 
             }
+
+        public class EmpresaVM : CrudEntities
+        {
+            public EmpresaVM()
+            {
+                Lista = new List<Empresa>();
+            }
+            public long IdEmpresa { get; set; }
+            public string Nombre { get; set; }
+            public string RUC { get; set; }
+            public string RazonSocial { get; set; }
+            public bool ServicioActivo { get; set; }
+            public string EmailNotificacion { get; set; }
+            public int PrimeraNotificacion { get; set; }
+            public int SegundaNotificacion { get; set; }
+            public int TerceraNotificacion { get; set; }
+            public List<Empresa> Lista { get; set; }
+        }
     }
 }

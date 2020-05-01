@@ -1,0 +1,61 @@
+﻿@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.EmpresaVM
+ @{ 
+     ViewBag.Title = "Catálogo de Empresas";
+ }
+ 
+    <div class="sixteen wide column">
+
+    <h2>@ViewBag.Title</h2>
+
+
+   @Html.ActionLink("Crear", "Create", null, new { @class = "ui primary   button" })
+    <table class="ui striped celled   table">
+        <thead>
+            <tr>
+                
+                <th>Nombre</th>
+                <th>Razón Social</th>
+                <th>RUC</th>
+                <th>PrimeraNot</th>
+                <th>SegundaNot</th>
+                <th>TerceraNot</th>
+                <th>EmailNotificación</th>
+                <th>Servicio activo</th>
+                <th>Fecha Registro</th>
+                <th>Fecha Modificación</th>
+                  
+                <th></th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Lista)
+        {
+
+            <tr>
+
+                <td>@item.Nombre</td>
+                <td>@item.RazonSocial</td>
+                <td>@item.RUC</td>
+                <td>@item.PrimeraNotificacion</td>
+                <td>@item.SegundaNotificacion</td>
+                <td>@item.TerceraNotificacion</td>
+                <td>@item.EmailNotificacion</td>
+                <td>@(item.ServicioActivo == true ? "SI" : "NO")</td>
+                <td>@item.FechaRegistro</td>
+                <td>@item.FechaModificacion</td>
+
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdEmpresa }, new { @class = "ui orange   button" })
+                </td>
+                <td>
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdEmpresa }, new { @class = "ui red   button" })
+                </td>
+            </tr>
+        }
+
+        </tbody>
+        </table>
+
+</div>

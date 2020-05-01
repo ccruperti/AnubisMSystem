@@ -11,12 +11,13 @@ using AnubisDBMS.Infraestructure.Security.Managers;
 using AnubisDBMS.Infraestructure.Data.Security.ViewModels;
 using AnubisDBMS.Data.Localization.Entities;
 using AnubisDBMS.Data;
+using AnubisDBMS.Controllers;
 
 namespace AnubisDBMS.Areas.Seguridad.Controllers
 {
 
 
-    public class AdministracionController : Controller
+    public class AdministracionController : MainController
     {
         protected AnubisDBMSUserManager _userManager;
         protected AnubisDBMSRoleManager _roleManager;
@@ -111,9 +112,9 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
             }
             var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
             var currentRole = RoleManager.FindById(currentRoleId.RoleId);
-            ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", idRol);
-            ViewBag.IdEmpresa = SelectListEmpresas();
-
+            ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", model.IdRol);
+            model.IdEmpresa = db.Users.FirstOrDefault(x=>x.IdEmpresa==IdEmpresa).IdEmpresa??0;
+            ViewBag.IdEmpresa = SelectListEmpresas(model.IdEmpresa); 
             return View(model);
         }
 
@@ -121,7 +122,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegistrarUsuario(RegisterNewUserViewModel model)
         {
-            if (ModelState.IsValid)
+             
+                if (ModelState.IsValid)
             {
                 var role =  RoleManager.FindByName(model.Rol);
 
@@ -137,6 +139,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 var creacion = await UserManager.CreateAsync(nuevoUsuario, model.Contrasena);
                 if (creacion.Succeeded)
                 {
+                    if(IdEmpresa!=0)
+                    { 
                     //var role = await RoleManager.FindByIdAsync(model.IdRol);
                     db.Empresas.Add(new Empresa
                     {
@@ -147,6 +151,7 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                         ServicioActivo = true, 
                     });
                     db.SaveChanges();
+                    }
                     await UserManager.AddToRoleAsync(nuevoUsuario.Id, role.Name);
                     return RedirectToAction("Index", new {recentId = nuevoUsuario.Id});
                 }
