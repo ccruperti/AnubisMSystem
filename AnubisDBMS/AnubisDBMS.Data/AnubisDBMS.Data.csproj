@@ -168,9 +168,9 @@
     <Compile Include="AnubisDBMSSchemas.cs" />
     <Compile Include="Configurations\CatalogosConfigurations.cs" />
     <Compile Include="Entities\CatalogosEntities.cs" />
-    <Compile Include="Migrations\202004280338259_Anubis1.0.cs" />
-    <Compile Include="Migrations\202004280338259_Anubis1.0.Designer.cs">
-      <DependentUpon>202004280338259_Anubis1.0.cs</DependentUpon>
+    <Compile Include="Migrations\202004290224326_Anubis1.0.cs" />
+    <Compile Include="Migrations\202004290224326_Anubis1.0.Designer.cs">
+      <DependentUpon>202004290224326_Anubis1.0.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -191,8 +191,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004280338259_Anubis1.0.resx">
-      <DependentUpon>202004280338259_Anubis1.0.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004290224326_Anubis1.0.resx">
+      <DependentUpon>202004290224326_Anubis1.0.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

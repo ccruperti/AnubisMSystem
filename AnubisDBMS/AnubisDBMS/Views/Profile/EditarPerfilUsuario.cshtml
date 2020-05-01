@@ -8,51 +8,64 @@
             <img src="~/Content/Images/perfil.png">
         </div>
         <div class="content">
-            <a class="header center" style="text-align:center;">Eagle&Cast</a>
-            <div class="ui sub dividing header"></div>
+            @using (Html.BeginForm("GuardarPerfilUsuario", "Profile", FormMethod.Post, new { @class = "ui form" }))
+            {
+                <h4 class="header center" style="text-align:center;">@Model.RazonSocial</h4>
+                <div class="ui sub dividing header"></div>
+                <div class="field">
+                    Correo
+
+                    @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="field">
+                    Razón Social
+
+                    @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="field">
+                    RUC
+
+                    @Html.EditorFor(model => model.Ruc, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Ruc, "", new { @class = "text-danger" })
+                </div>
+                <h4 class="header center" style="text-align:center;">Notificación de Alertas</h4>
+                <div class="ui sub dividing header"></div>
+                <div class="three fields">
+                    <div class="field">
+                        Alerta 1
+
+                        @Html.EditorFor(model => model.PrimeraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PrimeraNotificacion, "", new { @class = "text-danger" })
+                    </div>
+
+
+
+                    <div class="field">
+                        Alerta 2
+
+                        @Html.EditorFor(model => model.SegundaNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SegundaNotificacion, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="field">
+                        Alerta 3
+
+                        @Html.EditorFor(model => model.TerceraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TerceraNotificacion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <input type="submit" class="ui  green centered aligned floated button" />
+
+
+            }
 
         </div>
         <br />
-        @using (Html.BeginForm("GuardarPerfilUsuario", "GestionEquipos", FormMethod.Post, new { @class = "ui form" }))
-        {
-            <div class="field">
-                Teléfono
-
-                @Html.EditorFor(model => model.telefono, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.telefono, "", new { @class = "text-danger" })
-            </div>
-            <div class="field">
-                Correo
-
-                @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="three fields"> 
-                <h3>Notificación de Alertas</h3>
-                <div class="field">
-                    Correo
-
-                    @Html.EditorFor(model => model.PrimeraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.PrimeraNotificacion, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="field">
-                    Correo
-
-                    @Html.EditorFor(model => model.SegundaNotificacion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.SegundaNotificacion, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="field">
-                    Correo
-
-                    @Html.EditorFor(model => model.TerceraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.TerceraNotificacion, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <button class="ui button  green button" onclick="submit()">Guardar</button>
-        }
+    
         <br />
 
 
@@ -60,13 +73,7 @@
 
         <div class="ui sub dividing header"></div>
 
-        <div class="extra content">
-            <a>
-                <i class="tablet icon"></i>
-                22 Equipos
-            </a>
-
-        </div>
+        
     </div>
 
 
