@@ -121,7 +121,7 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult Mantenimientos(long IdEquipo, bool Registro = false)
         {
-            var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo && idsEmpresas.Contains(x.IdEmpresa.Value));
+            var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo && x.IdEmpresa == IdEmpresa);
             var model = new MantenimientoVM
             {
                 Lista = db.Mantenimiento.Where(c => c.Activo && c.IdEquipo == IdEquipo).ToList(),
@@ -138,7 +138,7 @@ namespace AnubisDBMS.Controllers
         public ActionResult ListaErrosDataSensores()
         {
 
-            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && idsEmpresas.Contains(c.IdEmpresa.Value)).ToList();
+            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == IdEmpresa).ToList();
 
             List<Alerta> model = new List<Alerta>();
             foreach(var error in listaErrores)

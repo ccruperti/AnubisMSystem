@@ -27,15 +27,15 @@ namespace AnubisDBMS.Controllers
         {
 
             var model = new ListaEquipos();
-            List<Equipo> equipos = db.Equipos.Where(x => x.Activo && idsEmpresas.Contains(x.IdEmpresa.Value)).ToList();
+            List<Equipo> equipos = db.Equipos.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).ToList();
             List<EquipoSensor> EquipoSensor = new List<EquipoSensor>();
             List<Mantenimiento> Mant = new List<Mantenimiento>();
             foreach (var eq in equipos) 
             {
-                EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == eq.IdEquipo && x.Activo && idsEmpresas.Contains(x.IdEmpresa.Value)).ToList();
+                EquipoSensor = db.EquipoSensor.Where(x => x.IdEquipo == eq.IdEquipo && x.Activo && x.IdEmpresa == IdEmpresa).ToList();
                 foreach (var es in EquipoSensor)
                 {
-                    Mant = db.Mantenimiento.Where(x => x.Activo && x.IdEquipo == es.IdEquipo && x.Estados.NombreEstado== "Pendiente" && idsEmpresas.Contains(x.IdEmpresa.Value)).ToList();
+                    Mant = db.Mantenimiento.Where(x => x.Activo && x.IdEquipo == es.IdEquipo && x.Estados.NombreEstado== "Pendiente" && x.IdEmpresa == IdEmpresa).ToList();
                 
                 }
                 model.EquiposSensor.Add(new EquipoSensorVM
@@ -78,7 +78,7 @@ namespace AnubisDBMS.Controllers
             //    IdEquipo = IdEquipo
             //};
             #endregion
-            var EquiposSensores = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo && x.Activo && idsEmpresas.Contains(x.IdEmpresa.Value)).OrderBy(x=>x.NumeroPuerto).ToList();
+            var EquiposSensores = db.EquipoSensor.Where(x => x.IdEquipo == IdEquipo && x.Activo && x.IdEmpresa == IdEmpresa).OrderBy(x=>x.NumeroPuerto).ToList();
             var model = new GestionEquiposViewModels
             {
                 EquiposSensores = EquiposSensores,
@@ -94,13 +94,13 @@ namespace AnubisDBMS.Controllers
             {
                 try
                 {
-                    var val = db.EquipoSensor.Any(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.NumeroPuerto == model.NumPuerto && x.Activo == false && idsEmpresas.Contains(x.IdEmpresa.Value));
+                    var val = db.EquipoSensor.Any(x => x.IdSensor == model.IdSensor && x.IdEquipo == model.IdEquipo && x.NumeroPuerto == model.NumPuerto && x.Activo == false && x.IdEmpresa == IdEmpresa);
                     if (val)
                     {
                         var activar = db.EquipoSensor.FirstOrDefault(x => x.IdSensor == model.IdSensor 
                         && x.IdEquipo == model.IdEquipo
                         && x.NumeroPuerto == model.NumPuerto 
-                        && x.Activo == false && idsEmpresas.Contains(x.IdEmpresa.Value));
+                        && x.Activo == false && x.IdEmpresa == IdEmpresa);
                         activar.Activo = true;
                         activar.FechaModificacion = DateTime.Now;
                         activar.UsuarioModificacion = User.Identity.Name;
@@ -151,7 +151,7 @@ namespace AnubisDBMS.Controllers
 
         public ActionResult EliminarRelacionEquipoSensor(long IdEquipoSensor)
         {
-            var es = db.EquipoSensor.FirstOrDefault(x => x.IdEquipoSensor == IdEquipoSensor && idsEmpresas.Contains(x.IdEmpresa.Value));
+            var es = db.EquipoSensor.FirstOrDefault(x => x.IdEquipoSensor == IdEquipoSensor && x.IdEmpresa == IdEmpresa);
             es.Activo = false;
             es.FechaModificacion = DateTime.Now;
             es.UsuarioModificacion = User.Identity.Name;
@@ -172,12 +172,12 @@ namespace AnubisDBMS.Controllers
                 AliasEquipo=equipo.Alias
 
             }; 
-            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo && idsEmpresas.Contains(x.IdEmpresa.Value)).ToList();
+            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo && x.IdEmpresa == IdEmpresa).ToList();
             foreach(var es in equiposSensores)
             {
                 var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
 
-                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.SerieSensor==sensor.SerieSensor && idsEmpresas.Contains(x.IdEmpresa.Value));
+                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.SerieSensor==sensor.SerieSensor && x.IdEmpresa == IdEmpresa);
                 if(lectura != null)
                 {
                     model.DatosSensores.Add(new DataSensoresVM
@@ -202,14 +202,14 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult LecturaMedidoresEquipo(MonitoreoSensoresVM model)
         {
-            var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == model.IdEquipo && idsEmpresas.Contains(x.IdEmpresa.Value));
+            var equipo = db.Equipos.FirstOrDefault(x => x.IdEquipo == model.IdEquipo && x.IdEmpresa == IdEmpresa);
         
-            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo && idsEmpresas.Contains(x.IdEmpresa.Value)).ToList();
+            var equiposSensores = db.EquipoSensor.Where(x => x.Activo && x.IdEquipo == equipo.IdEquipo && x.IdEmpresa == IdEmpresa).ToList();
             foreach (var es in equiposSensores)
             {
-                var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor && idsEmpresas.Contains(x.IdEmpresa.Value));
+                var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor && x.IdEmpresa == IdEmpresa);
 
-                var lectura = db.DataSensores.OrderByDescending(x => x.FechaRegistro).FirstOrDefault(x => x.SerieSensor == sensor.SerieSensor && idsEmpresas.Contains(x.IdEmpresa.Value));
+                var lectura = db.DataSensores.OrderByDescending(x => x.FechaRegistro).FirstOrDefault(x => x.SerieSensor == sensor.SerieSensor && x.IdEmpresa == IdEmpresa);
                 if (lectura != null)
                 {
                     model.DatosSensores.Add(new DataSensoresVM
@@ -269,12 +269,12 @@ namespace AnubisDBMS.Controllers
                 Desde = DateTime.Now.GetWeekStartDate();
                 Hasta = DateTime.Now.GetWeekEndDate();
             }
-            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta && idsEmpresas.Contains(x.IdEmpresa.Value)).Select(c => c.Sensores.SerieSensor).ToList();
+            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta && x.IdEmpresa == IdEmpresa).Select(c => c.Sensores.SerieSensor).ToList();
             
-            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor) && idsEmpresas.Contains(c.IdEmpresa.Value)).Select(x => new
+            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor) && c.IdEmpresa == IdEmpresa).Select(x => new
             {
                 lec = x.Medida,
-                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && idsEmpresas.Contains(x.IdEmpresa.Value)).TipoSensor.Min_TipoSensor,
+                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && x.IdEmpresa == IdEmpresa).TipoSensor.Min_TipoSensor,
                 Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Max_TipoSensor,
                 lecmin = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).Min,
                 lecmax = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).Max,
@@ -310,7 +310,7 @@ namespace AnubisDBMS.Controllers
             var desde = ViewBag.Desde;
             model.Lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
             && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
-            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && idsEmpresas.Contains(x.IdEmpresa.Value)).ToList();
+            && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && x.IdEmpresa == IdEmpresa).ToList();
             return View(model);
         }
     }
