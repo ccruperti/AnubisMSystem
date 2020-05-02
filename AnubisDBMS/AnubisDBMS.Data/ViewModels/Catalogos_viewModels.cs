@@ -79,7 +79,14 @@ namespace AnubisDBMS.Data.ViewModels
             public string Cedula { get; set; }
             public List<Tecnicos> Lista { get; set; }
         }
-
+        public class ListaPerfilesEmpresas
+        {
+            public ListaPerfilesEmpresas()
+            {
+                ListaPerfiles = new List<PerfilVM>();
+            }
+            public List<PerfilVM> ListaPerfiles { get; set; }
+        }
         public class PerfilVM {
             public PerfilVM()
                 {
@@ -94,9 +101,15 @@ namespace AnubisDBMS.Data.ViewModels
             public int PrimeraNotificacion { get; set; }
             public int SegundaNotificacion { get; set; }
             public int TerceraNotificacion { get; set; }
+            public long IdEmpresa { get; set; }
+            public string NombreEmpresa { get; set; }
+            public bool IsServicioActivo { get; set; }
 
             }
-
+        public class NombreEmpresaSeleccionadaVm
+        {
+            public string NombreEmpresa { get; set; }
+        }
         public class EmpresaVM : CrudEntities
         {
             public EmpresaVM()

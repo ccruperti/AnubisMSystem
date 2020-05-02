@@ -16,7 +16,6 @@
     @using (Html.BeginForm("EditarUsuario", "Administracion", FormMethod.Post, new {@class = "ui form"}))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(Model.IdEmpresa) 
 <div class="three fields">
     <div class="field">
         @Html.LabelFor(model => model.Usuario)

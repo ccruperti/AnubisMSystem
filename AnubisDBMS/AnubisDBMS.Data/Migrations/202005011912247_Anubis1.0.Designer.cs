@@ -13,7 +13,7 @@ namespace AnubisDBMS.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202005010417290_Anubis1.0"; }
+            get { return "202005011912247_Anubis1.0"; }
         }
         
         string IMigrationMetadata.Source

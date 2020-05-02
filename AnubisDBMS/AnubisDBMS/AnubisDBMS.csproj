@@ -547,6 +547,9 @@
     <Content Include="Views\Cat_Empresas\Create.cshtml" />
     <Content Include="Views\Cat_Empresas\Edit.cshtml" />
     <Content Include="Views\Cat_Empresas\Index.cshtml" />
+    <Content Include="Views\Profile\ListaPerfilesEmpresas.cshtml" />
+    <Content Include="Views\Shared\_NombreEmpresaSeleccionada.cshtml" />
+    <Content Include="Views\Home\_NombreEmpresaSeleccionada.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

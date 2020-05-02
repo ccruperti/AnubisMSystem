@@ -271,7 +271,7 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 usuario.IdEmpresa = viewModel.IdEmpresa;
                 usuario.Email = viewModel.Email;
                 var userUpdate = await UserManager.UpdateAsync(usuario);
-                db.SaveChangesAsync();
+                await db.SaveChangesAsync();
                 if (userUpdate.Succeeded)
                 {
                     return RedirectToAction("Index");

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
+using AnubisDBMS.Controllers;
 using AnubisDBMS.Data;
 
 namespace AnubisDBMS.Views.Helpers
 {
-    public static class RazorIdentityHelper
+    public static class RazorIdentityHelper 
     {
         private static AnubisDbContext _context = new AnubisDbContext();        
         public static string GetUserName(this IIdentity identity)
@@ -72,14 +73,65 @@ namespace AnubisDBMS.Views.Helpers
 
 
         }
-        public static long GetEmpresaId(this IIdentity identity)
+        public static int ObtenerNumeroAlertasSensoresPerfiles(this IIdentity identity, long IdEmpresa)
         {
-            
+            //var claim = ((ClaimsIdentity)identity).FindFirst("NumPendientes");
+            int pendientes = 0;
 
 
             var current = HttpContext.Current;
             var user = _context.Users.FirstOrDefault(c => c.UserName == identity.Name);
 
+            pendientes = _context.DataSensores.Count(c => c.Activo && c.Error && c.AlertaRecibida == false && c.IdEmpresa ==IdEmpresa);
+
+
+            //var paisesusuario = _context.UsuarioPais.FirstOrDefault(c => c.Activo && c.IdUsuario == user.Id && c.PaisSeleccionado);
+
+
+
+            //((ClaimsIdentity)identity).AddClaim(new Claim("NumPendientes", pendientes.ToString(), ClaimValueTypes.Integer));
+            //claim = ((ClaimsIdentity)identity).FindFirst("NumPendientes");
+
+
+            return pendientes;
+
+
+        }
+        public static string GetNombreEmpresa(this IIdentity identity)
+        {
+
+
+
+            var current = HttpContext.Current;
+            var id = GetUserId(identity);
+            var user = _context.Users.FirstOrDefault(c => c.Id == id);
+
+            //pendientes = _context.DataSensores.Count(c => c.Activo && c.Error && c.AlertaRecibida == false);
+
+
+            //var paisesusuario = _context.UsuarioPais.FirstOrDefault(c => c.Activo && c.IdUsuario == user.Id && c.PaisSeleccionado);
+
+
+
+            //((ClaimsIdentity)identity).AddClaim(new Claim("NumPendientes", pendientes.ToString(), ClaimValueTypes.Integer));
+            //claim = ((ClaimsIdentity)identity).FindFirst("NumPendientes");
+
+
+            return user.Empresa?.Nombre ?? "---";
+        }
+
+        public static long GetEmpresaId(this IIdentity identity, long? Id = null)
+        {
+            
+
+
+            var current = HttpContext.Current;
+            var id = GetUserId(identity);
+            var user = _context.Users.FirstOrDefault(c => c.Id == id);
+            if(Id != null)
+            {
+                user = _context.Users.FirstOrDefault(c => c.Id == Id);
+            }
             //pendientes = _context.DataSensores.Count(c => c.Activo && c.Error && c.AlertaRecibida == false);
 
 

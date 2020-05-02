@@ -135,10 +135,18 @@ namespace AnubisDBMS.Controllers
             }
             return View(model);
         }
-        public ActionResult ListaErrosDataSensores()
+        public ActionResult ListaErrosDataSensores(long? Id =  null)
         {
-
-            var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == IdEmpresa).ToList();
+            var listaErrores = new List<DataSensores>();
+            if(Id != null)
+            {
+                listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == Id).ToList();
+            }
+            else
+            {
+                listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == IdEmpresa).ToList();
+            }
+          
 
             List<Alerta> model = new List<Alerta>();
             foreach(var error in listaErrores)
@@ -158,5 +166,6 @@ namespace AnubisDBMS.Controllers
             return View(model);
         }
         
+
     }
 }

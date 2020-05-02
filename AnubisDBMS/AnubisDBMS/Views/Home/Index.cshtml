@@ -12,18 +12,27 @@
             </div>
         </div>
         <div class="sixteen wide column">
-            @if (Model.HomeVM.Estado=="Activo")
+            @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
             {
                 <h1 class="ui huge centered header">Bienvenido!</h1>
+
             }
             else
             {
-                <h1 class="ui huge centered header">Servicio Bloqueado!</h1>
+                if (Model.HomeVM.Estado == "Activo")
+                {
+                    <h1 class="ui huge centered header">Bienvenido!</h1>
+                }
+                else
+                {
+                    <h1 class="ui huge centered header">Servicio Bloqueado!</h1>
+                }
             }
+
         </div>
 
         <div>
-            @if (User.IsInRole("Administrador"))
+            @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
             {
 
                 <i class="unlock icon"></i>
@@ -36,7 +45,15 @@
 
 
             <br /><br />
-            Estado Actual: <label class="ui @Model.HomeVM.EstiloCSS label">@Model.HomeVM.Estado</label>
+            @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
+            {
+        <label class="ui @Model.HomeVM.EstiloCSS label"><strong>Usuario Administrador</strong></label>
+            }
+            else
+            {
+        <label class="ui @Model.HomeVM.EstiloCSS label"> "Estado Actual:"@Model.HomeVM.Estado</label>
+
+            }
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@ namespace AnubisDBMS.Controllers
 
 
             var model = new SharedVM();
-           if (User.IsInRole("Administrador"))
+           if (User.IsInRole("Administrador")|| User.IsInRole("Developers"))
             {
 
                 var Actual = db.Empresas.FirstOrDefault(x => x.IdEmpresa==IdEmpresa);
@@ -28,8 +28,8 @@ namespace AnubisDBMS.Controllers
                     Developer = true,
                     HomeVM = new HomeVm
                     {
-                        Estado = Actual.ServicioActivo == true ? "Activo" : "Bloqueado",
-                        EstiloCSS = Actual.ServicioActivo == true ? "green":"red"
+                        //Estado = Actual.ServicioActivo == true ? "Activo" : "Bloqueado",
+                        //EstiloCSS = Actual.ServicioActivo == true ? "green":"red"
                     }
                 };
 

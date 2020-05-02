@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Linq;
 using System;
+using static AnubisDBMS.Data.ViewModels.Catalogos_viewModels;
 
 namespace AnubisDBMS.Controllers
 {
@@ -25,9 +26,29 @@ namespace AnubisDBMS.Controllers
             };
             return View(model);
         }
-        public ActionResult EditarPerfilUsuario()
+        public ActionResult ListaPerfilesEmpresas()
         {
-            var empresa = db.Empresas.FirstOrDefault(c => c.IdEmpresa == IdEmpresa);
+            var model = new ListaPerfilesEmpresas
+            {
+                ListaPerfiles = db.Empresas.Select(x => new PerfilVM
+                {
+                    Ruc = x.RUC,
+                    RazonSocial = x.RazonSocial,
+                    correo = x.EmailNotificacion,
+                    PrimeraNotificacion = x.PrimeraNotificacion,
+                    SegundaNotificacion = x.SegundaNotificacion,
+                    TerceraNotificacion = x.TerceraNotificacion,
+                    IdEmpresa = x.IdEmpresa,
+                    NombreEmpresa = x.Nombre,
+                    IsServicioActivo = x.ServicioActivo
+
+                }).ToList()
+            };
+            return View(model);
+        }
+        public ActionResult EditarPerfilUsuario(long Id)
+        {
+            var empresa = db.Empresas.FirstOrDefault(c => c.IdEmpresa == Id);
 
             var model = new Catalogos_viewModels.PerfilVM
             {
@@ -57,7 +78,13 @@ namespace AnubisDBMS.Controllers
             db.SaveChanges();
             return RedirectToAction("PerfilUsuario");
         }
-
+        public ActionResult FiltrarInformacionPorEmpresa(long Id)
+        {
+            var user = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+            user.IdEmpresa = Id;
+            db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
  
 
     }

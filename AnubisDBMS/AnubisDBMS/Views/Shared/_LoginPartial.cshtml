@@ -1,42 +1,45 @@
 ﻿@using AnubisDBMS.Views.Helpers
 
-<div class="right menu">
-    @if (Request.IsAuthenticated)
-    {
-    <div class="ui dropdown item">
+    <div class="right menu">
+        @if (Request.IsAuthenticated)
+        {
 
-      
-        <a href="@Url.Action("ListaErrosDataSensores", "Mantenimiento" , new { area= ""})" class="item">
-            &nbsp;
-            Alertas <div class="ui red left pointing label">@User.Identity.ObtenerNumeroAlertasSensores()</div>
-        </a>
-        @*<div class="menu">
+            @Html.Action("_NombreEmpresaSeleccionada", "Main", new { area = "" })
 
-            <a href="@Url.Action("ListaErrosDataSensores", "Mantenimiento" , new { area= ""})" class="item">
-                &nbsp;
-                <div class="ui red left pointing label"> @User.Identity.GetNumeroPendientesOrdenComprasPresidencia()</div>
-            </a>
-        </div>*@
-    </div>
-        <div class="ui dropdown item">
-            Hola @User.Identity.GetUserName()
-            <i class="dropdown icon"></i>
-            <div class="menu">
-                @if (User.IsInRole("Administrador") || User.IsInRole("Administrador Sistema") || User.IsInRole("Developers"))
-                {
-                    @Html.ActionLink("Perfil", "PerfilUsuario", "Profile", new { area = "" }, new { @class = "item" })
-                    @Html.ActionLink("Administrador de Usuarios", "Index", "Administracion", new { area = "Seguridad" }, new { @class = "item" })
-                }
-                @using (Html.BeginForm("LogOff", "Cuenta", new { area = "Seguridad" }, FormMethod.Post, new { id = "logoutForm", @class = "" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <a href="javascript:document.getElementById('logoutForm').submit()" class="item" style="color: black;">Cerrar sesión</a>
-                }
+            <div class="ui dropdown item">
+
+
+                <a href="@Url.Action("ListaErrosDataSensores", "Mantenimiento" , new { area= ""})" class="item">
+                    &nbsp;
+                    Alertas <div class="ui red left pointing label">@User.Identity.ObtenerNumeroAlertasSensores()</div>
+                </a>
+                @*<div class="menu">
+
+                    <a href="@Url.Action("ListaErrosDataSensores", "Mantenimiento" , new { area= ""})" class="item">
+                        &nbsp;
+                        <div class="ui red left pointing label"> @User.Identity.GetNumeroPendientesOrdenComprasPresidencia()</div>
+                    </a>
+                </div>*@
             </div>
-        </div>
-    }
-    else
-    {
-        @Html.ActionLink("Iniciar sesión", "IniciarSesion", "Cuenta", new { area = "Seguridad" }, new { id = "loginLink", @class = "item" })
-    }
-</div>
+            <div class="ui dropdown item">
+                Hola @User.Identity.GetUserName()
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Administrador Sistema") || User.IsInRole("Developers"))
+                    {
+                        @Html.ActionLink("Administracion de Empresas", "ListaPerfilesEmpresas", "Profile", new { area = "" }, new { @class = "item" })
+                        @Html.ActionLink("Administrador de Usuarios", "Index", "Administracion", new { area = "Seguridad" }, new { @class = "item" })
+                    }
+                    @using (Html.BeginForm("LogOff", "Cuenta", new { area = "Seguridad" }, FormMethod.Post, new { id = "logoutForm", @class = "" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()" class="item" style="color: black;">Cerrar sesión</a>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.ActionLink("Iniciar sesión", "IniciarSesion", "Cuenta", new { area = "Seguridad" }, new { id = "loginLink", @class = "item" })
+        }
+    </div>

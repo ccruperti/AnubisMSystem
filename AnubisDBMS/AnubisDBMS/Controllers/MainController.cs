@@ -17,6 +17,7 @@ using System.Web.Hosting;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using AnubisDBMS.Views.Helpers;
+using static AnubisDBMS.Data.ViewModels.Catalogos_viewModels;
 
 namespace AnubisDBMS.Controllers
 {
@@ -199,11 +200,44 @@ namespace AnubisDBMS.Controllers
 
             return Redirect("Index");
         }
+
+        public ActionResult ActivarServEmpresa(long Id)
+        {
+
+            var empresa = db.Empresas.FirstOrDefault(x => x.IdEmpresa == Id);
+            if (!empresa.ServicioActivo)
+            {
+                empresa.ServicioActivo = true;
+                empresa.FechaModificacion = DateTime.Now;
+                db.SaveChanges();
+            }
+            return RedirectToAction("ListaPerfilesEmpresas","Profile");
+        }
+        public ActionResult DesactServEmpresa(long Id)
+        {
+            var empresa = db.Empresas.FirstOrDefault(x => x.IdEmpresa == Id);
+            if (empresa.ServicioActivo)
+            {
+                empresa.ServicioActivo = false;
+                empresa.FechaModificacion = DateTime.Now;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ListaPerfilesEmpresas", "Profile");
+        }
         #endregion
 
-      
+        public PartialViewResult _NombreEmpresaSeleccionada()
+        {
+            var usuario = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name);
+            var model = new NombreEmpresaSeleccionadaVm
+            {
+                NombreEmpresa = usuario.Empresa.Nombre
+            };
+            return PartialView(model);
+        }
 
-         
+
 
     }
 }
