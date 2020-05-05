@@ -22,7 +22,8 @@ namespace AnubisDBMS.Controllers
                 correo = empresa.EmailNotificacion,
                 PrimeraNotificacion = empresa.PrimeraNotificacion,
                 SegundaNotificacion = empresa.SegundaNotificacion,
-                TerceraNotificacion = empresa.TerceraNotificacion
+                TerceraNotificacion = empresa.TerceraNotificacion,
+                IdEmpresa=empresa.IdEmpresa
             };
             return View(model);
         }
@@ -30,7 +31,7 @@ namespace AnubisDBMS.Controllers
         {
             var model = new ListaPerfilesEmpresas
             {
-                ListaPerfiles = db.Empresas.Select(x => new PerfilVM
+                ListaPerfiles = db.Empresas.Where(x => x.Activo).Select(x => new PerfilVM
                 {
                     Ruc = x.RUC,
                     RazonSocial = x.RazonSocial,
@@ -46,9 +47,9 @@ namespace AnubisDBMS.Controllers
             };
             return View(model);
         }
-        public ActionResult EditarPerfilUsuario(long Id)
+        public ActionResult EditarPerfilUsuario(long IdEmpresa)
         {
-            var empresa = db.Empresas.FirstOrDefault(c => c.IdEmpresa == Id);
+            var empresa = db.Empresas.FirstOrDefault(c => c.IdEmpresa == IdEmpresa);
 
             var model = new Catalogos_viewModels.PerfilVM
             {

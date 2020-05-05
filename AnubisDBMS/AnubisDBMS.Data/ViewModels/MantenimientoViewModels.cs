@@ -18,16 +18,20 @@ namespace AnubisDBMS.Data.ViewModels
         }
         public long? IdManteniemiento { get; set; }
         public long IdEstado { get; set; }
+        [Required]
         [Display(Name = "Tecnico")]
         public long IdTecnico { get; set; }
         public string IdUsuario { get; set; }
+        [Required]
         [Display(Name = "Frecuencia")]
         public long IdFrecuencia { get; set; }
         public string Notas { get; set; }
         public bool ServicioActivo { get; set; }
         [DisplayName("Notificaciones")]
         public bool Notificaciones { get; set; }
+        [Required]
         public string Descripcion { get; set; }
+        [Required]
         public DateTime FechaMant { get; set; }
         public long IdEquipo { get; set; }
 

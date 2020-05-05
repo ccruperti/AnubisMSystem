@@ -35,14 +35,16 @@
     @if (User.Identity.IsAuthenticated)
     {
 
-        <nav class="ui top attached raised inverted stackable menu bg-gqm-regular" id="main-menu">
-            @Html.ActionLink("AnubisDBMS", "Index", "Home", new { area = "" }, new { @class = "header item" })
+    <nav class="ui top attached raised inverted stackable menu bg-gqm-regular" id="main-menu">
+        @Html.ActionLink("AnubisDBMS", "Index", "Home", new { area = "" }, new { @class = "header item" })
 
 
-            <div class="menu">
-                @Html.ActionLink("Monitoreo", "MonitoreoEquipos", "GestionEquipos", new { area = "" }, new { @class = "item" })
+        <div class="menu">
+            @Html.ActionLink("Monitoreo", "MonitoreoEquipos", "GestionEquipos", new { area = "" }, new { @class = "item" })
 
-            </div>
+        </div>
+        @if (User.IsInRole("Developers") || User.IsInRole("Administrador"))
+        {
             <div class="ui dropdown item">
                 Catálogos
                 <i class="dropdown icon"></i>
@@ -51,13 +53,14 @@
                     @Html.ActionLink("Técnicos", "Index", "Cat_Tecnicos", new { area = "" }, new { @class = "item" })
                     @Html.ActionLink("Sensores", "Index", "Cat_Sensores", new { area = "" }, new { @class = "item" })
                     @Html.ActionLink("Tipo de Sensor", "Index", "Cat_TipoSensor", new { area = "" }, new { @class = "item" })
-                    @if(User.IsInRole("Developers"))
+                    @if (User.IsInRole("Developers"))
                     {
-                    @Html.ActionLink("Empresas", "Index", "Cat_Empresas", new { area = "" }, new { @class = "item" })
+                        @Html.ActionLink("Empresas", "Index", "Cat_Empresas", new { area = "" }, new { @class = "item" })
                     }
                 </div>
 
             </div>
+        }
 
             <a class="item" id="main-sidebar-trigger" style="visibility:hidden;">
                 <i class="sidebar icon"></i>
@@ -80,11 +83,7 @@
                     @Html.ActionLink("Monitoreo", "MonitoreoEquipos", "GestionEquipos", new { area = "" }, new { @class = "item" })
                 </div>
             </div>
-            @if (User.IsInRole("Administrador") || User.IsInRole("Administrador Sistema") || User.IsInRole("Developers"))
-            {
-
-
-            }
+          
         </aside>
     }
 

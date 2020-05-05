@@ -45,13 +45,13 @@
 
 
             <br /><br />
-            @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
+            @if ( User.IsInRole("Developers"))
             {
-        <label class="ui @Model.HomeVM.EstiloCSS label"><strong>Usuario Administrador</strong></label>
+            <label class="ui @Model.HomeVM.EstiloCSS label"><strong>Usuario Administrador</strong></label>
             }
             else
             {
-        <label class="ui @Model.HomeVM.EstiloCSS label"> "Estado Actual:"@Model.HomeVM.Estado</label>
+          <label class="ui @Model.HomeVM.EstiloCSS label"> "Estado Actual: " @Model.HomeVM.Estado</label>
 
             }
         </div>

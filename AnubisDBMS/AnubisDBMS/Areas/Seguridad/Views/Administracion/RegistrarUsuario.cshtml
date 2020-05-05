@@ -7,8 +7,7 @@
         <h1 class="ui header">@ViewBag.Title</h1>
         @using (Html.BeginForm("RegistrarUsuario", "Administracion", FormMethod.Post, new { @class = "ui form" }))
         {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(x => x.IdEmpresa) 
+            @Html.AntiForgeryToken() 
             @Html.HiddenFor(x => x.IdRol) 
             <div class="four fields">
                 <div class="field">

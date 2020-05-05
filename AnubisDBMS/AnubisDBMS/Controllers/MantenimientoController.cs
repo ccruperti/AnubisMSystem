@@ -34,6 +34,8 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult AgregarMantenimiento(MantenimientoVM model, string submitButton)
         {
+            if(ModelState.IsValid)
+            { 
             switch (submitButton)
             {
                 case "SaveAndCont":
@@ -60,6 +62,11 @@ namespace AnubisDBMS.Controllers
                 default:
                     return View(model);
             }
+            }
+        else
+                ViewBag.IdFrecuencia = SelectListFrecuencias();
+            ViewBag.IdTecnico = SelectListTecnico();
+            return View(model);
         }
         [HttpPost]
         public ActionResult CambiarEstadoMantenimiento(long? IdMant, string Desc)

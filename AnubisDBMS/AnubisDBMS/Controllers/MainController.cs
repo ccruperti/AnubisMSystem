@@ -116,7 +116,7 @@ namespace AnubisDBMS.Controllers
         public SelectList SelectListFrecuencias(long? id = null)
         {
 
-            List<Frecuencia> data = db.Frecuencia.Where(c => c.Activo && c.IdEmpresa == IdEmpresa).ToList();
+            List<Frecuencia> data = db.Frecuencia.Where(c => c.Activo).ToList();
             data.Add(new Frecuencia { IdFrecuencia = 0 , NombreFrecuencia = "Seleccione frecuencia" });
             return new SelectList(data.OrderBy(c => c.IdFrecuencia), "IdFrecuencia", "NombreFrecuencia", id);
 
@@ -232,7 +232,7 @@ namespace AnubisDBMS.Controllers
             var usuario = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name);
             var model = new NombreEmpresaSeleccionadaVm
             {
-                NombreEmpresa = usuario.Empresa.Nombre
+                NombreEmpresa = usuario?.Empresa?.Nombre
             };
             return PartialView(model);
         }

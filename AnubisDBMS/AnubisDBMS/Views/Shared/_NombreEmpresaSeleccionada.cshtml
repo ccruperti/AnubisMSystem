@@ -3,7 +3,7 @@
 
 
 
-@if (User.IsInRole("Developers") || User.IsInRole("Administrador"))
+@if (User.IsInRole("Developers") )
 {
     <div class="item">
         <label><i class="user circle icon"></i>Empresa Seleccionada: @Model.NombreEmpresa</label>

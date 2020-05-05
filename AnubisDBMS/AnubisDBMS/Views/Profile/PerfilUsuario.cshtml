@@ -14,61 +14,57 @@
 
 
                 <div class="field">
-                    Correo
 
-                    @Html.EditorFor(model => model.correo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.correo, "", new { @class = "text-danger" })
+
+                    <label class="ui gray left icon label"><i class="mail icon"></i>Correo: @Model.correo</label>
+
+
                 </div>
 
                 <div class="field">
-                    Razón Social
+                    <label class="ui gray left icon label"><i class="user icon"></i>Razón Social: @Model.RazonSocial</label>
 
-                    @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+
                 </div>
 
                 <div class="field">
-                    RUC
+                    <label class="ui gray left icon label"><i class="id card icon"></i>RUC: @Model.RazonSocial</label>
 
-                    @Html.EditorFor(model => model.Ruc, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Ruc, "", new { @class = "text-danger" })
                 </div>
                 <h4 class="header center" style="text-align:center;">Notificación de Alertas</h4>
                 <div class="ui sub dividing header"></div>
                 <div class="three fields">
                     <div class="field">
-                        Alerta 1
+                        <label class="ui yellow left icon label"><i class="warning icon"></i>1er Alerta: @Model.PrimeraNotificacion</label>
 
-                        @Html.EditorFor(model => model.PrimeraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.PrimeraNotificacion, "", new { @class = "text-danger" })
                     </div>
 
 
 
                     <div class="field">
-                        Alerta 2
+                        <label class="ui yellow left icon label"><i class="warning icon"></i>2da Alerta: @Model.SegundaNotificacion</label>
 
-                        @Html.EditorFor(model => model.SegundaNotificacion, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.SegundaNotificacion, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="field">
-                        Alerta 3
+                        <label class="ui yellow left icon label"><i class="warning icon"></i>3ra Alerta: @Model.TerceraNotificacion</label>
 
-                        @Html.EditorFor(model => model.TerceraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.TerceraNotificacion, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
 
+                 
 
-            </div>
+
+
+        </div>
 
         <br />
 
         <br />
         <br /> 
-        @Html.ActionLink("Edit", "EditarPerfilUsuario", null,  new { @class = "ui tiny red right floated button" })
+            @Html.HiddenFor(x=>x.IdEmpresa)
+        @Html.ActionLink("Edit", "EditarPerfilUsuario", new { idEmpresa = Model.IdEmpresa},  new { @class = "ui tiny red right floated button" })
         <div class="ui sub dividing header"></div>
 
         @*<div class="extra content">
