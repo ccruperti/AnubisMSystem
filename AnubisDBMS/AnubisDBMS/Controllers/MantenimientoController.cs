@@ -68,6 +68,63 @@ namespace AnubisDBMS.Controllers
             ViewBag.IdTecnico = SelectListTecnico();
             return View(model);
         }
+        public ActionResult EditarMantenimiento(long id)
+        {
+            var equipo = db.Mantenimiento.FirstOrDefault(x => x.IdManteniemiento == id);
+
+            ViewBag.IdFrecuencia = SelectListFrecuencias(equipo.IdFrecuencia);
+            ViewBag.IdTecnico = SelectListTecnico(equipo.IdTecnico);
+            var model = new MantenimientoVM
+            {
+                FechaMant = DateTime.Now,
+                IdEquipo = equipo.IdEquipo ?? 0,
+                AliasEquipo = equipo.Equipo.Alias,
+                QR = equipo.Equipo.CodigoQR,
+                Descripcion = ""
+            };
+            //if (Registro)
+            //{
+            //    TempData["Mensaje"] = new MensajeViewModel(true, "Registro Exitoso!", "Se ingreso un mantenimiento para el equipo: " + equipo.Alias);
+            //}
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditarMantenimiento(MantenimientoVM model, string submitButton)
+        {
+            if (ModelState.IsValid)
+            {
+                switch (submitButton)
+                {
+                    case "SaveAndCont":
+                        var modelo = GuardarMantenimiento(model);
+                        if (modelo != null)
+                        {
+                            return RedirectToAction("AgregarMantenimiento", new { modelo.IdEquipo, Registro = true });
+                        }
+                        else
+                        {
+                            return View(modelo);
+                        }
+                    case "SaveAndBack":
+                        var modelo2 = GuardarMantenimiento(model);
+                        if (modelo2 != null)
+                        {
+
+                            return RedirectToAction("Mantenimientos", new { modelo2.IdEquipo, Registro = true });
+                        }
+                        else
+                        {
+                            return View(modelo2);
+                        }
+                    default:
+                        return View(model);
+                }
+            }
+            else
+                ViewBag.IdFrecuencia = SelectListFrecuencias();
+            ViewBag.IdTecnico = SelectListTecnico();
+            return View(model);
+        }
         [HttpPost]
         public ActionResult CambiarEstadoMantenimiento(long? IdMant, string Desc)
         {

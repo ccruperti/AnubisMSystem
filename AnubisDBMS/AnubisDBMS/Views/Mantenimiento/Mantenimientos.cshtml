@@ -87,7 +87,7 @@
                             <td class="centered">
                                 <div class="ui small buttons">
 
-                                    <a href="#" class="ui blue button compact"><i class="pencil icon"></i>Editar</a>
+                                    <a href="@Url.Action("EditarMantenimiento", new { id = mant.IdManteniemiento})" class="ui blue button compact"><i class="pencil icon"></i>Editar</a>
                                     @if (mant.Estados.NombreEstado != "Completado")
                                     {
                                         <a href="#" data-idmant="@mant.IdManteniemiento" id="show-modal-mant" class="ui green button compact show-modal-mant"><i class="check icon"></i>Completar Mantenimiento</a>

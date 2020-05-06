@@ -12,6 +12,7 @@ using AnubisDBMS.Infraestructure.Data.Security.ViewModels;
 using AnubisDBMS.Data.Localization.Entities;
 using AnubisDBMS.Data;
 using AnubisDBMS.Controllers;
+using AnubisDBMS.Views.Helpers;
 
 namespace AnubisDBMS.Areas.Seguridad.Controllers
 {
@@ -133,7 +134,7 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 if (ModelState.IsValid)
             {
                 var role =  RoleManager.FindById(model.IdRol);
-
+                var usr = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name).IdEmpresa;
                 var nuevoUsuario = new AnubisDBMSUser
                 {
                     UserName = model.Usuario, 
@@ -141,7 +142,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                     Celular = model.Celular,
                     Apellidos = model.Apellidos,
                     TipoUsuario = role.Name,
-                    IdEmpresa = model.IdEmpresa
+                    IdEmpresa = User.Identity.GetEmpresaId()
+                   
                 };
                    
                 var creacion = await UserManager.CreateAsync(nuevoUsuario, model.Contrasena);

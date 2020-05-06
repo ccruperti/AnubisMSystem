@@ -80,7 +80,7 @@
 
                                         <br />
                                         <br />
-                                        @Html.ActionLink("Edit", "EditarPerfilUsuario", new { Id = emp.IdEmpresa }, new { @class = "ui green centered button" })
+                                        @Html.ActionLink("Edit", "EditarPerfilUsuario", new { IdEmpresa = emp.IdEmpresa }, new { @class = "ui green centered button" })
                                         @if (emp.IsServicioActivo)
                                         {
                                             <i class="lock icon"></i>
