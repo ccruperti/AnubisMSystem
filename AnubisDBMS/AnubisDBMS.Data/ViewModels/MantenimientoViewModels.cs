@@ -51,6 +51,7 @@ namespace AnubisDBMS.Data.ViewModels
         public double Min { get; set; }
         public double Max { get; set; }
         public double medida { get; set; }
+        public string encimadebajo { get; set; }
 
         }
 }

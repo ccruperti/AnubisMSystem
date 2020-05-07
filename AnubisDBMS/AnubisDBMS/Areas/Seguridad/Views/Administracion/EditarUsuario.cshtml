@@ -2,71 +2,73 @@
 @{
     ViewBag.Title = "Editar Usuario";
 }
-<div class="ten wide column">
-    <h1 class="ui header">@ViewBag.Title</h1>
-    <div class="ui info icon message">
-        <i class="info icon"></i>
-        <div class="content">
-            <div class="header">
-                Importante
+    <div class="ten wide column">
+        <h1 class="ui header">@ViewBag.Title</h1>
+        <div class="ui info icon message">
+            <i class="info icon"></i>
+            <div class="content">
+                <div class="header">
+                    Importante
+                </div>
+                <p>Cambiar el "Usuario" requiere que el usuario vuelva a iniciar sesion. Un cambio de "Usuario" no actualiza logs ni registros transaccionales.</p>
             </div>
-            <p>Cambiar el "Usuario" requiere que el usuario vuelva a iniciar sesion. Un cambio de "Usuario" no actualiza logs ni registros transaccionales.</p>
         </div>
-    </div>
-    @using (Html.BeginForm("EditarUsuario", "Administracion", FormMethod.Post, new {@class = "ui form"}))
-    {
-        @Html.AntiForgeryToken()
-<div class="three fields">
-    <div class="field">
-        @Html.LabelFor(model => model.Usuario)
-        @Html.EditorFor(model => model.Usuario)
-        @Html.ValidationMessageFor(model => model.Usuario)
-    </div>
-    <div class="field">
-        @Html.LabelFor(model => model.IdRol) 
-        @Html.DropDownList("IdRol",  (SelectList)ViewBag.IdRol, "Please select", new { @class = "ui dropdown" })
-        @Html.ValidationMessageFor(model => model.IdRol)
-    </div>
-    <div class="field">
-        @Html.LabelFor(model => model.Email)
-        @Html.EditorFor(model => model.Email)
-        @Html.ValidationMessageFor(model => model.Email)
-    </div>
-</div>
-        <h2 class="ui dividing sub header">Datos Adicionales</h2>
-        <div class="ui small message">
-           
-        </div>
-        <div class="four fields">
-            <div class="field">
-                @Html.LabelFor(model => model.Celular)
-                @Html.EditorFor(model => model.Celular)
-                @Html.ValidationMessageFor(model => model.Celular)
+        @using (Html.BeginForm("EditarUsuario", "Administracion", FormMethod.Post, new { @class = "ui form" }))
+        {
+            @Html.HiddenFor(x => x.IdRol)
+            @Html.HiddenFor(x => x.IdEmpresa)
+            @Html.AntiForgeryToken()
+            <div class="three fields">
+                <div class="field">
+                    @Html.LabelFor(model => model.Usuario)
+                    @Html.EditorFor(model => model.Usuario)
+                    @Html.ValidationMessageFor(model => model.Usuario)
+                </div>
+                <div class="field">
+                    @Html.LabelFor(model => model.IdRol)
+                    @Html.DropDownList("IdRol", null, new { @class = "ui dropdown", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.IdRol)
+                </div>
+                <div class="field">
+                    @Html.LabelFor(model => model.Email)
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
             </div>
-            <div class="field">
-                @Html.LabelFor(model => model.Nombres)
-                @Html.EditorFor(model => model.Nombres)
-                @Html.ValidationMessageFor(model => model.Nombres)
-            </div>
-            <div class="field">
-                @Html.LabelFor(model => model.Apellidos)
-                @Html.EditorFor(model => model.Apellidos)
-                @Html.ValidationMessageFor(model => model.Apellidos)
-            </div>
+            <h2 class="ui dividing sub header">Datos Adicionales</h2>
+            <div class="ui small message">
 
-            @if(User.IsInRole("Developers"))
-            {
-            <div class="field">
-                @Html.LabelFor(model => model.IdEmpresa)
-                @Html.DropDownList("IdEmpresa", null, new { @class = "ui search dropdown" })
-                @Html.ValidationMessageFor(model => model.IdEmpresa)
             </div>
-            }
+            <div class="four fields">
+                <div class="field">
+                    @Html.LabelFor(model => model.Celular)
+                    @Html.EditorFor(model => model.Celular)
+                    @Html.ValidationMessageFor(model => model.Celular)
+                </div>
+                <div class="field">
+                    @Html.LabelFor(model => model.Nombres)
+                    @Html.EditorFor(model => model.Nombres)
+                    @Html.ValidationMessageFor(model => model.Nombres)
+                </div>
+                <div class="field">
+                    @Html.LabelFor(model => model.Apellidos)
+                    @Html.EditorFor(model => model.Apellidos)
+                    @Html.ValidationMessageFor(model => model.Apellidos)
+                </div>
 
-        </div>
-        @Html.ActionLink("Regresar", "Index", null, new { @class = "ui button" })
-        <button type="submit" class="ui primary icon button">
-            <i class="save icon"></i> Actualizar Datos
-        </button>
-    }
-</div>
+                @if (User.IsInRole("Developers"))
+                {
+                    <div class="field">
+                        @Html.LabelFor(model => model.IdEmpresa)
+                        @Html.DropDownList("IdEmpresa", null, new { @class = "ui search dropdown" })
+                        @Html.ValidationMessageFor(model => model.IdEmpresa)
+                    </div>
+                }
+
+            </div>
+            @Html.ActionLink("Regresar", "Index", null, new { @class = "ui button" })
+            <button type="submit" class="ui primary icon button">
+                <i class="save icon"></i> Actualizar Datos
+            </button>
+        }
+    </div>

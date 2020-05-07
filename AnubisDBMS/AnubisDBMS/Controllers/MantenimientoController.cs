@@ -34,36 +34,36 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult AgregarMantenimiento(MantenimientoVM model, string submitButton)
         {
-            if(ModelState.IsValid)
-            { 
-            switch (submitButton)
+            if (ModelState.IsValid)
             {
-                case "SaveAndCont":
-                    var modelo = GuardarMantenimiento(model);
-                    if (modelo != null)
-                    {
-                        return RedirectToAction("AgregarMantenimiento", new { modelo.IdEquipo, Registro = true });
-                    }
-                    else
-                    {
-                        return View(modelo);
-                    }
-                case "SaveAndBack":
-                    var modelo2 = GuardarMantenimiento(model);
-                    if (modelo2 != null)
-                    {
+                switch (submitButton)
+                {
+                    case "SaveAndCont":
+                        var modelo = GuardarMantenimiento(model);
+                        if (modelo != null)
+                        {
+                            return RedirectToAction("AgregarMantenimiento", new { modelo.IdEquipo, Registro = true });
+                        }
+                        else
+                        {
+                            return View(modelo);
+                        }
+                    case "SaveAndBack":
+                        var modelo2 = GuardarMantenimiento(model);
+                        if (modelo2 != null)
+                        {
 
-                        return RedirectToAction("Mantenimientos", new { modelo2.IdEquipo, Registro = true });
-                    }
-                    else
-                    {
-                        return View(modelo2);
-                    }
-                default:
-                    return View(model);
+                            return RedirectToAction("Mantenimientos", new { modelo2.IdEquipo, Registro = true });
+                        }
+                        else
+                        {
+                            return View(modelo2);
+                        }
+                    default:
+                        return View(model);
+                }
             }
-            }
-        else
+            else
                 ViewBag.IdFrecuencia = SelectListFrecuencias();
             ViewBag.IdTecnico = SelectListTecnico();
             return View(model);
@@ -99,7 +99,7 @@ namespace AnubisDBMS.Controllers
                         var modelo = EditarMantenimiento(model);
                         if (modelo != null)
                         {
-                            return RedirectToAction("EditarMantenimiento", new {id = model.IdManteniemiento });
+                            return RedirectToAction("EditarMantenimiento", new { id = model.IdManteniemiento });
                         }
                         else
                         {
@@ -190,20 +190,20 @@ namespace AnubisDBMS.Controllers
             {
                 try
                 {
-                
+
                     var mantenimiento = db.Mantenimiento.Find(model.IdManteniemiento);
 
                     mantenimiento.IdTecnico = model.IdTecnico;
-                         mantenimiento.IdEquipo = model.IdEquipo;
-                         mantenimiento.FechaRegistro = DateTime.Now;
-                         mantenimiento.UsuarioRegistro = User.Identity.Name;
-                         mantenimiento.Activo = true;
-                         mantenimiento.IdEstado = db.Estados.FirstOrDefault(c => c.Activo && c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Pendiente").IdEstado;
-                         mantenimiento.IdFrecuencia = model.IdFrecuencia;
-                         mantenimiento.Descripcion = model.Descripcion;
-                         mantenimiento.FechaMantenimiento = model.FechaMant;
+                    mantenimiento.IdEquipo = model.IdEquipo;
+                    mantenimiento.FechaRegistro = DateTime.Now;
+                    mantenimiento.UsuarioRegistro = User.Identity.Name;
+                    mantenimiento.Activo = true;
+                    mantenimiento.IdEstado = db.Estados.FirstOrDefault(c => c.Activo && c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Pendiente").IdEstado;
+                    mantenimiento.IdFrecuencia = model.IdFrecuencia;
+                    mantenimiento.Descripcion = model.Descripcion;
+                    mantenimiento.FechaMantenimiento = model.FechaMant;
                     mantenimiento.IdEmpresa = IdEmpresa;
-                   
+
                     db.SaveChanges();
 
                     transaction.Commit();
@@ -240,37 +240,52 @@ namespace AnubisDBMS.Controllers
             }
             return View(model);
         }
-        public ActionResult ListaErrosDataSensores(long? Id =  null)
+        public ActionResult ListaErrosDataSensores(long? Id = null)
         {
             var listaErrores = new List<DataSensores>();
-            if(Id != null)
+            if (User.IsInRole("Developers"))
             {
-                listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == Id).ToList();
+                listaErrores = db.DataSensores.Where(c => c.Activo && c.Error).ToList();
             }
             else
             {
-                listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == IdEmpresa).ToList();
+                listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.AlertaRecibida == false && c.IdEmpresa == IdEmpresa  ).ToList();
             }
-          
+
 
             List<Alerta> model = new List<Alerta>();
-            foreach(var error in listaErrores)
+            foreach (var error in listaErrores)
             {
-               var equipoSensor = db.EquipoSensor.FirstOrDefault(x => x.Sensores.SerieSensor == error.SerieSensor);
+                var equipoSensor = db.EquipoSensor.FirstOrDefault(x => x.Sensores.SerieSensor == error.SerieSensor);
                 model.Add(new Alerta
                 {
-                    Min = equipoSensor.Sensores.Min??0,
-                    Max = equipoSensor.Sensores.Max??0,
-                    Equipo=equipoSensor.Equipos.SerieEquipo,
-                    medida=error.Medida,
-                    Sensor= equipoSensor.Sensores.SerieSensor,
-                    UnidadMedida=error.UnidadMedida 
+                    Min = equipoSensor.Sensores.Min ?? 0,
+                    Max = equipoSensor.Sensores.Max ?? 0,
+                    Equipo = equipoSensor.Equipos.SerieEquipo,
+                    medida = error.Medida,
+                    Sensor = equipoSensor.Sensores.SerieSensor,
+                    UnidadMedida = error.UnidadMedida,
+                    encimadebajo = error.EncimaNormal == true ? "Encima de lo normal" : "Debajo de lo normal"
                 });
+
             }
-           
+
             return View(model);
         }
-        
 
-    }
+        public ActionResult RevisarMedidas()
+        {
+            if (!User.IsInRole("Developers"))
+            {
+                var listaErrores = db.DataSensores.Where(c => c.Activo && c.Error && c.IdEmpresa == IdEmpresa).ToList();
+             foreach(var l in listaErrores)
+            {
+                l.AlertaRecibida = true;
+                db.SaveChanges();
+            } 
+            }
+            return Redirect("ListaErrosDataSensores");
+        }
+         
+        }
 }

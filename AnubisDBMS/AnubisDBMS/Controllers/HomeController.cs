@@ -18,35 +18,34 @@ namespace AnubisDBMS.Controllers
 
 
             var model = new SharedVM();
-           if (User.IsInRole("Administrador"))
+            if (User.IsInRole("Administrador") || User.IsInRole("Usuario"))
             {
 
-                var Actual = db.Empresas.FirstOrDefault(x => x.IdEmpresa==IdEmpresa);
+                var Actual = db.Empresas.FirstOrDefault(x => x.IdEmpresa == IdEmpresa);
                 model = new SharedVM
                 {
                     Visible = true,
                     Developer = true,
                     HomeVM = new HomeVm
                     {
-                       Estado = Actual.ServicioActivo == true ? "Activo" : "Bloqueado",
-                       EstiloCSS = Actual.ServicioActivo == true ? "green":"red"
+                        Estado = Actual.ServicioActivo == true ? "Activo" : "Bloqueado",
+                        EstiloCSS = Actual.ServicioActivo == true ? "green" : "red"
                     }
                 };
 
             }
             else
             {
-                long id = User.Identity.GetEmpresaId();
-            var Actual = db.Empresas.FirstOrDefault(x => x.IdEmpresa == id);
-             model = new SharedVM
-             {
-                Visible=Actual.ServicioActivo,
-                HomeVM=new HomeVm 
-            {
-                Estado = Actual.ServicioActivo ? "Activo" : "Desactivado",
-                EstiloCSS = (db.Empresas.FirstOrDefault(x => x.Activo && x.IdEmpresa==IdEmpresa).ServicioActivo ? "green" : "red")
-            }
-                    };
+
+                model = new SharedVM
+                {
+
+                    HomeVM = new HomeVm
+                    {
+                         
+                    }
+                };
+          
             }
             
             return View(model);

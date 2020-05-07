@@ -76,7 +76,7 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                     Bloqueado = rol.Sistema,
                     Descripcion = rol.Descripcion
                 };
-                var rolUsuarios = UserManager.GetUsersInRole(rol.Id, User.Identity.GetUserId<long>()); 
+                var rolUsuarios = UserManager.GetUsersInRole(rol.Id); 
                 if (!User.IsInRole("Developers"))
                 {
                     rolUsuarios = rolUsuarios.Where(x => x.IdEmpresa == IdEmpresa).ToList();
@@ -133,8 +133,7 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
         {
                 if (ModelState.IsValid)
             {
-                var role =  RoleManager.FindById(model.IdRol);
-                var usr = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name).IdEmpresa;
+                var role =  RoleManager.FindById(model.IdRol); 
                 var nuevoUsuario = new AnubisDBMSUser
                 {
                     UserName = model.Usuario, 
@@ -142,10 +141,17 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                     Celular = model.Celular,
                     Apellidos = model.Apellidos,
                     TipoUsuario = role.Name,
-                    IdEmpresa = User.Identity.GetEmpresaId()
+                    
                    
                 };
-                   
+                if(!User.IsInRole("Developers"))
+                {
+                    nuevoUsuario.IdEmpresa = User.Identity.GetEmpresaId();
+                }
+                else
+                    {
+                    nuevoUsuario.IdEmpresa = model.IdEmpresa;
+                }
                 var creacion = await UserManager.CreateAsync(nuevoUsuario, model.Contrasena);
                 if (creacion.Succeeded)
                 {
@@ -219,6 +225,8 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
             {
                 return HttpNotFound();
             }
+            var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
+            var currentRole = RoleManager.FindById(currentRoleId.RoleId);
             var viewModel = new EditUserViewModel
             {
                 Id = usuario.Id,
@@ -227,11 +235,10 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
                 Nombres = usuario.Nombres,
                 Apellidos = usuario.Apellidos,
                 IdEmpresa = usuario.IdEmpresa ?? 0,
-                Email = usuario.Email
-            };
-            var currentRoleId = UserManager.FindById(User.Identity.GetUserId<long>()).Roles.First();
-            var currentRole = RoleManager.FindById(currentRoleId.RoleId);
-            ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", viewModel.IdRol);
+                Email = usuario.Email,
+                IdRol= currentRole.Id
+            }; 
+            ViewBag.IdRol = new SelectList(RoleManager.AvailableEditRoles(currentRole.Prioridad), "Id", "Name", currentRole.Id);
             ViewBag.IdEmpresa = SelectListEmpresas(usuario.IdEmpresa);
 
             return View(viewModel);
@@ -240,7 +247,7 @@ namespace AnubisDBMS.Areas.Seguridad.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditarUsuario(EditUserViewModel viewModel)
-        {
+            {
             var usuario = await UserManager.FindByIdAsync(viewModel.Id);
             if (usuario == null)
             {
