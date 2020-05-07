@@ -96,17 +96,17 @@ namespace AnubisDBMS.Controllers
                 switch (submitButton)
                 {
                     case "SaveAndCont":
-                        var modelo = GuardarMantenimiento(model);
+                        var modelo = EditarMantenimiento(model);
                         if (modelo != null)
                         {
-                            return RedirectToAction("AgregarMantenimiento", new { modelo.IdEquipo, Registro = true });
+                            return RedirectToAction("EditarMantenimiento", new {id = model.IdManteniemiento });
                         }
                         else
                         {
                             return View(modelo);
                         }
                     case "SaveAndBack":
-                        var modelo2 = GuardarMantenimiento(model);
+                        var modelo2 = EditarMantenimiento(model);
                         if (modelo2 != null)
                         {
 
@@ -183,6 +183,47 @@ namespace AnubisDBMS.Controllers
             TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al registrar el mantenimiento, revise que todos los campos esten ingresados correctamente.");
             return null;
         }
+        public MantenimientoVM EditarMantenimiento(MantenimientoVM model)
+        {
+            var transaction = db.Database.BeginTransaction();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                
+                    var mantenimiento = db.Mantenimiento.Find(model.IdManteniemiento);
+
+                    mantenimiento.IdTecnico = model.IdTecnico;
+                         mantenimiento.IdEquipo = model.IdEquipo;
+                         mantenimiento.FechaRegistro = DateTime.Now;
+                         mantenimiento.UsuarioRegistro = User.Identity.Name;
+                         mantenimiento.Activo = true;
+                         mantenimiento.IdEstado = db.Estados.FirstOrDefault(c => c.Activo && c.TipoEstado == "Mantenimiento" && c.NombreEstado == "Pendiente").IdEstado;
+                         mantenimiento.IdFrecuencia = model.IdFrecuencia;
+                         mantenimiento.Descripcion = model.Descripcion;
+                         mantenimiento.FechaMantenimiento = model.FechaMant;
+                    mantenimiento.IdEmpresa = IdEmpresa;
+                   
+                    db.SaveChanges();
+
+                    transaction.Commit();
+                    ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
+                    ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
+                    return model;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    ViewBag.IdFrecuencia = SelectListFrecuencias(model.IdFrecuencia);
+                    ViewBag.IdTecnico = SelectListTecnico(model.IdTecnico);
+                    TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al guardar los datos.");
+                    return null;
+                }
+            }
+            TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al registrar el mantenimiento, revise que todos los campos esten ingresados correctamente.");
+            return null;
+        }
+
         public ActionResult Mantenimientos(long IdEquipo, bool Registro = false)
         {
             var Eq = db.Equipos.FirstOrDefault(x => x.IdEquipo == IdEquipo && x.Activo && x.IdEmpresa == IdEmpresa);
