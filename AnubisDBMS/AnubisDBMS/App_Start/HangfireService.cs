@@ -77,42 +77,48 @@ namespace AnubisDBMS.Web.App_Start
         #region SensorMinMaxCheck
         public bool CheckMinMax(DataSensores dataSensor)
         {
-            var Max = db.Sensores.FirstOrDefault(x => x.SerieSensor == dataSensor.SerieSensor).Max ?? 0;
-            var Min = db.Sensores.FirstOrDefault(x => x.SerieSensor == dataSensor.SerieSensor).Min ?? 0;
-            bool TodoBienMAX = true;
-            bool TodoBienMIN = true;
-            //SI MIN ES 0 REVISO MAX
-            if (Min == 0)
+            var  Sensor = db.Sensores.FirstOrDefault(x => x.SerieSensor == dataSensor.SerieSensor && x.Activo); 
+          
+            if(Sensor != null)
             {
-                if (!CheckRange(null, Max, dataSensor.Medida))
-                { TodoBienMAX = false; }
-            }
-            //SI MAX ES 0 REVISO MIN
-            if (Max == 0)
-            {
-                if (!CheckRange(Min, null, dataSensor.Medida))
-                { TodoBienMIN = false; }
-            }
-            //SI NINGUNO ES 0 REVISO AMBOS
-            if (Min != 0 && Max != 0)
-            {
-                if (!CheckRange(null, Max, dataSensor.Medida))
-                { TodoBienMAX = false; }
-                if (!CheckRange(Min, null, dataSensor.Medida))
-                { TodoBienMIN = false; }
-            }
-            if (TodoBienMAX == false || TodoBienMIN == false)
-            {
+                var Max = Sensor.Max != null ? Sensor.Max : 0;
+                var Min = Sensor.Max != null ? Sensor.Min : 0;
+                bool TodoBienMAX = true;
+                bool TodoBienMIN = true;
+                //SI MIN ES 0 REVISO MAX
+                if (Min == 0)
+                {
+                    if (!CheckRange(null, Max, dataSensor.Medida))
+                    { TodoBienMAX = false; }
+                }
+                //SI MAX ES 0 REVISO MIN
+                if (Max == 0)
+                {
+                    if (!CheckRange(Min, null, dataSensor.Medida))
+                    { TodoBienMIN = false; }
+                }
+                //SI NINGUNO ES 0 REVISO AMBOS
+                if (Min != 0 && Max != 0)
+                {
+                    if (!CheckRange(null, Max, dataSensor.Medida))
+                    { TodoBienMAX = false; }
+                    if (!CheckRange(Min, null, dataSensor.Medida))
+                    { TodoBienMIN = false; }
+                }
+                if (TodoBienMAX == false || TodoBienMIN == false)
+                {
+                    dataSensor.Chequeado = true;
+                    dataSensor.Error = true;
+                    dataSensor.EncimaNormal = TodoBienMIN;
+                    dataSensor.DebajoNormal = TodoBienMAX;
+                    db.SaveChanges();
+                    return false;
+                }
                 dataSensor.Chequeado = true;
-                dataSensor.Error = true;
-                dataSensor.EncimaNormal = TodoBienMIN;
-                dataSensor.DebajoNormal = TodoBienMAX;
                 db.SaveChanges();
-                return false;
+                return true;
             }
-            dataSensor.Chequeado = true;
-            db.SaveChanges();
-            return true;
+            return false;
         }
          
         public bool CheckRange(double? Min, double? Max, double Lectura)
