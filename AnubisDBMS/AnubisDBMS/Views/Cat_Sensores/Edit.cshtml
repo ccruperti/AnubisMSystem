@@ -14,19 +14,14 @@
             @Html.HiddenFor(x => x.IdSensor)
 
 
-            <div class="field">
-                @Html.LabelFor(model => model.SerieSensor, htmlAttributes: new { @class = "control-label col-md-2" })
-
-                @Html.EditorFor(model => model.SerieSensor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SerieSensor, "", new { @class = "text-danger" })
-            </div>
+           
             <div class="four wide field">
                 <label>Seleccione Tipo de Sensor</label>
                 @Html.DropDownList("IdTipoSensor", null, new { @class = "ui search dropdown", @id = "tipo" })
             </div>
 
             <div class="fields">
-
+              
 
 
                 <div class="field">

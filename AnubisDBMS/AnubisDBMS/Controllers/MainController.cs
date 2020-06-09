@@ -125,12 +125,12 @@ namespace AnubisDBMS.Controllers
         {
             List<long> sensoresIDs = db.EquipoSensor.Where(x => x.Activo && x.IdEmpresa == IdEmpresa).Select(i =>i.IdSensor??0).ToList();
             List<SelectListItem> sensores = db.Sensores.AsNoTracking()
-                   .OrderBy(n => n.SerieSensor).Where(x=>x.Activo && x.IdEmpresa == IdEmpresa)
+                   .OrderBy(n => n.TipoSensor.NombreTipoSensor).Where(x=>x.Activo && x.IdEmpresa == IdEmpresa)
                        .Select(n =>
                        new SelectListItem
                        {
                            Value = n.IdSensor.ToString(),
-                           Text = n.TipoSensor.NombreTipoSensor+ " - " + n.SerieSensor
+                           Text = n.TipoSensor.NombreTipoSensor
                        }).ToList();
 
            

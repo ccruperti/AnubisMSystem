@@ -177,12 +177,12 @@ namespace AnubisDBMS.Controllers
             {
                 var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor);
 
-                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.SerieSensor==sensor.SerieSensor && x.IdEmpresa == IdEmpresa);
+                 var lectura =  db.DataSensores.OrderByDescending(x=>x.FechaRegistro).FirstOrDefault(x=>x.TipoSensor==sensor.TipoSensor.NombreTipoSensor && x.IdEmpresa == IdEmpresa);
                 if(lectura != null)
                 {
                     model.DatosSensores.Add(new DataSensoresVM
                     {
-                        SerieSensor = sensor?.SerieSensor,
+                        
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
                         Lectura = lectura.Medida,
@@ -209,12 +209,11 @@ namespace AnubisDBMS.Controllers
             {
                 var sensor = db.Sensores.FirstOrDefault(x => x.IdSensor == es.IdSensor && x.IdEmpresa == IdEmpresa);
 
-                var lectura = db.DataSensores.OrderByDescending(x => x.FechaRegistro).FirstOrDefault(x => x.SerieSensor == sensor.SerieSensor && x.IdEmpresa == IdEmpresa);
+                var lectura = db.DataSensores.OrderByDescending(x => x.FechaRegistro).FirstOrDefault(x => x.TipoSensor == sensor.TipoSensor.NombreTipoSensor && x.IdEmpresa == IdEmpresa);
                 if (lectura != null)
                 {
                     model.DatosSensores.Add(new DataSensoresVM
-                    {
-                        SerieSensor = sensor?.SerieSensor,
+                    { 
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
                         Lectura = lectura.Medida,
@@ -261,7 +260,7 @@ namespace AnubisDBMS.Controllers
             return RedirectToAction("MonitoreoEquipos");
 
         }
-        public ActionResult GraficosLecturasMedidores(string SerieSensor, DateTime? Desde, DateTime? Hasta)
+        public ActionResult GraficosLecturasMedidores(string TipoSensor, DateTime? Desde, DateTime? Hasta)
         {
             if(Desde == null && Hasta == null)
             {
@@ -269,28 +268,28 @@ namespace AnubisDBMS.Controllers
                 Desde = DateTime.Now.GetWeekStartDate();
                 Hasta = DateTime.Now.GetWeekEndDate();
             }
-            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.SerieSensor == SerieSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta && x.IdEmpresa == IdEmpresa).Select(c => c.Sensores.SerieSensor).ToList();
+            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.TipoSensor.NombreTipoSensor == TipoSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta && x.IdEmpresa == IdEmpresa).Select(c => c.Sensores.TipoSensor.NombreTipoSensor).ToList();
             
-            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.SerieSensor) && c.IdEmpresa == IdEmpresa).Select(x => new
+            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.TipoSensor) && c.IdEmpresa == IdEmpresa).Select(x => new
             {
                 lec = x.Medida,
-                Min= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && x.IdEmpresa == IdEmpresa).TipoSensor.Min_TipoSensor,
-                Max= db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Max_TipoSensor,
-                lecmin = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).Min,
-                lecmax = db.Sensores.FirstOrDefault(y => y.SerieSensor == x.SerieSensor && y.IdEmpresa == IdEmpresa).Max,
-                sensor = x.SerieSensor,                
+                Min= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && x.IdEmpresa == IdEmpresa).TipoSensor.Min_TipoSensor,
+                Max= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Max_TipoSensor,
+                lecmin = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Min,
+                lecmax = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Max,
+                sensor = x.TipoSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,
                 Anio = x.FechaRegistro.Year
             }).ToList();
-            return Json(lecturas.Where(x => x.sensor == SerieSensor ).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(lecturas.Where(x => x.sensor == TipoSensor ).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {
             return View();
         }
         
-        public ActionResult GenerarExcel(string SerieSensor, DateTime? Desde, DateTime? Hasta)
+        public ActionResult GenerarExcel(string TipoSensor, DateTime? Desde, DateTime? Hasta)
         {
             var fecha = ViewBag.Desde;
             if(Desde == null && Hasta == null)
@@ -299,16 +298,16 @@ namespace AnubisDBMS.Controllers
                 Hasta = DateTime.Now.GetWeekEndDate();
             }
             GenerarExcelConsultas Gen = new GenerarExcelConsultas();
-            byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(SerieSensor, Desde, Hasta, IdEmpresa);
+            byte[] fileStream = Gen.GenerarDocumentoLecturasEquipos(TipoSensor, Desde, Hasta, IdEmpresa);
             string fileName = string.Format("Lecturas.xlsx");
             return File(fileStream.ToArray(), "application/octet-stream", fileName);
         }
 
-        public ActionResult MedicionesSensor(string SerieSensor, DateTime? Desde, DateTime? Hasta)
+        public ActionResult MedicionesSensor(string TipoSensor, DateTime? Desde, DateTime? Hasta)
         {
             var model = new ConsultasMedicionesViewModel();
             var desde = ViewBag.Desde;
-            model.Lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
+            model.Lecturas = db.DataSensores.Where(x => x.TipoSensor == TipoSensor
             && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
             && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && x.IdEmpresa == IdEmpresa).ToList();
             return View(model);

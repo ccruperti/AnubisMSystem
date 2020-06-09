@@ -17,7 +17,7 @@ namespace AnubisDBMS.Controllers
     public class NotificacionCorreo
     {
         public string Usuario { get; set; }
-        public string SerieSensor { get; set; }
+        public string TipoSensor { get; set; }
         public string Medicion { get; set; }
         public string UnidadMedida { get; set; }
         public string MedidaSensor { get; set; }

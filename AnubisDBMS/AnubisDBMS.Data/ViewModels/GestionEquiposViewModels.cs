@@ -52,7 +52,7 @@ namespace AnubisDBMS.Data.ViewModels
         public long IdEquipo { get; set; }
         public string QR { get; set; }
         public string AliasEquipo { get; set; }
-        public string SerieSensor { get; set; }
+        public string TipoSensor { get; set; }
         public List<DataSensoresVM> DatosSensores { get; set; }
         public DateTime? Desde { get; set; }
         public DateTime? Hasta { get; set; }

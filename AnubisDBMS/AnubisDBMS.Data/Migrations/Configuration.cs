@@ -134,8 +134,77 @@
                 db.Frecuencia.AddRange(FrecuenciaList);
                 db.SaveChanges();
             }
-        
-            
+
+            if (!db.TipoSensor.Any())
+            {
+                db.TipoSensor.Add(new TipoSensor
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now, 
+                    UsuarioRegistro = "System",
+                    NombreTipoSensor = "CorrienteIA",
+                    IdEmpresa = 1,
+
+                });
+                db.TipoSensor.Add(new TipoSensor
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    UsuarioRegistro = "System",
+                    NombreTipoSensor = "CorrienteIB",
+                    IdEmpresa = 1,
+
+                });
+                db.TipoSensor.Add(new TipoSensor
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    UsuarioRegistro = "System",
+                    NombreTipoSensor = "CorrienteIC",
+                    IdEmpresa = 1,
+
+                });
+
+                db.TipoSensor.Add(new TipoSensor
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    UsuarioRegistro = "System",
+                    NombreTipoSensor = "AceleracionAX",
+                    IdEmpresa = 1,
+
+                });
+
+                db.TipoSensor.Add(new TipoSensor
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    UsuarioRegistro = "System",
+                    NombreTipoSensor = "AceleracionAZ",
+                      IdEmpresa = 1,
+
+                });
+
+                db.TipoSensor.Add(new TipoSensor
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now,
+                    UsuarioRegistro = "System",
+                    NombreTipoSensor = "AceleracionAY",
+                    IdEmpresa = 1,
+
+                });
+                db.TipoSensor.Add(new TipoSensor
+                {
+                    Activo = true,
+                    FechaRegistro = DateTime.Now, 
+                    UsuarioRegistro = "System",
+                    NombreTipoSensor = "Temperatura",
+                    IdEmpresa = 1,
+
+                });
+            }
+            db.SaveChanges();
             //if (db.EquipoSensor.Any(x => x.Activo))
             //{
             //    var countdatos = db.EquipoSensor.Count();

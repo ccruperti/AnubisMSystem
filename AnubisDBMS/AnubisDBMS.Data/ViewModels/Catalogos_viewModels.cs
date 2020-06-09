@@ -38,8 +38,7 @@ namespace AnubisDBMS.Data.ViewModels
             }
             public long IdSensor { get; set; }
             public long? IdTipoSensor { get; set; }
-            [Required]
-            public string SerieSensor { get; set; } 
+            public string TipoSensor { get; set; } 
             public double? Max { get; set; } 
 
             public double? Min { get; set; }

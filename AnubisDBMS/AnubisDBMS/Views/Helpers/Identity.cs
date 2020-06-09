@@ -50,25 +50,16 @@ namespace AnubisDBMS.Views.Helpers
         //    return (claim != null) ? claim.Value : "0";
         //}
         public static int ObtenerNumeroAlertasSensores(this IIdentity identity)
-        {
-            //var claim = ((ClaimsIdentity)identity).FindFirst("NumPendientes");
+        { 
             int pendientes = 0;
         
 
                 var current = HttpContext.Current;
                 var user = _context.Users.FirstOrDefault(c => c.UserName == identity.Name);
-                
-                    pendientes = _context.DataSensores.Count(c => c.Activo && c.Error && c.AlertaRecibida == false && c.IdEmpresa == user.IdEmpresa);
-            
-
-                //var paisesusuario = _context.UsuarioPais.FirstOrDefault(c => c.Activo && c.IdUsuario == user.Id && c.PaisSeleccionado);
-
+               
+            pendientes = _context.DataSensores.Count(c => c.Activo && c.Error && c.AlertaRecibida == false && c.IdEmpresa == (user.IdEmpresa??0));
              
 
-                    //((ClaimsIdentity)identity).AddClaim(new Claim("NumPendientes", pendientes.ToString(), ClaimValueTypes.Integer));
-                    //claim = ((ClaimsIdentity)identity).FindFirst("NumPendientes");
-                
-            
             return pendientes;
 
 
@@ -124,7 +115,7 @@ namespace AnubisDBMS.Views.Helpers
         {
             
 
-
+            
             var current = HttpContext.Current;
             var id = GetUserId(identity);
             var user = _context.Users.FirstOrDefault(c => c.Id == id);
@@ -143,7 +134,7 @@ namespace AnubisDBMS.Views.Helpers
             //claim = ((ClaimsIdentity)identity).FindFirst("NumPendientes");
 
 
-            return user.IdEmpresa ?? 0;
+            return user?.IdEmpresa ?? 0;
         }
         //public static int GetNumeroPendientesOrdenComprasGerencia(this IIdentity identity)
         //{

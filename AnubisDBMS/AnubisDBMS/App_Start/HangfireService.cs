@@ -77,7 +77,7 @@ namespace AnubisDBMS.Web.App_Start
         #region SensorMinMaxCheck
         public bool CheckMinMax(DataSensores dataSensor)
         {
-            var  Sensor = db.Sensores.FirstOrDefault(x => x.SerieSensor == dataSensor.SerieSensor && x.Activo); 
+            var  Sensor = db.Sensores.FirstOrDefault(x => x.TipoSensor.NombreTipoSensor == dataSensor.TipoSensor && x.Activo); 
           
             if(Sensor != null)
             {
@@ -200,12 +200,12 @@ namespace AnubisDBMS.Web.App_Start
             email.Attachments.Add(dividerAtt);
             email.Attachments.Add(rounderdwnAtt);
 
-            email.Subject = "Nueva Alerta - Sensor" + " " + error.SerieSensor;
+            email.Subject = "Nueva Alerta - Sensor" + " " + error.TipoSensor;
             email.IsBodyHtml = true;
             var not = new NotificacionCorreo
             {
                 Usuario = "Adminsitrador",
-                SerieSensor = error.SerieSensor,
+                TipoSensor = error.TipoSensor,
                 Medicion = error.UnidadMedida,
                 
 

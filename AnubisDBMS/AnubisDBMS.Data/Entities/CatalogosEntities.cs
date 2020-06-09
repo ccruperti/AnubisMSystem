@@ -30,8 +30,7 @@ namespace AnubisDBMS.Data.Entities
     {
         public long IdSensor { get; set; }
         public long IdTipoSensor { get; set; }
-        public DateTime? FechaConsulta { get; set; }
-        public string SerieSensor { get; set; } 
+        public DateTime? FechaConsulta { get; set; } 
         public double? Max { get; set; }
         public double? Min { get; set; }
         public long? IdEmpresa { get; set; }

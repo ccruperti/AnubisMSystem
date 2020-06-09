@@ -28,8 +28,8 @@ namespace AnubisDBMS.Controllers
                     Developer = true,
                     HomeVM = new HomeVm
                     {
-                        Estado = Actual.ServicioActivo == true ? "Activo" : "Bloqueado",
-                        EstiloCSS = Actual.ServicioActivo == true ? "green" : "red"
+                        Estado = Actual?.ServicioActivo == true ? "Activo" : "Bloqueado",
+                        EstiloCSS = Actual?.ServicioActivo == true ? "green" : "red"
                     }
                 };
 

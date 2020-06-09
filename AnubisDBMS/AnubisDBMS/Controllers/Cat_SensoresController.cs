@@ -27,8 +27,7 @@ namespace AnubisDBMS.Controllers
             {
                 var model = new Catalogos_viewModels.SensorVM
                 {
-                     IdSensor=x.IdSensor,
-                     SerieSensor=x.SerieSensor,
+                     IdSensor=x.IdSensor, 
                      IdTipoSensor=x.TipoSensor?.IdTipoSensor,
                      UnidadSensor=x.TipoSensor?.UnidadSensor,
                      NombreTipoSensor=x.TipoSensor?.NombreTipoSensor,
@@ -61,7 +60,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult Create(Catalogos_viewModels.SensorVM model)
         {
-            var bdd = db.Sensores.FirstOrDefault(x => x.SerieSensor == model.SerieSensor.Trim().ToUpper() && x.IdEmpresa == IdEmpresa);
+            var bdd = db.Sensores.FirstOrDefault(x => x.TipoSensor.NombreTipoSensor == model.TipoSensor.Trim().ToUpper() && x.IdEmpresa == IdEmpresa);
             if (bdd != null)
             {
                 bdd.Activo = true;
@@ -79,10 +78,11 @@ namespace AnubisDBMS.Controllers
                         Activo = true,
                         FechaRegistro = DateTime.Now,
                         UsuarioRegistro = User.Identity.Name,
-                        //Audit end
-                        SerieSensor = model.SerieSensor.Trim().ToUpper(), 
+                        //Audit end 
                         IdTipoSensor=model.IdTipoSensor??0,
-                        IdEmpresa = IdEmpresa
+                        IdEmpresa = IdEmpresa,
+                        
+
                     };
                     if (model.Max != null)
                     {
@@ -108,8 +108,7 @@ namespace AnubisDBMS.Controllers
             var bdd = db.Sensores.Find(id);
             var model = new Catalogos_viewModels.SensorVM
             {
-                IdSensor = id, 
-                SerieSensor = bdd.SerieSensor,
+                IdSensor = id,  
                 IdTipoSensor=bdd.IdTipoSensor, 
             };
             if (bdd.Max != null)
@@ -130,7 +129,6 @@ namespace AnubisDBMS.Controllers
             var bdd = db.Sensores.Find(model.IdSensor);
             bdd.IdSensor = model.IdSensor;
             bdd.IdTipoSensor = model.IdTipoSensor??0;
-            bdd.SerieSensor = model.SerieSensor.Trim().ToUpper();
             if (model.Max != null)
             {
                 bdd.Max = model.Max ?? 0;

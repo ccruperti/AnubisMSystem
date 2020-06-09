@@ -43,10 +43,10 @@
                                     @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "hasta" })
                                 </div>
                             </div>
-                            @*<div class="item">
+                            <div class="item">
                     <input type="submit" value="Consultar" class="ui mini blue button" />
 
-                </div>*@
+                </div>
                         </div>
 
 
@@ -56,9 +56,6 @@
                             <thead>
                                 <tr class="centered">
 
-                                    <th>
-                                        Serie Sensor
-                                    </th>
                                     <th>
                                         Tipo Sensor
                                     </th>
@@ -76,9 +73,7 @@
                                 @foreach (var x in Model.DatosSensores)
                                 {
                                     <tr class="center">
-                                        <td>
-                                            @x.SerieSensor
-                                        </td>
+                                         
                                         <td>
                                             @x.TipoSensor
                                         </td>
@@ -90,10 +85,10 @@
                                         </td>
                                         <td>
                                             <div class="ui small buttons">
-                                                @Html.HiddenFor(m => m.SerieSensor, new { @id = "id-sensor" });
-                                                <a data-seriesensor="@x.SerieSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
+                                                @Html.HiddenFor(m => m.TipoSensor, new { @id = "id-sensor" });
+                                                <a data-seriesensor="@x.TipoSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
                                                 @*<a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=Model.Desde, Hasta=Model.Hasta })"><i class="Excel icon"></i>Generar Excel</a>*@
-                                                <button data-sensor="@x.SerieSensor"  data-desde="" data-hasta="" class="ui attached green button boton-excel" type="submit")"><i class="excel file icon"></i>Generar Excel</button>
+                                                <button data-sensor="@x.TipoSensor"  data-desde="" data-hasta="" class="ui attached green button boton-excel" type="submit")"><i class="excel file icon"></i>Generar Excel</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -191,7 +186,7 @@
                 type: "get",
                 dataType: "json",
                 contentType: "application/json",
-                url: 'GraficosLecturasMedidores?SerieSensor=' + serie +"&Desde="+ desde +"&Hasta="+hasta,
+                url: 'GraficosLecturasMedidores?TipoSensor=' + serie +"&Desde="+ desde +"&Hasta="+hasta,
                               success: function (result) {
                                   $("#linechart_div").html("");
 

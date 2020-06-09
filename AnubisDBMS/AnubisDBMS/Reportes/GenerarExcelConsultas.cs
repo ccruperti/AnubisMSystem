@@ -20,7 +20,7 @@ namespace AnubisDBMS.Reportes
 
         }
         
-        public byte[] GenerarDocumentoLecturasEquipos(string SerieSensor, DateTime? Desde, DateTime? Hasta, long? IdEmpresa,int Row = 0, int Col = 0)
+        public byte[] GenerarDocumentoLecturasEquipos(string TipoSensor, DateTime? Desde, DateTime? Hasta, long? IdEmpresa,int Row = 0, int Col = 0)
         {
             ExcelFile ef = new ExcelFile();
             ExcelWorksheet ws = ef.Worksheets.Add("DataSensores");
@@ -40,41 +40,27 @@ namespace AnubisDBMS.Reportes
             var Usuario = db.Users.FirstOrDefault(x => x.UserName == user);
             if (HttpContext.Current.User.IsInRole("Developers"))
             {
-                 lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
+                 lecturas = db.DataSensores.Where(x => x.TipoSensor == TipoSensor
                 && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
                 && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta))).ToList();
             }
             else
             {
-                 lecturas = db.DataSensores.Where(x => x.SerieSensor == SerieSensor
+                 lecturas = db.DataSensores.Where(x => x.TipoSensor == TipoSensor
                 && (DbFunctions.TruncateTime(x.FechaRegistro) >= DbFunctions.TruncateTime(Desde)
                 && DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)) && x.IdEmpresa == Usuario.IdEmpresa).ToList();
             }
         
-           
-            //foreach (var eqs in equiposensor)
-            //{
-            //    lecturas.AddRange(db.DataSensores.Where(x => x.SerieSensor == eqs.Sensores.SerieSensor
-            //&& DbFunctions.TruncateTime(x.FechaRegistro) <= DbFunctions.TruncateTime(Hasta)).ToList());
-            //}
-
-
-            //SetCells(ws, Row, Col);
-            //SetCells(ws2, Row, Col);
-            //SetCells(ws3, Row, Col);
-            //SetCells(ws4, Row, Col);
-            //SetCells(ws5, Row, Col);
-
-            //var cont = 1;
+            
             int contador = 0;
-            var listafechas = lecturas.OrderBy(c => c.FechaRegistro).Select(x => new {fech = x.FechaRegistro, med = x.Medida, sensor=x.SerieSensor }).ToList();
+            var listafechas = lecturas.OrderBy(c => c.FechaRegistro).Select(x => new {fech = x.FechaRegistro, med = x.Medida, sensor=x.TipoSensor }).ToList();
             
              
                 foreach (var fecha in listafechas.GroupBy(c => c.fech))
                 {
                     if (contador == 0)
                     {
-                        ws.Cells[Row, Col++].Value = SerieSensor;
+                        ws.Cells[Row, Col++].Value = TipoSensor;
                         contador++;
                     }
                     var fechassensores = listafechas.Where(c => c.fech == fecha.Key).Select(x => x.med).ToList();
@@ -256,7 +242,7 @@ namespace AnubisDBMS.Reportes
         public void setContent(ExcelWorksheet ws, int Row, int Col, int cont, DataSensores lectura)
         {
             cont++;
-            ws.Cells[Row, Col++].Value = lectura.SerieSensor ?? "---";
+ 
             ws.Cells[Row, Col++].Value = lectura.TipoSensor ?? "---";
             ws.Cells[Row, Col++].Value = lectura?.FechaRegistro.ToString() ?? "---";
             ws.Cells[Row, Col++].Value = lectura.Medida;

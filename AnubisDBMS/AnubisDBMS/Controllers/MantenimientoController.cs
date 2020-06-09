@@ -256,14 +256,14 @@ namespace AnubisDBMS.Controllers
             List<Alerta> model = new List<Alerta>();
             foreach (var error in listaErrores)
             {
-                var equipoSensor = db.EquipoSensor.FirstOrDefault(x => x.Sensores.SerieSensor == error.SerieSensor);
+                var equipoSensor = db.EquipoSensor.FirstOrDefault(x => x.Sensores.TipoSensor.NombreTipoSensor == error.TipoSensor);
                 model.Add(new Alerta
                 {
                     Min = equipoSensor.Sensores.Min ?? 0,
                     Max = equipoSensor.Sensores.Max ?? 0,
                     Equipo = equipoSensor.Equipos.SerieEquipo,
                     medida = error.Medida,
-                    Sensor = equipoSensor.Sensores.SerieSensor,
+                    Sensor = equipoSensor.Sensores.TipoSensor.NombreTipoSensor,
                     UnidadMedida = error.UnidadMedida,
                     encimadebajo = error.EncimaNormal == true ? "Encima de lo normal" : "Debajo de lo normal"
                 });
