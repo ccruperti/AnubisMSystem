@@ -86,9 +86,9 @@
                                         <td>
                                             <div class="ui small buttons">
                                                 @Html.HiddenFor(m => m.TipoSensor, new { @id = "id-sensor" });
-                                                <a data-seriesensor="@x.TipoSensor" data-maxval="@x.MaxVal" data-minval="@x.MinVal" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
+                                                <a data-seriesensor="@x.TipoSensor" data-maxval="@Model.DatosSensores.Max(c=> c.MaxVal)" data-minval="@Model.DatosSensores.Min(c=> c.MinVal)" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
                                                 @*<a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=Model.Desde, Hasta=Model.Hasta })"><i class="Excel icon"></i>Generar Excel</a>*@
-                                                <button data-sensor="@x.TipoSensor"  data-desde="" data-hasta="" class="ui attached green button boton-excel" type="submit")"><i class="excel file icon"></i>Generar Excel</button>
+                                                <button data-sensor="@x.TipoSensor"  data-desde="" data-hasta="" class="ui attached green button boton-excel" type="submit"><i class="excel file icon"></i>Generar Excel</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -163,10 +163,15 @@
     <script>
         $(document).ready(function () {
 
-      
-  
-        });
-        $(".boton-excel").on("click", function () {
+              var anioDesde = null;
+        var mesDesde =null ;
+                var diaDesde = null;
+
+           var anioHasta = null;
+        var mesHasta = null;
+        var diaHasta =null ;
+
+          $(".boton-excel").on("click", function () {
             var serie = $(this).data("sensor");
             $("#id-sensor").val(serie);
             var desde = $("#desde").val();
@@ -180,7 +185,9 @@
             var minval = $(this).data("minval");
             var maxval = $(this).data("maxval")
             var desde = $("#desde").val();
-           var hasta = $("#hasta").val();
+            var hasta = $("#hasta").val();
+            var d = new Date(desde); 
+           var h = new Date(hasta); 
 
                           $.ajax({
                 type: "get",
@@ -194,42 +201,50 @@
                         'packages': ['corechart']
                     });
                                   google.charts.setOnLoadCallback(function () {
-                                      $("#mostrar-graficos").html(drawChart(result, serie, minval, maxval));
+                                      $("#mostrar-graficos").html(drawChart(result, serie, minval, maxval, d, h));
                     });
                 }
             });
             });
-        function drawChart(result, serie, minval, maxval) {
-            var data = new google.visualization.DataTable();
-             data.addColumn('date', 'Fecha');
-            data.addColumn('number', 'Lectura'); 
-            data.addColumn('number', 'Min');
-            data.addColumn('number', 'Max'); 
+            function drawChart(result, serie, minval, maxval, d, h) {
+                var data = new google.visualization.DataTable();
+                data.addColumn('date', 'Fecha');
+                data.addColumn('number', 'Lectura');
+                data.addColumn('number', 'Min');
+                data.addColumn('number', 'Max');
 
-            var dataArray = [];
+                var dataArray = [];
 
-            $.each(result, function (i, obj) {
-                dataArray.push([new Date(obj.Anio, obj.Mes, obj.Dia), obj.lec, obj.Min, obj.Max]);
-            });
-            data.addRows(dataArray);
+                $.each(result, function (i, obj) {
+                    dataArray.push([new Date(Date.UTC(obj.Anio, obj.Mes - 1, obj.Dia, obj.Hora)), obj.lec, obj.Min, obj.Max]);
+                });
+                data.addRows(dataArray);
 
-        var columnChartOptions = {
-                title: "Lectura Medidores",
-                width: 1000,
-                height: 300,     
-            vAxis: { title: serie, minValue: minval, maxValue: maxval },
+                var columnChartOptions = {
+                    title: "Lectura Medidores",
+                    width: 1000,
+                    height: 300,
+                    vAxis: { viewWindow: { title: serie, minValue: minval, maxValue: maxval }
+            },
            hAxis: {
-            format: 'M/d/yy',
-               gridlines: { count: 15 },
-            viewWindow: {
-            min: new Date(2019, 01, 01),
-            max: new Date(2019, 12, 31)
-               } 
+               viewWindow: {
+                   min: new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 12)),
+                   max: new Date(Date.UTC(h.getFullYear(), h.getMonth(), h.getDate(), 24))
+               } ,
+               gridlines: {
+                   count: -2,
+                   units: {
+                       days: { format: ['MMM dd'] },
+                       hours: { format: ['HH:mm', 'ha'] },
+                   }
+               },
+            
           },
              explorer: {
             axis: 'horizontal', 
             keepInBounds: false,
-            maxZoomIn: 4.0
+                 maxZoomIn: 5.0
+               
           }
             };
 
@@ -237,5 +252,8 @@
                 .getElementById('linechart_div')); 
             columnChart.draw(data, columnChartOptions);
         }
+        });
+
+
     </script>
 }

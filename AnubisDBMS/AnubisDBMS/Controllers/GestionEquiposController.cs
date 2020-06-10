@@ -186,10 +186,10 @@ namespace AnubisDBMS.Controllers
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
                         Lectura = lectura.Medida,
-                        MinVal = sensor.TipoSensor.Min_TipoSensor,
-                        MaxVal = sensor.TipoSensor.Max_TipoSensor,
-                        LecMax = sensor.Max,
-                        LecMin = sensor.Min
+                        MinVal = sensor.Min,
+                        MaxVal = sensor.Max,
+                        LecMin = sensor.TipoSensor.Min_TipoSensor,
+                        LecMax = sensor.TipoSensor.Max_TipoSensor,
                     });
                 }
                
@@ -217,10 +217,10 @@ namespace AnubisDBMS.Controllers
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
                         Lectura = lectura.Medida,
-                        MinVal = sensor.TipoSensor.Min_TipoSensor,
-                        MaxVal = sensor.TipoSensor.Max_TipoSensor,
-                        LecMin = sensor.Min,
-                        LecMax = sensor.Max,
+                        MinVal = sensor.Min,
+                        MaxVal = sensor.Max,
+                        LecMin = sensor.TipoSensor.Min_TipoSensor,
+                        LecMax = sensor.TipoSensor.Max_TipoSensor,
                         
                     });
                 }
@@ -273,16 +273,18 @@ namespace AnubisDBMS.Controllers
             var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.TipoSensor) && c.IdEmpresa == IdEmpresa).Select(x => new
             {
                 lec = x.Medida,
-                Min= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && x.IdEmpresa == IdEmpresa).TipoSensor.Min_TipoSensor,
-                Max= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Max_TipoSensor,
-                lecmin = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Min,
-                lecmax = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Max,
+                Min= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && x.IdEmpresa == IdEmpresa).Min,
+                Max= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Max,
+                lecmin = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Min_TipoSensor,
+                lecmax = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Max_TipoSensor,
                 sensor = x.TipoSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,
-                Anio = x.FechaRegistro.Year
+                Anio = x.FechaRegistro.Year,
+                Hora = x.FechaRegistro.Hour,
+                Minuto = x.FechaRegistro.Minute
             }).ToList();
-            return Json(lecturas.Where(x => x.sensor == TipoSensor ).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(lecturas.Where(x => x.sensor == TipoSensor ).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ThenBy(x => x.Hora).ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {
