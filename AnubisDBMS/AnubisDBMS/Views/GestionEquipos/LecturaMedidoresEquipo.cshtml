@@ -218,33 +218,44 @@
                 var columnChartOptions = {
                     title: "Lectura Medidores",
                     width: 1000,
-                    height: 300,
-                    vAxis: {  title: serie, minValue: minval, maxValue: maxval 
-            },
-           hAxis: {
-               viewWindow: {
-                   min: new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 12)),
-                   max: new Date(Date.UTC(h.getFullYear(), h.getMonth(), h.getDate(), 24))
-               } ,
-               gridlines: {
-                   count: 15,
-                   units: {
-                       days: { format: ['MMM dd'] },
-                       hours: { format: ['HH:mm', 'ha'] },
-                   }
-               },
+                    height: 300, 
+                    aggregationTarget: "series",
+                    focusTarget: "category",
+                    vAxis: {
+                        title: serie, minValue: minval, maxValue: maxval,
+                        viewWindow: {
+                            viewWindowMode: "maximized"
+                        }
+                    },
+                         hAxis: {
+                               viewWindow: {
+                                   min: new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 12)),
+                                 max: new Date(Date.UTC(h.getFullYear(), h.getMonth(), h.getDate(), 24)),
+                                 viewWindowMode: "maximized",
+                                            } ,
+                                               gridlines: {
+                                                   count: 4,
+                                                   units: {
+                                                       days: { format: ['MMM dd'] },
+                                                       hours: { format: ['HH:mm', 'ha'] }, 
+                                                   }
+                                               },
             
-          },
-             explorer: {
-            axis: 'horizontal', 
-            keepInBounds: false,
-                 maxZoomIn: 4.0
-               
-          }
-            };
+                            },
+                                explorer: {  
+                                    keepInBounds: false, 
+                                    dragToPan: true,
+                                    zoomDelta: 0.5,
+                                    maxZoomIn: 0,
+                                    maxZoomOut: 2
+                                 },
+                    
+                        
+                       
+                    
+                     };
 
-            var columnChart = new google.visualization.LineChart(document
-                .getElementById('linechart_div')); 
+            var columnChart = new google.visualization.LineChart(document.getElementById('linechart_div')); 
             columnChart.draw(data, columnChartOptions);
         }
         });
