@@ -42,7 +42,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult Create(Catalogos_viewModels.TipoSensorVM model)
         {
-            var bdd = db.TipoSensor.FirstOrDefault(x => x.NombreTipoSensor == model.NombreTipoSensor.Trim().ToUpper());
+            var bdd = db.TipoSensor.FirstOrDefault(x => x.NombreTipoSensor == model.NombreTipoSensor.Trim());
             if (bdd != null)
             {
                 bdd.Activo = true;
@@ -61,7 +61,7 @@ namespace AnubisDBMS.Controllers
                         FechaRegistro = DateTime.Now,
                         UsuarioRegistro = User.Identity.Name,
                         //Audit end
-                      NombreTipoSensor=model.NombreTipoSensor.Trim().ToUpper(),
+                      NombreTipoSensor=model.NombreTipoSensor.Trim(),
                       Max_TipoSensor=model.Max_TipoSensor,
                       Min_TipoSensor=model.Min_TipoSensor,
                       IdEmpresa = IdEmpresa
@@ -83,7 +83,7 @@ namespace AnubisDBMS.Controllers
             var model = new Catalogos_viewModels.TipoSensorVM
             {
                 IdTipoSensor = id,
-                NombreTipoSensor = bdd.NombreTipoSensor.Trim().ToUpper(),
+                NombreTipoSensor = bdd.NombreTipoSensor.Trim(),
                 Max_TipoSensor = bdd.Max_TipoSensor,
                 Min_TipoSensor = bdd.Min_TipoSensor
             };

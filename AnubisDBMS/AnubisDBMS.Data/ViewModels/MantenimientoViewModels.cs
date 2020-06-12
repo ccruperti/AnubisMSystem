@@ -20,7 +20,7 @@ namespace AnubisDBMS.Data.ViewModels
         public long IdEstado { get; set; }
         [Required]
         [Display(Name = "Tecnico")]
-        public long IdTecnico { get; set; }
+        public long IdTecnico { get; set; } 
         public string IdUsuario { get; set; }
         [Required]
         [Display(Name = "Frecuencia")]

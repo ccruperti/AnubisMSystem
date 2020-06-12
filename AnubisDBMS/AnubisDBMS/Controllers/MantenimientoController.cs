@@ -70,17 +70,19 @@ namespace AnubisDBMS.Controllers
         }
         public ActionResult EditarMantenimiento(long id)
         {
-            var equipo = db.Mantenimiento.FirstOrDefault(x => x.IdManteniemiento == id);
+            var mant = db.Mantenimiento.FirstOrDefault(x => x.IdManteniemiento == id);
 
-            ViewBag.IdFrecuencia = SelectListFrecuencias(equipo.IdFrecuencia);
-            ViewBag.IdTecnico = SelectListTecnico(equipo.IdTecnico);
+            ViewBag.IdFrecuencia = SelectListFrecuencias(mant.IdFrecuencia);
+            ViewBag.IdTecnico = SelectListTecnico(mant.IdTecnico);
             var model = new MantenimientoVM
             {
                 FechaMant = DateTime.Now,
-                IdEquipo = equipo.IdEquipo ?? 0,
-                AliasEquipo = equipo.Equipo.Alias,
-                QR = equipo.Equipo.CodigoQR,
-                Descripcion = ""
+                IdEquipo = mant.IdEquipo ?? 0,
+                AliasEquipo = mant.Equipo?.Alias,
+                QR = mant.Equipo.CodigoQR,
+                Descripcion = mant.Descripcion,
+                Notificaciones=mant.Notificiaciones,
+                IdManteniemiento=mant.IdManteniemiento
             };
             //if (Registro)
             //{
@@ -96,7 +98,7 @@ namespace AnubisDBMS.Controllers
                 switch (submitButton)
                 {
                     case "SaveAndCont":
-                        var modelo = EditarMantenimiento(model);
+                        var modelo = EditarMantenimientoVM(model);
                         if (modelo != null)
                         {
                             return RedirectToAction("EditarMantenimiento", new { id = model.IdManteniemiento });
@@ -106,7 +108,7 @@ namespace AnubisDBMS.Controllers
                             return View(modelo);
                         }
                     case "SaveAndBack":
-                        var modelo2 = EditarMantenimiento(model);
+                        var modelo2 = EditarMantenimientoVM(model);
                         if (modelo2 != null)
                         {
 
@@ -161,6 +163,7 @@ namespace AnubisDBMS.Controllers
                         IdFrecuencia = model.IdFrecuencia,
                         Descripcion = model.Descripcion,
                         FechaMantenimiento = model.FechaMant,
+                        Notificiaciones=model.Notificaciones,
                         IdEmpresa = IdEmpresa
                     };
                     db.Mantenimiento.Add(mantenimiento);
@@ -183,16 +186,15 @@ namespace AnubisDBMS.Controllers
             TempData["Mensaje"] = new MensajeViewModel(false, "Error de registro", "Ocurrio un error al registrar el mantenimiento, revise que todos los campos esten ingresados correctamente.");
             return null;
         }
-        public MantenimientoVM EditarMantenimiento(MantenimientoVM model)
+        public MantenimientoVM EditarMantenimientoVM(MantenimientoVM model)
         {
             var transaction = db.Database.BeginTransaction();
             if (ModelState.IsValid)
             {
                 try
-                {
-
+                { 
                     var mantenimiento = db.Mantenimiento.Find(model.IdManteniemiento);
-
+                    mantenimiento.Notificiaciones = model.Notificaciones;
                     mantenimiento.IdTecnico = model.IdTecnico;
                     mantenimiento.IdEquipo = model.IdEquipo;
                     mantenimiento.FechaRegistro = DateTime.Now;
@@ -202,8 +204,8 @@ namespace AnubisDBMS.Controllers
                     mantenimiento.IdFrecuencia = model.IdFrecuencia;
                     mantenimiento.Descripcion = model.Descripcion;
                     mantenimiento.FechaMantenimiento = model.FechaMant;
-                    mantenimiento.IdEmpresa = IdEmpresa;
-
+                    mantenimiento.IdEmpresa = IdEmpresa; 
+                                          
                     db.SaveChanges();
 
                     transaction.Commit();

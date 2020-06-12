@@ -60,7 +60,7 @@ namespace AnubisDBMS.Controllers
         [HttpPost]
         public ActionResult Create(Catalogos_viewModels.SensorVM model)
         {
-            var bdd = db.Sensores.FirstOrDefault(x => x.TipoSensor.NombreTipoSensor == model.TipoSensor.Trim().ToUpper() && x.IdEmpresa == IdEmpresa);
+            var bdd = db.Sensores.FirstOrDefault(x => x.TipoSensor.NombreTipoSensor == model.TipoSensor.Trim() && x.IdEmpresa == IdEmpresa);
             if (bdd != null)
             {
                 bdd.Activo = true;

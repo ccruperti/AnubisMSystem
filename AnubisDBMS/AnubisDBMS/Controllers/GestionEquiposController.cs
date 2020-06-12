@@ -185,9 +185,7 @@ namespace AnubisDBMS.Controllers
                         
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
-                        Lectura = lectura.Medida,
-                        MinVal = sensor.Min,
-                        MaxVal = sensor.Max,
+                        Lectura = lectura.Medida, 
                         LecMin = sensor.TipoSensor.Min_TipoSensor,
                         LecMax = sensor.TipoSensor.Max_TipoSensor,
                     });
@@ -216,9 +214,7 @@ namespace AnubisDBMS.Controllers
                     { 
                         TipoSensor = sensor?.TipoSensor?.NombreTipoSensor,
                         UnidadMedida = lectura?.UnidadMedida,
-                        Lectura = lectura.Medida,
-                        MinVal = sensor.Min,
-                        MaxVal = sensor.Max,
+                        Lectura = lectura.Medida, 
                         LecMin = sensor.TipoSensor.Min_TipoSensor,
                         LecMax = sensor.TipoSensor.Max_TipoSensor,
                         
@@ -272,11 +268,9 @@ namespace AnubisDBMS.Controllers
             
             var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.TipoSensor) && c.IdEmpresa == IdEmpresa).Select(x => new
             {
-                lec = x.Medida,
-                Min= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && x.IdEmpresa == IdEmpresa).Min,
-                Max= db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Max,
-                lecmin = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Min_TipoSensor,
-                lecmax = db.Sensores.FirstOrDefault(y => y.TipoSensor.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).TipoSensor.Max_TipoSensor,
+                lec = x.Medida, 
+                lecmin = db.TipoSensor.FirstOrDefault(y => y.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Min_TipoSensor,
+                lecmax = db.TipoSensor.FirstOrDefault(y => y.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Max_TipoSensor,
                 sensor = x.TipoSensor,                
                 Dia= x.FechaRegistro.Day,
                 Mes = x.FechaRegistro.Month,

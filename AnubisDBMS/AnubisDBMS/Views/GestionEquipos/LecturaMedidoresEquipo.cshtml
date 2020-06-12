@@ -15,6 +15,13 @@
                     <div class="header item">
                         <i class="list icon"></i> Lectura de Sensores
                     </div>
+
+                    <div class="header item">
+                        <div class="ui info message  yellow">
+                            
+                            <p><i class="warning icon"></i>Por favor indique las fechas de consulta y luego de click en "Ver Gráfico" o "Generar Excel". </p>
+                        </div>
+                    </div>
                 </div>
                 <div class="ui raised segment">
                     @using (Html.BeginForm("MedicionesSensor", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui form", id = "" }))
@@ -42,11 +49,7 @@
                                     @Html.HiddenFor(m => m.Hasta, new { @id="fecha-hasta"})
                                     @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "hasta" })
                                 </div>
-                            </div>
-                            <div class="item">
-                    <input type="submit" value="Consultar" class="ui mini blue button" />
-
-                </div>
+                            </div>  
                         </div>
 
 
@@ -86,7 +89,7 @@
                                         <td>
                                             <div class="ui small buttons">
                                                 @Html.HiddenFor(m => m.TipoSensor, new { @id = "id-sensor" });
-                                                <a data-seriesensor="@x.TipoSensor" data-maxval="@Model.DatosSensores.Max(c=> c.MaxVal)" data-minval="@Model.DatosSensores.Min(c=> c.MinVal)" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
+                                                <a data-seriesensor="@x.TipoSensor" data-maxval="@(x.LecMax))" data-minval="@(x.LecMin))" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
                                                 @*<a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=Model.Desde, Hasta=Model.Hasta })"><i class="Excel icon"></i>Generar Excel</a>*@
                                                 <button data-sensor="@x.TipoSensor"  data-desde="" data-hasta="" class="ui attached green button boton-excel" type="submit"><i class="excel file icon"></i>Generar Excel</button>
                                             </div>
@@ -163,15 +166,7 @@
     <script>
         $(document).ready(function () {
 
-              var anioDesde = null;
-        var mesDesde =null ;
-                var diaDesde = null;
-
-           var anioHasta = null;
-        var mesHasta = null;
-        var diaHasta =null ;
-
-          $(".boton-excel").on("click", function () {
+            $(".boton-excel").on("click", function () {
             var serie = $(this).data("sensor");
             $("#id-sensor").val(serie);
             var desde = $("#desde").val();
@@ -210,13 +205,13 @@
                 var data = new google.visualization.DataTable();
                 data.addColumn('date', 'Fecha');
                 data.addColumn('number', 'Lectura');
-                data.addColumn('number', 'Min');
-                data.addColumn('number', 'Max');
+                data.addColumn('number', 'Mínimo');
+                data.addColumn('number', 'Máximo');
 
                 var dataArray = [];
 
                 $.each(result, function (i, obj) {
-                    dataArray.push([new Date(Date.UTC(obj.Anio, obj.Mes - 1, obj.Dia, obj.Hora)), obj.lec, obj.Min, obj.Max]);
+                    dataArray.push([new Date(Date.UTC(obj.Anio, obj.Mes - 1, obj.Dia, obj.Hora)), obj.lec, obj.lecmin, obj.lecmax]);
                 });
                 data.addRows(dataArray);
 
@@ -224,7 +219,7 @@
                     title: "Lectura Medidores",
                     width: 1000,
                     height: 300,
-                    vAxis: { viewWindow: { title: serie, minValue: minval, maxValue: maxval }
+                    vAxis: {  title: serie, minValue: minval, maxValue: maxval 
             },
            hAxis: {
                viewWindow: {
@@ -232,7 +227,7 @@
                    max: new Date(Date.UTC(h.getFullYear(), h.getMonth(), h.getDate(), 24))
                } ,
                gridlines: {
-                   count: -2,
+                   count: 15,
                    units: {
                        days: { format: ['MMM dd'] },
                        hours: { format: ['HH:mm', 'ha'] },
@@ -243,7 +238,7 @@
              explorer: {
             axis: 'horizontal', 
             keepInBounds: false,
-                 maxZoomIn: 5.0
+                 maxZoomIn: 4.0
                
           }
             };

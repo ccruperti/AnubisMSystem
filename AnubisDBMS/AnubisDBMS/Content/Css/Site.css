@@ -140,3 +140,8 @@ th.xg-width {
 .ui.card {
     display: inline-block;
 }
+
+.buttons-pdf
+{
+    display:none !important;
+}

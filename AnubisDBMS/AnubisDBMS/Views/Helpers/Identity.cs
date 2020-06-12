@@ -18,8 +18,7 @@ namespace AnubisDBMS.Views.Helpers
         }
 
         public static long GetUserId(this IIdentity identity)
-        {
-
+        { 
             var user = _context.Users.FirstOrDefault(c => c.UserName == identity.Name);
             return user != null ?user.Id : 0;
         }
@@ -51,12 +50,9 @@ namespace AnubisDBMS.Views.Helpers
         //}
         public static int ObtenerNumeroAlertasSensores(this IIdentity identity)
         { 
-            int pendientes = 0;
-        
-
+            int pendientes = 0; 
                 var current = HttpContext.Current;
-                var user = _context.Users.FirstOrDefault(c => c.UserName == identity.Name);
-               
+                var user = _context.Users.FirstOrDefault(c => c.UserName == identity.Name); 
             pendientes = _context.DataSensores.Count(c => c.Activo && c.Error && c.AlertaRecibida == false && c.IdEmpresa == (user.IdEmpresa??0));
              
 
