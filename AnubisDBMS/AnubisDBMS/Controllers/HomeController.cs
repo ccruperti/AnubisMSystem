@@ -14,13 +14,10 @@ namespace AnubisDBMS.Controllers
     public class HomeController : MainController 
     { 
         public ActionResult Index()
-        {
-
-
+        { 
             var model = new SharedVM();
             if (User.IsInRole("Administrador") || User.IsInRole("Usuario"))
-            {
-
+            { 
                 var Actual = db.Empresas.FirstOrDefault(x => x.IdEmpresa == IdEmpresa);
                 model = new SharedVM
                 {

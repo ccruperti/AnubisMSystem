@@ -37,18 +37,14 @@ namespace AnubisDBMS.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-
-           
+            if (!User.IsInRole("Developers"))
+            {
                 if (User.Identity.Name != null)
                 {
                     IdEmpresa = User.Identity.GetEmpresaId();
-
                     idsEmpresas.Add(IdEmpresa);
-
                 }
-            
-            
-
+            }
         }
 
         public MainController()
