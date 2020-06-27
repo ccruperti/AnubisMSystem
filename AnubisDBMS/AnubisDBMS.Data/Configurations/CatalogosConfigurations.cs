@@ -126,7 +126,7 @@ namespace AnubisDBMS.Data.Configurations
         }
 
 
- 
+
 
     }
     public class EstadosConfiguration : EntityTypeConfiguration<Estados>
@@ -194,7 +194,7 @@ namespace AnubisDBMS.Data.Configurations
         {
             ToTable("DataSensores", AnubisDBMSSchemas.Monitoreo);
             HasKey(c => c.IdDataSensor);
-           
+
         }
     }
 
@@ -248,7 +248,17 @@ namespace AnubisDBMS.Data.Configurations
 
 
         }
+
+
     }
 
-
+    public class DispositivosConfiguration : EntityTypeConfiguration<Dispositivos>
+        {
+          public DispositivosConfiguration()
+            {
+                ToTable("Dispositivos", AnubisDBMSSchemas.Monitoreo);
+                HasKey(c => c.IdDispositivos);
+            }
+        }
+ 
 }

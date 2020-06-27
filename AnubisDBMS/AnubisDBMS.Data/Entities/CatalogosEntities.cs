@@ -21,7 +21,7 @@ namespace AnubisDBMS.Data.Entities
         public long? IdEmpresa { get; set; }
         public virtual Empresa Empresa { get; set; }
         //public virtual AnubisDBMSUser Usuarios { get; set; }
-       //public IEnumerable<User> Usuarios { get; set; }
+        //public IEnumerable<User> Usuarios { get; set; }
         //public virtual ICollection<EquipoSensor> EquiposSensor { get; set; }
 
     }
@@ -30,7 +30,7 @@ namespace AnubisDBMS.Data.Entities
     {
         public long IdSensor { get; set; }
         public long IdTipoSensor { get; set; }
-        public DateTime? FechaConsulta { get; set; } 
+        public DateTime? FechaConsulta { get; set; }
         public double? Max { get; set; }
         public double? Min { get; set; }
         public long? IdEmpresa { get; set; }
@@ -116,19 +116,18 @@ namespace AnubisDBMS.Data.Entities
         public virtual Frecuencia Frecuencias { get; set; }
     }
 
-   
+
     public class DataSensores : CrudEntities
-    {
-        
+    { 
         public long IdDataSensor { get; set; }
         public string SerieSensor { get; set; }
         public string TipoSensor { get; set; }
         public double Medida { get; set; }
-        public string UnidadMedida { get; set; } 
+        public string UnidadMedida { get; set; }
         public bool Chequeado { get; set; }
         public bool Error { get; set; }
         public bool EncimaNormal { get; set; }
-        public bool DebajoNormal { get; set; } 
+        public bool DebajoNormal { get; set; }
         public bool AlertaRecibida { get; set; }
         public bool Notificado { get; set; }
         public long? IdEmpresa { get; set; }
@@ -136,5 +135,11 @@ namespace AnubisDBMS.Data.Entities
 
     }
 
+    public class Dispositivos
+    {
+        public long IdDispositivos { get; set; }
+        public string ip { get; set; }
+        public DateTime ult_lectura { get; set; }
+    }
 
 }
