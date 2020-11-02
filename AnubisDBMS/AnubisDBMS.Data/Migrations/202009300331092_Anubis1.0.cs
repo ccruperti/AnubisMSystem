@@ -87,6 +87,16 @@ namespace AnubisDBMS.Data.Migrations
                 .PrimaryKey(t => t.IdEmpresa);
             
             CreateTable(
+                "MON.Dispositivos",
+                c => new
+                    {
+                        IdDispositivos = c.Long(nullable: false, identity: true),
+                        ip = c.String(),
+                        ult_lectura = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.IdDispositivos);
+            
+            CreateTable(
                 "CAT.Equipos",
                 c => new
                     {
@@ -141,7 +151,6 @@ namespace AnubisDBMS.Data.Migrations
                         IdSensor = c.Long(nullable: false, identity: true),
                         IdTipoSensor = c.Long(nullable: false),
                         FechaConsulta = c.DateTime(),
-                        SerieSensor = c.String(),
                         Max = c.Double(),
                         Min = c.Double(),
                         IdEmpresa = c.Long(),
@@ -455,6 +464,7 @@ namespace AnubisDBMS.Data.Migrations
             DropTable("CAT.Sensores");
             DropTable("MON.EquipoSensores");
             DropTable("CAT.Equipos");
+            DropTable("MON.Dispositivos");
             DropTable("GEN.Empresas");
             DropTable("MON.DataSensores");
             DropTable("SEG.Permisos");

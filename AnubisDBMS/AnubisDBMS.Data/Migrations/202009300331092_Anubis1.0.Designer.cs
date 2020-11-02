@@ -7,13 +7,13 @@ namespace AnubisDBMS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Anubis12 : IMigrationMetadata
+    public sealed partial class Anubis10 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Anubis12));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Anubis10));
         
         string IMigrationMetadata.Id
         {
-            get { return "202006262218127_Anubis1.2"; }
+            get { return "202009300331092_Anubis1.0"; }
         }
         
         string IMigrationMetadata.Source
