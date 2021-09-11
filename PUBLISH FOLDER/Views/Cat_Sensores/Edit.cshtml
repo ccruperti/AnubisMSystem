@@ -1,0 +1,63 @@
+﻿@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.SensorVM
+@{
+    ViewBag.Title = "Editar Sensor";
+}
+<div class="sixteen wide column">
+    <h1 class="ui header">@ViewBag.Title</h1>
+</div>
+@using (Html.BeginForm("Edit", "Cat_Sensores", FormMethod.Post, new { @class = "ui row" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="sixteen wide column">
+        <h2 class="ui top attached sub header">Datos</h2>
+        <div class="ui attached form segment">
+            @Html.HiddenFor(x => x.IdSensor)
+
+
+           
+            <div class="four wide field">
+                <label>Seleccione Tipo de Sensor</label>
+                @Html.DropDownList("IdTipoSensor", null, new { @class = "ui search dropdown", @id = "tipo" })
+            </div>
+
+            <div class="fields">
+              
+
+
+                <div class="field">
+                    @Html.LabelFor(model => model.Min, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Min, new { htmlAttributes = new { @class = "number" } })
+                    @Html.ValidationMessageFor(model => model.Min, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="field">
+                    @Html.LabelFor(model => model.Max, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.EditorFor(model => model.Max, new { htmlAttributes = new { @class = "number" } })
+                    @Html.ValidationMessageFor(model => model.Max, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+
+            @Html.ActionLink("Regresar a la Lista", "Index", null, new { @class = "ui secondary button" })
+            <input type="submit" value="Guardar" class="ui primary button" />
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+
+
+         $(".number").on("keypress keyup blur",function (event) {
+
+     $(this).val($(this).val().replace(/[^0-9\,\-]/g,''));
+            //if ((event.which != 46 || $(this).val().indexOf(',') != -1) && (event.which < 48 || event.which > 57)) {
+            //    event.preventDefault();
+            //}
+        });
+    </script>
+}

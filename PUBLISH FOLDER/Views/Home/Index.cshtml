@@ -1,0 +1,59 @@
+﻿@model AnubisDBMS.Data.ViewModels.SharedVM
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="sixteen wide column">
+    <div class="ui raised centered segment grid">
+        <div class="row">
+            <div class="four wide column">
+                <img class="ui fluid image" src="~/Content/Images/AnubisLogo.jpeg" alt="Logo" />
+            </div>
+        </div>
+        <div class="sixteen wide column">
+            @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
+            {
+                <h1 class="ui huge centered header">Bienvenido!</h1>
+
+            }
+            else
+            {
+                if (Model.HomeVM.Estado == "Activo")
+                {
+                    <h1 class="ui huge centered header">Bienvenido!</h1>
+                }
+                else
+                {
+                    <h1 class="ui huge centered header">Servicio Bloqueado!</h1>
+                }
+            }
+
+        </div>
+
+        <div>
+            @if (User.IsInRole("Administrador") || User.IsInRole("Developers"))
+            {
+
+                <i class="unlock icon"></i>
+                @Html.ActionLink("Activar", "Activar_Servicio", "Main", new { @class = "ui green button" })
+
+                <i class="lock icon"></i>
+                @Html.ActionLink("Bloquear", "Desactivar_Servicio", "Main", new { @class = "ui red button" })
+
+            }
+
+
+            <br /><br />
+            @if ( User.IsInRole("Developers"))
+            {
+            <label class="ui @Model.HomeVM.EstiloCSS label"><strong>Usuario Administrador</strong></label>
+            }
+            else
+            {
+          <label class="ui @Model.HomeVM.EstiloCSS label"> "Estado Actual: " @Model.HomeVM.Estado</label>
+
+            }
+        </div>
+    </div>
+</div>

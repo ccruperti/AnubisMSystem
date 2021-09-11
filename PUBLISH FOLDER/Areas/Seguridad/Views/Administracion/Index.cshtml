@@ -1,0 +1,13 @@
+﻿@model IEnumerable<AnubisDBMS.Infraestructure.Data.Security.ViewModels.RoleUserListViewModel>
+    @{
+        ViewBag.Title = "Administración de Usuarios";
+    }
+    <div class="sixteen wide column">
+        <h1 class="ui header">@ViewBag.Title</h1>
+        <p class="ui sub header">Modulo de gestión, creación y eliminación de usuarios.</p>
+        @foreach (var item in Model)
+        {
+
+            Html.RenderAction("ListaUsuarioRol", item);
+        }
+    </div>

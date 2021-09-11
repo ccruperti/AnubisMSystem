@@ -1,0 +1,78 @@
+﻿@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.EmpresaVM
+@{
+    ViewBag.Title = "Editar Empresa";
+}
+<div class="sixteen wide column">
+    <h1 class="ui header">@ViewBag.Title</h1>
+</div>
+@using (Html.BeginForm("Edit", "Cat_Empresas", FormMethod.Post, new { @class = "ui row" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.IdEmpresa)
+    <div class="sixteen wide column">
+        <h2 class="ui top attached sub header">Datos</h2>
+        <div class="ui attached form segment">
+            @Html.HiddenFor(x => x.IdEmpresa)
+            <div class="field">
+                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="field">
+                @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="field">
+                @Html.LabelFor(model => model.RUC, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="field">
+                @Html.LabelFor(model => model.EmailNotificacion, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.EmailNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailNotificacion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="field">
+                @Html.LabelFor(model => model.PrimeraNotificacion, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.PrimeraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PrimeraNotificacion, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="field">
+                @Html.LabelFor(model => model.SegundaNotificacion, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.SegundaNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SegundaNotificacion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="field">
+                @Html.LabelFor(model => model.TerceraNotificacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.TerceraNotificacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TerceraNotificacion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="field">
+                @Html.LabelFor(model => model.ServicioActivo, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.EditorFor(model => model.ServicioActivo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ServicioActivo, "", new { @class = "text-danger" })
+            </div>
+
+
+
+            @Html.ActionLink("Regresar a la Lista", "Index", null, new { @class = "ui secondary button" })
+            <input type="submit" value="Guardar" class="ui primary button" />
+        </div>
+    </div>
+}

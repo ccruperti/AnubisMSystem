@@ -84,7 +84,7 @@ $(function () {
     // Carga de datepickers global
 
 
-    $('.date-picker').datepicker(globalDatePickerOptions);
+    //$('.date-picker').datepicker(globalDatePickerOptions);
     $('.date-picker').attr('autocomplete', 'off');
     /*
     $('.date-picker-programacion').datepicker(PrograDatePickerOptions);

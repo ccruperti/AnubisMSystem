@@ -1,0 +1,50 @@
+﻿@{ Layout = "~/Areas/Seguridad/Views/Shared/_LoginLayout.cshtml"; }
+@model AnubisDBMS.Infraestructure.Data.Security.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Iniciar Sesión";
+}
+<div class="six wide left aligned column">
+    <div class="ui raised segments">
+        <div class="ui top attached segment center aligned">
+            <img src="~/Content/Images/AnubisLogo.jpeg" style="max-width: 100%; width: 320px;" />
+        </div>
+        <div class="ui bottom attached segment bg-labcontrol-main">
+            @using (Html.BeginForm("IniciarSesion", "Cuenta", new { returnUrl = ViewBag.returnUrl }, FormMethod.Post, new { @class = "ui inverted form" }))
+            {
+                <h1 class="ui inverted header">@ViewBag.Title</h1>
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="field">
+                    @Html.LabelFor(m => m.Username)
+                    <div class="ui left icon input">
+                        @Html.TextBoxFor(m => m.Username, new { placeholder = "Usuario" })
+                        <i class="user icon"></i>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Username)
+                </div>
+                <div class="field">
+                    @Html.LabelFor(m => m.Password)
+                    <div class="ui left icon input">
+                        @Html.PasswordFor(m => m.Password, new { placeholder = "Clave" })
+                        <i class="lock icon"></i>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe)
+                    </div>
+                </div>
+                <button type="submit" class="ui inverted black button">
+                    <i class="unlock alternate icon"></i> Iniciar Sesión
+                </button>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+      
+    </script>
+}

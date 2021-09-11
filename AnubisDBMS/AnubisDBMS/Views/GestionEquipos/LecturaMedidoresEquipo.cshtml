@@ -165,7 +165,20 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         $(document).ready(function () {
-
+            var globalDatePickerOptions = {
+                format: "yyyy-mm-dd",
+                language: "es",
+                orientation: "bottom auto",
+                autoclose: true,
+                weekStart: 1,
+                todayBtn: true,
+                todayHighlight: true,
+                templates: {
+                    rightArrow: '<i class="chevron right icon"></i>',
+                    leftArrow: '<i class="chevron left icon"></i>'
+                }
+            };
+            $('.date-picker').datepicker(globalDatePickerOptions);
             $(".boton-excel").on("click", function () {
             var serie = $(this).data("sensor");
             $("#id-sensor").val(serie);

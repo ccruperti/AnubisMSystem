@@ -1,0 +1,147 @@
+﻿/* Set padding to keep content from hitting the edges */
+#securityGrid {
+    min-height: 600px;
+    min-height: 98vh;
+}
+
+    #securityGrid .ui.segment.bg-labcontrol-main {
+        background-color: #EE632A;
+    }
+
+.ui.segment.bg-labcontrol-main, .ui.attached.header.bg-labcontrol-main, .ui.menu.inverted.bg-labcontrol-main, .ui.top.attached.menu.bg-labcontrol-main {
+    background-color: #EE632A;
+    color: #fff;
+}
+.ui.menu, .item {
+        color: #fff !important;
+    }
+.ui.dropdown .menu > .item{
+    color: black !important;
+}
+.ui.vertical.menu .menu .item{
+    color: black !important;
+}
+.ui.vertical.menu .item > .header:not(.ui) {
+    color: black !important;
+}
+#main-content {
+    margin-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 50px;
+    z-index: -1 !important;
+    position: relative;
+}
+
+.nodisplay {
+    line-height: 0.00;
+}
+
+.nodisplay2 .field {
+    line-height: 1.12;
+}
+
+.nodisplay.active {
+    display: block;
+}
+
+.movebuttonleft {
+    position: inherit;
+    left: 50px;
+}
+
+.overflowdiv {
+    overflow-y: auto;
+    height: 70vh;
+}
+
+.overflowdivClientes {
+    overflow-y: auto;
+    height: 60vh;
+}
+
+.bg-gqm-regular, .ui.inverted.segment.bg-gqm-regular, .ui.inverted.menu.bg-gqm-regular {
+    background-color: #EE632A;
+    color: #ffffff;
+}
+
+.ui.menu.compact-menu {
+    font-size: .9rem;
+}
+
+    .ui.menu.compact-menu .item {
+        padding: .55em;
+    }
+
+.ui.table.small-text-table tr td {
+    font-size: .85rem;
+}
+
+.ui.table.small-text-table tr th {
+    font-size: .9rem;
+}
+
+#modal-selector-actividades .accordion .title .list {
+    margin-top: -.14em;
+}
+
+.error-text{
+    color: #ff0000;
+}
+
+.dt-head-center {
+    text-align: center !important;
+}
+.dt-body-center {
+    text-align: center !important;
+}
+
+.table thead,
+.table th tbody {
+    text-align: center !important; 
+}
+
+.ui.segment.checkbox-segment{
+    margin: 0;
+    padding: .5em;
+}
+
+th.tn-width {
+    width: 80px;
+}
+th.sm-width {
+    width: 140px;
+}
+
+th.md-width {
+    width: 200px;
+}
+
+th.lg-width {
+    min-width: 100px;
+}
+
+th.xg-width {
+    min-width: 200px;
+}
+
+.ui.menu > .item:first-child {
+    color: black !important;
+}
+
+.ui.menu .ui.dropdown.item .menu .item:not(.filtered) {
+    color: black !important;
+}
+.ui.container {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.ui.card {
+    display: inline-block;
+}
+
+.buttons-pdf
+{
+    display:none !important;
+}
