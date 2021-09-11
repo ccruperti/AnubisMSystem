@@ -264,9 +264,10 @@ namespace AnubisDBMS.Controllers
                 Desde = DateTime.Now.GetWeekStartDate();
                 Hasta = DateTime.Now.GetWeekEndDate();
             }
-            var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.TipoSensor.NombreTipoSensor == TipoSensor && x.FechaRegistro >= Desde && x.FechaRegistro <= Hasta && x.IdEmpresa == IdEmpresa).Select(c => c.Sensores.TipoSensor.NombreTipoSensor).ToList();
+          //  var EquipoSensor = db.EquipoSensor.Where(x => x.Sensores.TipoSensor.NombreTipoSensor == TipoSensor && x.IdEmpresa == IdEmpresa).Select(c => c.Sensores.TipoSensor.NombreTipoSensor).ToList();
             
-            var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.TipoSensor) && c.IdEmpresa == IdEmpresa).Select(x => new
+        //    var lecturas = db.DataSensores.Where(c => EquipoSensor.Contains(c.TipoSensor) && c.IdEmpresa == IdEmpresa && c.FechaRegistro >= Desde && c.FechaRegistro <= Hasta).Select(x => new
+            var lecturas = db.DataSensores.Where(c => c.TipoSensor == TipoSensor && c.IdEmpresa == IdEmpresa && c.FechaRegistro >= Desde && c.FechaRegistro <= Hasta ).Take(999).Select(x => new
             {
                 lec = x.Medida, 
                 lecmin = db.TipoSensor.FirstOrDefault(y => y.NombreTipoSensor == x.TipoSensor && y.IdEmpresa == IdEmpresa).Min_TipoSensor,
@@ -276,9 +277,10 @@ namespace AnubisDBMS.Controllers
                 Mes = x.FechaRegistro.Month,
                 Anio = x.FechaRegistro.Year,
                 Hora = x.FechaRegistro.Hour,
-                Minuto = x.FechaRegistro.Minute
+                Minuto = x.FechaRegistro.Minute,
+                Segundo = x.FechaRegistro.Second
             }).ToList();
-            return Json(lecturas.Where(x => x.sensor == TipoSensor ).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ThenBy(x => x.Hora).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(lecturas.Where(x => x.sensor == TipoSensor ).OrderBy(x=>x.Anio).ThenBy(x=>x.Mes).ThenBy(x=>x.Dia).ThenBy(x => x.Hora).ThenBy(x => x.Minuto).ThenBy(x => x.Segundo).ToList(), JsonRequestBehavior.AllowGet);
         }
         public ActionResult AccesoBloqueado()
         {

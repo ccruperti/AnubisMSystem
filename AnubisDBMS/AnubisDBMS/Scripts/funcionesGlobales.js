@@ -792,8 +792,8 @@ $.fn.extend({
 });
 
 //Filtro de Fechas del Tab de Calendario
-$("#Fecha_Desde_Calendario").datepicker(globalDatePickerOptions);
-$("#Fecha_Hasta_Calendario").datepicker(globalDatePickerOptions);
+//$("#Fecha_Desde_Calendario").datepicker(globalDatePickerOptions);
+//$("#Fecha_Hasta_Calendario").datepicker(globalDatePickerOptions);
 //Evento onchage de la fecha desde
 $("#Fecha_Desde_Calendario").on('changeDate', function (e) {
     $('#Filtro_Fecha_Calendario').submit();

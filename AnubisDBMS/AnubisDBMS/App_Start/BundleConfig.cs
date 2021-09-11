@@ -46,8 +46,8 @@ namespace AnubisDBMS
 
             bundles.Add(new StyleBundle("~/bundles/JsLibraries").Include(
                 "~/Content/Libraries/Semantic/semantic.min.js",
-                "~/Content/Libraries/BootstrapDatepicker/bootstrap-datepicker.min.js",
-                "~/Content/Libraries/BootstrapDatepicker/locales/bootstrap-datepicker.es.min.js",
+                //"~/Content/Libraries/BootstrapDatepicker/bootstrap-datepicker.min.js",
+               
                 "~/Scripts/wickedpicker.min.js"
                 ));
 
