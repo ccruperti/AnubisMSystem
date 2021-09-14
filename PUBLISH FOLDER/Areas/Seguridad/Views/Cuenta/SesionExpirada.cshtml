@@ -1,9 +1,0 @@
-﻿@{
-    ViewBag.Title = "Sesion Expirada";
-}
-<div class="sixteen wide column">
-    <h1 class="ui header">@ViewBag.Title</h1>
-    <p class="description">
-        El token de sesion ya ha expirado, para poder continuar puedes volver a @Html.ActionLink("iniciar sesion.", "IniciarSesion", "Cuenta", new { area = "Seguridad"})
-    </p>
-</div>

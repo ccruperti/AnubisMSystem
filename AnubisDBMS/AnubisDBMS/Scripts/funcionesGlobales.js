@@ -583,7 +583,7 @@ function RenderDataTable($table) {
         paging: true,
         searching: true,
         dom: 'Brtip',
-        buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5'],
+        buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5'],
         pageLength: 20,
         
     };
