@@ -15,6 +15,7 @@
     @Styles.Render("~/bundles/css")
     @Styles.Render("~/bundles/CssLibraries")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="~/Content/buttons.semanticui.min.css" />
     <style>
         /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
@@ -101,7 +102,14 @@
     @Scripts.Render("~/bundles/Js")
     @Scripts.Render(Url.Content("~/bundles/JsLibraries"))
     @Scripts.Render(Url.Content("~/Content/Libraries/BootstrapDatepicker/bootstrap-datepicker.min.js"))
-    <script src="~/Scripts/funcionesGlobales.js"></script>
+
+    <script src="~/Scripts/buttons.html5.min.js"></script>
+    <script src="~/Scripts/buttons.print.min.js"></script>
+    <script src="~/Scripts/buttons.semanticui.min.js"></script>
+    <script src="~/Scripts/vfs_fonts.js"></script>
+    <script src="~/Scripts/buttons.flash.min.js"></script>
+    <script src="~/Scripts/dataTables.buttons.min.js"></script>
+
     <script>
 
         $(document).ready(function () {
