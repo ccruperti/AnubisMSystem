@@ -1,0 +1,124 @@
+﻿@model AnubisDBMS.Data.ViewModels.MantenimientoVM
+
+
+@using (Html.BeginForm("EditarMantenimiento", "Mantenimiento", new { }, FormMethod.Post, new { @class = "ui row", id = "" }))
+{
+    @Html.HiddenFor(m => m.IdEquipo)
+    @Html.HiddenFor(m => m.QR)
+    @Html.HiddenFor(m => m.AliasEquipo)
+    @Html.HiddenFor(m => m.IdManteniemiento)
+
+
+    <div class="ten wide column">
+
+        <div class="ui raised segments">
+            <div class="ui bottom attached raised menu">
+                <div class="header item">
+                    Editar Mantenimiento: @Model.AliasEquipo
+                </div>
+                <div class="right menu">
+                    <a class="ui attached black button" href="@Url.Action("Mantenimientos","Mantenimiento",new { IdEquipo = Model.IdEquipo})"><i class="left arrow icon"></i>Volver al listado</a>
+                </div>
+            </div>
+            <div class="ui compact raised segment">
+                <div class="ui  form">
+                    <div class="two fields">
+                        @*<div class="six wide field">
+                                <label>Tipo de Mantenimiento</label>
+                                @Html.TextBox("test")
+                            </div>*@
+
+                        <div class="four wide field">
+                            <label>Fecha de Mantenimiento</label>
+                            <div class="ui labeled input">
+
+                                <div class="ui label">
+                                    <i class="calendar icon"></i>
+                                </div>
+                                @Html.TextBoxFor(model => model.FechaMant, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "Fecha-mant" })
+
+                            </div>
+                        </div>
+                        <div class="six wide field">
+                            <div class="ui toggle checkbox" style="margin-top:30px  !important; margin-left:20px !important;">
+
+                                @Html.LabelFor(m => m.Notificaciones)
+                                @Html.CheckBoxFor(m => m.Notificaciones)
+
+                            </div>
+                        </div>
+
+
+                        <div class="four wide field">
+                            <label>Técnico</label>
+                            @Html.DropDownList("IdTecnico", null, new { @class = "ui search dropdown" })
+
+                        </div>
+
+                        <div class="four wide field">
+                            <label>Frecuencia</label>
+                            @Html.DropDownList("IdFrecuencia", null, new { @class = "ui search dropdown" })
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="ui raised segment orange">
+                <div class="ui form">
+
+                    <div class="sixteen wide field">
+                        <label>Descripcion del Mantenimiento</label>
+
+                        @Html.TextAreaFor(m => m.Descripcion, htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
+                    </div>
+
+
+                    <button type="submit" style="color:white !important;" class="ui blue button" name="submitButton" value="SaveAndBack"><i class="left arrow icon"></i>Guardar y Volver</button>
+                   
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="ui raised segments" style="margin-top:-2.2px;">
+        <div class="ui bottom attached raised menu">
+            <div class="header item">
+                <i class="qrcode icon"></i> Codigo QR
+            </div>
+        </div>
+        <div class="ui raised segment">
+            <div class="ui link cards">
+                <div class="card">
+                    <div class="small image">
+                        <img src="data:image/gif;base64,@Model.QR" width="500" height="500" />
+                    </div>
+                    <div class="content">
+                        <div class="header">@Model.AliasEquipo</div>
+
+
+                    </div>
+                    @* <div class="extra content">
+
+                            <span>
+                                <i class="thermometer icon"></i>
+                                @Model.DatosSensores.Count Sensores
+                            </span>
+                        </div>*@
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+}
+
+
+@section scripts{
+    <script>
+
+        $('.ui.checkbox').checkbox();
+    </script>
+
+}

@@ -1,0 +1,269 @@
+﻿@model AnubisDBMS.Data.ViewModels.MonitoreoSensoresVM
+<div class="sixteen wide column">
+    @*<div class="ui top attached tabular menu">
+            <div class="active item" data-tab="tab-sensores"><i class="chart bar icon"></i>Sensores</div>
+            <div class="item" data-tab="tab-graficos"><i class="chart bar icon"></i>Graficos y Exportacion de datos</div>
+
+
+        </div>*@
+    @Html.HiddenFor(m => m.IdEquipo, new { id = "id-equipo" })
+    <div class="ui grid">
+
+        <div class="twelve wide column">
+            <div class="ui raised segments">
+                <div class="ui bottom attached raised menu">
+                    <div class="header item">
+                        <i class="list icon"></i> Lectura de Sensores
+                    </div>
+
+                    <div class="header item">
+                        <div class="ui info message  yellow">
+                            
+                            <p><i class="warning icon"></i>Por favor indique las fechas de consulta y luego de click en "Ver Gráfico" o "Generar Excel". </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui raised segment">
+                    @using (Html.BeginForm("MedicionesSensor", "GestionEquipos", new { }, FormMethod.Get, new { @class = "ui form", id = "" }))
+                    {
+
+
+                        <div class="fields">
+                            <div class="header" style="color:black !important">
+                                <h4>Desde</h4>
+                            </div>
+                            <div class="four wide field">
+
+                                <div class="ui left icon small input">
+                                    <i class="calendar icon"></i>
+                                    @Html.HiddenFor(m => m.Desde, new { @id = "fecha-desde" })
+                                    @Html.TextBoxFor(model => model.Desde, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "desde" })
+                                </div>
+                            </div>
+                            <div class="header" style="color:black !important">
+                                <h4>Hasta</h4>
+                            </div>
+                            <div class="four wide field">
+                                <div class="ui left icon small input">
+                                    <i class="calendar icon"></i>
+                                    @Html.HiddenFor(m => m.Hasta, new { @id="fecha-hasta"})
+                                    @Html.TextBoxFor(model => model.Hasta, "{0:yyyy-MM-dd}", new { @class = "date-picker", @id = "hasta" })
+                                </div>
+                            </div>  
+                        </div>
+
+
+
+
+                        <table class="ui  compact celled selectable table">
+                            <thead>
+                                <tr class="centered">
+
+                                    <th>
+                                        Tipo Sensor
+                                    </th>
+                                    <th>
+                                        Unidad Medida
+                                    </th>
+                                    <th>
+                                        Última Lectura
+                                    </th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var x in Model.DatosSensores)
+                                {
+                                    <tr class="center">
+                                         
+                                        <td>
+                                            @x.TipoSensor
+                                        </td>
+                                        <td>
+                                            @x.UnidadMedida
+                                        </td>
+                                        <td>
+                                            @x.Lectura
+                                        </td>
+                                        <td>
+                                            <div class="ui small buttons">
+                                                @Html.HiddenFor(m => m.TipoSensor, new { @id = "id-sensor" });
+                                                <a data-seriesensor="@x.TipoSensor" data-maxval="@(x.LecMax)" data-minval="@(x.LecMin)" class="ui blue small button cargar-grafico"><i class="graph line icon"></i>Ver Grafico</a>
+                                                @*<a class="ui attached green button" href="@Url.Action("GenerarExcel","GestionEquipos",new { SerieSensor = x.SerieSensor, Desde=Model.Desde, Hasta=Model.Hasta })"><i class="Excel icon"></i>Generar Excel</a>*@
+                                                <button data-sensor="@x.TipoSensor"  data-desde="" data-hasta="" class="ui attached green button boton-excel" type="submit"><i class="excel file icon"></i>Generar Excel</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+
+                    }
+
+                </div>
+            </div>
+        </div>
+      
+        <div class="four wide column" >
+            <div class="ui tiny raised segments" >
+                @*<div class="ui bottom attached raised menu">
+                    <div class="header item">
+                        <i class="qrcode icon"></i> Codigo QR
+                    </div>
+                    <div class="header item">
+                    </div>
+
+                </div>*@
+                <div class="ui raised segment">
+                    <div class="ui   link cards">
+                        <div class="card">
+                            <div class="tiny image">
+                                <img src="data:image/gif;base64,@Model.QR" width="300" height="150" />
+                            </div>
+                            <div class="content">
+                                <div class="header">@Model.AliasEquipo</div> 
+                            </div>
+                            <div class="extra content"> 
+                                <span>
+                                    <i class="thermometer icon"></i>
+                                    @Model.DatosSensores.Count Sensores
+                                </span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="ui grid">
+        <div class="twelve wide column" style="margin-top:-30px !important;" >
+            <div class="ui raised segments">
+                <div class="ui bottom attached raised menu">
+                    <div class="header item">
+                        <i class="graph line icon"></i> Graficos
+                    </div>
+                </div>
+                <div class="ui raised segment" id="mostrar-graficos" style="overflow-x:auto;">
+                    <div id="linechart_div"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@section Scripts
+    {
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        $(document).ready(function () {
+      
+            $(".boton-excel").on("click", function () {
+            var serie = $(this).data("sensor");
+            $("#id-sensor").val(serie);
+            var desde = $("#desde").val();
+            var hasta = $("#hasta").val();
+            $("#fecha-desde").val(desde);
+                        $("#fecha-hasta").val(hasta);
+
+        })
+
+
+            $(".cargar-grafico").on('click', function () {
+            var serie = $(this).data("seriesensor");
+            var minval = $(this).data("minval");
+            var maxval = $(this).data("maxval")
+            var desde = $("#desde").val();
+            var hasta = $("#hasta").val();
+            var d = new Date(desde); 
+            var h = new Date(hasta);
+
+
+                $.ajax({
+                type: "get",
+                dataType: "json",
+                contentType: "application/json",
+                url: 'GraficosLecturasMedidores?TipoSensor=' + serie + "&Desde="+ desde + "&Hasta="+hasta,
+                              success: function (result) {
+                                  console.log(result);
+                                  $("#linechart_div").html("");
+
+                                  google.charts.load('current', { 'packages': ['corechart'] });
+                                  google.charts.setOnLoadCallback(function () {
+                                      $("#mostrar-graficos").html(drawChart(result, serie, minval, maxval, d, h));
+                    });
+                }
+            });
+            });
+            function drawChart(result, serie, minval, maxval, d, h) {
+                var data = new google.visualization.DataTable();
+                data.addColumn('datetime', 'Fecha');
+                data.addColumn('number', 'Lectura');
+                data.addColumn('number', 'Mínimo');
+                data.addColumn('number', 'Máximo');
+
+                var dataArray = [];
+
+                $.each(result, function (i, obj) {
+                    dataArray.push([new Date(Date.UTC(obj.Anio, obj.Mes - 1, obj.Dia, obj.Hora, obj.Minuto, obj.Segundo)), obj.lec, obj.lecmin, obj.lecmax]);
+                });
+                data.addRows(dataArray);
+
+                var ChartOptions = {
+                    title: "Lectura Medidores",
+                    curveType: 'function',
+                    width: 1000,
+                    height: 300, 
+                    //aggregationTarget: "series",
+                    //focusTarget: "category",
+                    vAxis: {
+                        title: serie, minValue: minval, maxValue: maxval,
+                        viewWindow: {
+                            viewWindowMode: "maximized"
+                        }
+                    },
+                         hAxis: {
+                               viewWindow: {
+                                   min: new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 12)),
+                                 max: new Date(Date.UTC(h.getFullYear(), h.getMonth(), h.getDate(), 24)),
+                                 viewWindowMode: "maximized",
+                                            } ,
+                                               gridlines: {
+                                                   count: 4,
+                                                   units: {
+                                                       days: { format: ['MMM dd'] },
+                                                       hours: { format: ['hh:mm:ss a', 'ha'] },
+                                                       minutes: { format: ['HH:mm a Z', ':mm'] }
+                                                   }
+                                               },
+            
+                            },
+                                explorer: {  
+                                    keepInBounds: false, 
+                                    dragToPan: true,
+                                    zoomDelta: 0.5,
+                                    maxZoomIn: 0,
+                                    maxZoomOut: 2
+                                 },
+                    
+                        
+                       
+                    
+                     };
+
+            var Chart = new google.visualization.LineChart(document.getElementById('linechart_div')); 
+                Chart.draw(data, ChartOptions);
+        }
+        });
+
+
+    </script>
+}

@@ -1,0 +1,46 @@
+﻿@model AnubisDBMS.Data.ViewModels.Catalogos_viewModels.EquipoVM
+ @{ 
+     ViewBag.Title = "Catálogo de Equipos";
+ }
+ 
+    <div class="sixteen wide column">
+
+    <h2>@ViewBag.Title</h2>
+
+
+   @Html.ActionLink("Crear", "Create", null, new { @class = "ui primary   button" })
+    <table class="ui striped celled   table">
+        <thead>
+            <tr>
+                
+                <th>Alias</th>
+                <th>Serie</th>
+                <th>QR</th>
+                  
+                <th>Editar</th>
+                <th>Eliminar</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Lista)
+        {
+
+            <tr>
+ 
+                <td>@item.Alias</td>
+                <td>@item.SerieEquipo</td>
+                <td><img src="data:image/gif;base64,@item.CodigoQR" width="100" height="100" /></td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdEquipo }, new { @class = "ui orange   button" })
+                </td>
+                <td>
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdEquipo }, new { @class = "ui red   button" })
+                </td>
+            </tr>
+        }
+
+        </tbody>
+        </table>
+
+</div>
