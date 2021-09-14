@@ -39,8 +39,9 @@ namespace AnubisDBMS
                 "~/Scripts/fullcalendar.min.js",
                 "~/Scripts/jquery.qtip.min.js",
                 "~/Scripts/mdtimepicker.js",
-                "~/Scripts/jquery.timepicker.js",
-                "~/Scripts/funcionesGlobales.js"
+                "~/Scripts/jquery.timepicker.js"
+                
+                //"~/Scripts/funcionesGlobales.js"
 
                ));
 
